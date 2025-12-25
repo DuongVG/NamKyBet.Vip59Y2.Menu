@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NamKyBet Portal v4.3</title>
+    <style>
+        /* --- RESET & CORE --- */
+        :root {
+            --bg-dark: #050505;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent-gold: #ffd700;
+            --accent-red: #ff3333;
+            --neon-blue: #00f2ff;
+            --text-main: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-dark); color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+            background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000 100%);
+            background-size: 200% 200%; animation: bgBreath 10s ease infinite;
+            padding-bottom: 60px;
+        }
+
+        @keyframes bgBreath { 0% {background-position:0% 50%} 50% {background-position:100% 50%} 100% {background-position:0% 50%} }
+        @keyframes shine { to {background-position: 200% center;} }
+        @keyframes float { 0%,100% {transform:translateY(0)} 50% {transform:translateY(-5px)} }
+
+        /* --- HEADER --- */
+        .header { text-align: center; margin: 20px 0 10px 0; z-index: 10; width: 100%; }
+
+        .logo {
+            font-size: 2.5rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite; filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+        }
+
+        .jackpot-box {
+            background: rgba(0,0,0,0.5); border: 1px solid var(--accent-gold);
+            border-radius: 10px; padding: 10px 20px; margin: 10px auto;
+            display: inline-block; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+        .jackpot-label { font-size: 0.7rem; color: #aaa; letter-spacing: 2px; margin-bottom: 2px; }
+        .jackpot-num {
+            font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: bold;
+            color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold);
+        }
+
+        /* --- BANNER --- */
+        .promo-banner {
+            width: 90%; max-width: 600px; background: linear-gradient(90deg, #ff0055, #ff3333);
+            color: #fff; padding: 8px; border-radius: 50px; text-align: center;
+            font-size: 0.85rem; font-weight: bold; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 0, 85, 0.4);
+            animation: float 2s ease-in-out infinite; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        /* --- GRID --- */
+        .container {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+            width: 95%; max-width: 1100px; padding: 10px; z-index: 10;
+        }
+
+        .card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px;
+            padding: 20px 10px; display: flex; flex-direction: column; align-items: center; text-align: center;
+            cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px); position: relative;
+        }
+        .card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+        
+        .card-icon { font-size: 3rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+        .card-title { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; }
+        .card-desc { font-size: 0.75rem; color: #aaa; font-style: italic; margin-bottom: 15px; height: 30px; display: flex; align-items: center; justify-content: center; }
+        
+        .play-btn {
+            padding: 8px 20px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;
+            background: #fff; color: #000; box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .card.taixiu .card-title { color: #ff4d4d; } .card.taixiu .play-btn { background: #ff4d4d; color: #fff; }
+        .card.aviator .card-title { color: #00f2ff; } .card.aviator .play-btn { background: #00f2ff; color: #000; }
+        .card.scatter .card-title { color: #d900ff; } .card.scatter .play-btn { background: #d900ff; color: #fff; }
+
+        /* --- MARQUEE (FIXED & SLOW) --- */
+        .marquee-container {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 40px;
+            background: rgba(0,0,0,0.95); border-top: 1px solid #333;
+            display: flex; align-items: center; z-index: 100; overflow: hidden;
+        }
+        .marquee-content {
+            display: inline-block; white-space: nowrap;
+            animation: marquee 65s linear infinite; /* Tốc độ chậm 65s */
+            color: #fff; font-size: 0.85rem; font-weight: 600;
+            padding-left: 100vw; 
+        }
+        .marquee-content span { margin-right: 60px; color: var(--accent-gold); }
+        
+        @keyframes marquee { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(-100%); } 
+        }
+
+        /* --- MUSIC BUTTON --- */
+        .music-btn {
+            position: fixed; top: 15px; left: 15px; z-index: 200;
+            background: rgba(0,0,0,0.6); border: 1px solid #fff; color: #fff;
+            padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; padding-bottom: 50px; }
+            .card { flex-direction: row; padding: 15px; text-align: left; height: 100px; }
+            .card-icon { margin-bottom: 0; margin-right: 15px; font-size: 2.5rem; }
+            .card-desc { justify-content: flex-start; margin-bottom: 0; }
+            .play-btn { margin-left: auto; padding: 6px 12px; font-size: 0.7rem; }
+            .logo { font-size: 1.8rem; }
+            .jackpot-num { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="bg.mp3" type="audio/mpeg">
+    </audio>
+    <button class="music-btn" id="btnMusic" onclick="toggleMusic()">🔇 BẬT NHẠC</button>
+
+    <div class="header">
+        <div class="logo">NamKyBet.Vip59Y2</div>
+        
+        <div class="jackpot-box">
+            <div class="jackpot-label">JACKPOT TỔNG</div>
+            <div class="jackpot-num" id="jackpot">36,549,230,500</div>
+        </div>
+    </div>
+
+    <div class="promo-banner" id="promoText">
+        🔥 Tạo tài khoản tặng ngay 500k (không cho rút) 🔥
+    </div>
+
+    <div class="container">
+        <div class="card taixiu" onclick="openGame('https://taixiunamkybet.vercel.app/')">
+            <div class="card-icon">🎲</div>
+            <div class="card-content">
+                <div class="card-title">Tài Xỉu</div>
+                <div class="card-desc">"Tài ơi đừng xỉu Tài ơii!"</div>
+            </div>
+            <div class="play-btn">VÀO GAME</div>
+        </div>
+
+        <div class="card aviator" onclick="openGame('https://namkybetaviator.vercel.app/')">
+            <div class="card-icon">✈️</div>
+            <div class="card-content">
+                <div class="card-title">Aviator</div>
+                <div class="card-desc">"Bay càng lâu, lên đỉnh càng sướng"</div>
+            </div>
+            <div class="play-btn">VÀO GAME</div>
+        </div>
+
+        <div class="card scatter" onclick="openGame('https://namkybet59y2scatter.vercel.app/')">
+            <div class="card-icon">💎</div>
+            <div class="card-content">
+                <div class="card-title">Scatter</div>
+                <div class="card-desc">"Tích cực quay tay vận may sẽ đến!"</div>
+            </div>
+            <div class="play-btn">VÀO GAME</div>
+        </div>
+    </div>
+
+    <div class="marquee-container">
+        <div class="marquee-content" id="marqueeText"></div>
+    </div>
+
+    <script>
+        // --- 1. NHẠC NỀN ---
+        var music = document.getElementById("bgMusic");
+        var btnMusic = document.getElementById("btnMusic");
+        var isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                btnMusic.innerHTML = "🔇 BẬT NHẠC";
+                isPlaying = false;
+            } else {
+                music.play().then(() => {
+                    btnMusic.innerHTML = "🔊 TẮT NHẠC";
+                    isPlaying = true;
+                }).catch(e => alert("Chạm vào màn hình lần nữa để phát nhạc!"));
+            }
+        }
+        document.body.addEventListener('click', function() {
+            if(!isPlaying) toggleMusic();
+        }, { once: true });
+
+        // --- 2. JACKPOT ---
+        let currentJackpot = 36549230500;
+        function updateJackpot() {
+            currentJackpot += Math.floor(Math.random() * 500000) + 100000;
+            document.getElementById('jackpot').innerText = currentJackpot.toLocaleString('vi-VN');
+        }
+        setInterval(updateJackpot, 1500);
+
+        // --- 3. PROMO ---
+        const promos = [
+            "🔥 Tạo tài khoản tặng ngay 500k nhưng không cho rút 🔥",
+            "💀 Đua top Tài Xỉu, nhận ngay cái nịt! 💀",
+            "💎 Hoàn trả 0% trọn đời cho mọi thành viên 💎",
+            "🚀 Nạp đầu 50k tặng code... xin lỗi code hết rồi 🚀"
+        ];
+        let pIndex = 0;
+        setInterval(() => {
+            pIndex = (pIndex + 1) % promos.length;
+            document.getElementById('promoText').innerText = promos[pIndex];
+        }, 4000);
+
+        // --- 4. NGƯỜI THẮNG (DANH SÁCH CHUẨN) ---
+        const players = [
+            "Minh Cùi", "Tí Đỉnh", "Hạt Nhân", "Tiện Nhân", "Thương Nhân", 
+            "Phu Nhân", "Mười Răng", "Thanh Quốc", "Trần Gái"
+        ];
+        const actions = ["vừa nổ hũ", "vừa rút thành công", "vừa thắng lớn", "đang về bờ", "vừa hốt bạc"];
+        
+        function genMarquee() {
+            let html = "";
+            for(let i=0; i<30; i++) { // Tạo 30 tin lặp lại cho dài
+                let p = players[Math.floor(Math.random() * players.length)];
+                let a = actions[Math.floor(Math.random() * actions.length)];
+                let m = (Math.floor(Math.random() * 900) + 100) + ".000.000";
+                html += `<span>🔔 Chúc mừng <b>${p}</b> ${a} ${m} VNĐ</span>`;
+            }
+            document.getElementById('marqueeText').innerHTML = html;
+        }
+        genMarquee();
+
+        // --- 5. LINK GAME ---
+        function openGame(url) {
+            if (navigator.vibrate) navigator.vibrate(30);
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.4s';
+            setTimeout(() => { window.location.href = url; }, 400);
+        }
+    </script>
+
+</body>
+</html>
