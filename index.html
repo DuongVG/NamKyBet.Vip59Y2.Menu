@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NamKyBet - Tết Tài Xỉu v4.7</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. CẤU HÌNH & RESET --- */
+        :root {
+            --tet-red: #d90429;
+            --tet-dark-red: #4a0404;
+            --tet-gold: #ffd700;
+            --tet-yellow: #ffcc00;
+            --text-color: #fff;
+            --font-head: 'Coiny', cursive;
+            --font-body: 'Quicksand', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #8a0f0f 0%, var(--tet-dark-red) 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 60px;
+        }
+
+        /* Hoa rơi */
+        #flower-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+        .petal {
+            position: absolute; background: var(--tet-yellow);
+            border-radius: 50% 0 50% 50%; width: 10px; height: 10px;
+            animation: fall linear infinite; opacity: 0.9;
+            box-shadow: 0 0 5px rgba(255,255,0,0.5);
+        }
+        .petal.peach { background: #ffb7c5; box-shadow: 0 0 5px rgba(255, 183, 197, 0.5); }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(50px); opacity: 0; }
+        }
+
+        /* --- 2. HEADER & LOGO --- */
+        .header {
+            text-align: center; margin-top: 25px; z-index: 10; width: 100%;
+            position: relative;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 2.8rem; text-transform: uppercase; letter-spacing: 2px;
+            color: #ffd700;
+            text-shadow: 2px 2px 0px #b38f00, 4px 4px 0px #665200, 0 0 20px rgba(255, 215, 0, 0.5);
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+            margin-bottom: 5px;
+        }
+
+        .sub-logo {
+            font-family: var(--font-body);
+            font-size: 0.95rem; color: #ffeb3b; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            background: rgba(100, 0, 0, 0.6);
+            padding: 5px 20px; border-radius: 30px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            display: inline-block;
+        }
+
+        /* --- 3. JACKPOT BOX --- */
+        .jackpot-container {
+            margin: 20px 0; padding: 15px 30px;
+            background: linear-gradient(180deg, #990000, #550000);
+            border: 3px solid var(--tet-gold); border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(255, 215, 0, 0.2);
+            text-align: center; z-index: 10; position: relative;
+            transform: skewX(-5deg);
+        }
+        .jackpot-container > * { transform: skewX(5deg); }
+
+        .jackpot-container::before, .jackpot-container::after {
+            content: "💰"; position: absolute; top: 50%; transform: translateY(-50%) skewX(5deg); font-size: 1.5rem;
+        }
+        .jackpot-container::before { left: -15px; }
+        .jackpot-container::after { right: -15px; }
+
+        .jackpot-title { 
+            font-family: var(--font-body); font-size: 0.8rem; color: #ffeb3b; 
+            text-transform: uppercase; font-weight: bold; margin-bottom: 5px; 
+        }
+        .jackpot-value {
+            font-family: var(--font-head); font-size: 2rem; color: #fff;
+            text-shadow: 2px 2px 0 #d90429, -1px -1px 0 #d90429, 1px -1px 0 #d90429, -1px 1px 0 #d90429, 1px 1px 0 #d90429;
+        }
+
+        /* --- 4. PROMO BANNER --- */
+        .promo-box {
+            width: 92%; max-width: 600px; margin: 10px auto 25px;
+            background: linear-gradient(90deg, #ff3300, #ff6600);
+            color: #fff; padding: 12px 15px; border-radius: 12px;
+            text-align: center; font-size: 0.95rem; font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-bottom: 3px solid #b32400;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            z-index: 10;
+        }
+
+        /* --- 5. GAME GRID --- */
+        .game-grid {
+            display: grid; grid-template-columns: 1fr; gap: 20px;
+            width: 90%; max-width: 500px; z-index: 10; padding-bottom: 30px;
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 18px; padding: 15px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+        }
+        .game-card:active { transform: scale(0.97); }
+
+        .card-info { display: flex; align-items: center; gap: 15px; }
+        .card-icon { font-size: 3rem; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); }
+        
+        .card-text h3 { 
+            font-family: var(--font-head); color: var(--tet-gold); 
+            font-size: 1.3rem; margin-bottom: 4px; text-transform: uppercase; 
+            letter-spacing: 1px; text-shadow: 1px 1px 0 #000;
+        }
+        .card-text p { color: #eee; font-size: 0.8rem; font-weight: 500; }
+
+        .play-btn {
+            font-family: var(--font-head);
+            background: linear-gradient(180deg, #ffe066, #ffcc00);
+            color: #cc0000; font-size: 0.9rem;
+            padding: 10px 20px; border-radius: 25px;
+            box-shadow: 0 4px 0 #cc9900, 0 5px 10px rgba(0,0,0,0.3); 
+            border: none; transition: 0.2s;
+        }
+        .play-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #cc9900; }
+
+        /* --- 6. MARQUEE --- */
+        .marquee-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 45px;
+            background: rgba(30, 0, 0, 0.95); 
+            border-top: 2px solid var(--tet-gold);
+            display: flex; align-items: center; z-index: 100; overflow: hidden;
+        }
+        .marquee-content {
+            display: inline-block; white-space: nowrap;
+            animation: marquee 65s linear infinite;
+            color: #fff; font-size: 0.9rem; font-weight: 600;
+            padding-left: 100vw;
+        }
+        .marquee-content span { margin-right: 50px; }
+        .marquee-content b { color: var(--tet-gold); font-family: var(--font-head); letter-spacing: 1px; }
+        
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- 7. MUSIC BUTTON --- */
+        .music-btn {
+            position: fixed; bottom: 60px; right: 15px; z-index: 200;
+            background: rgba(0, 0, 0, 0.8); color: var(--tet-gold);
+            border: 2px solid var(--tet-gold); border-radius: 50px;
+            padding: 8px 16px; font-size: 0.8rem; font-weight: bold;
+            font-family: var(--font-body);
+            cursor: pointer; box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        
+        .cloud {
+            position: absolute; opacity: 0.1; pointer-events: none;
+            filter: blur(5px); z-index: 0; fill: #fff;
+        }
+        .c1 { top: 5%; left: -20%; width: 180px; animation: cloudMove 30s linear infinite; }
+        .c2 { top: 35%; right: -20%; width: 120px; animation: cloudMove 40s linear infinite reverse; }
+        @keyframes cloudMove { from { transform: translateX(-100vw); } to { transform: translateX(100vw); } }
+
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="bg.mp3" type="audio/mpeg">
+    </audio>
+    <button class="music-btn" id="btnMusic" onclick="toggleMusic()">🔇 BẬT NHẠC TẾT</button>
+
+    <div id="flower-container"></div>
+    <svg class="cloud c1" viewBox="0 0 24 24"><path d="M18.5,12c0-1.7-1.1-3.1-2.6-3.7C15.7,6.5,14,5.5,12,5.5c-2.7,0-5,1.8-5.7,4.3C4.6,10.1,3.5,11.4,3.5,13c0,1.9,1.6,3.5,3.5,3.5h11.5c1.9,0,3.5-1.6,3.5-3.5S20.4,12,18.5,12z"/></svg>
+    <svg class="cloud c2" viewBox="0 0 24 24"><path d="M18.5,12c0-1.7-1.1-3.1-2.6-3.7C15.7,6.5,14,5.5,12,5.5c-2.7,0-5,1.8-5.7,4.3C4.6,10.1,3.5,11.4,3.5,13c0,1.9,1.6,3.5,3.5,3.5h11.5c1.9,0,3.5-1.6,3.5-3.5S20.4,12,18.5,12z"/></svg>
+
+    <div class="header">
+        <div class="logo">NAMKYBET</div>
+        <div class="sub-logo">✨ CHÚC MỪNG NĂM MỚI ✨</div>
+    </div>
+
+    <div class="jackpot-container">
+        <div class="jackpot-title">LÌ XÌ JACKPOT TỔNG</div>
+        <div class="jackpot-value" id="jackpot">36.549.230.500</div>
+    </div>
+
+    <div class="promo-box" id="promoText">
+        🧧 Lì Xì đầu năm 500k - đéo cho rút 🧧
+    </div>
+
+    <div class="game-grid">
+        <div class="game-card" onclick="openGame('https://taixiunamkybet.vercel.app/')">
+            <div class="card-info">
+                <div class="card-icon">🎲</div>
+                <div class="card-text">
+                    <h3>Tài Xỉu</h3>
+                    <p>"Tài về lộc lá, Xỉu về bình an"</p>
+                </div>
+            </div>
+            <button class="play-btn">CHƠI</button>
+        </div>
+
+        <div class="game-card" onclick="openGame('https://namkybetaviator.vercel.app/')">
+            <div class="card-info">
+                <div class="card-icon">✈️</div>
+                <div class="card-text">
+                    <h3>Aviator</h3>
+                    <p>"Bay cao đón Tết, tiền về như nước"</p>
+                </div>
+            </div>
+            <button class="play-btn">CHƠI</button>
+        </div>
+
+        <div class="game-card" onclick="openGame('https://namkybet59y2scatter.vercel.app/')">
+            <div class="card-info">
+                <div class="card-icon">💎</div>
+                <div class="card-text">
+                    <h3>Scatter</h3>
+                    <p>"Tích cực quay tay, vận may sẽ đến"</p>
+                </div>
+            </div>
+            <button class="play-btn">CHƠI</button>
+        </div>
+    </div>
+
+    <div class="marquee-bar">
+        <div class="marquee-content" id="marqueeText"></div>
+    </div>
+
+    <script>
+        var music = document.getElementById("bgMusic");
+        var btnMusic = document.getElementById("btnMusic");
+        var isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                btnMusic.innerHTML = "🔇 BẬT NHẠC TẾT";
+                isPlaying = false;
+            } else {
+                music.play().then(() => {
+                    btnMusic.innerHTML = "🔊 TẮT NHẠC";
+                    isPlaying = true;
+                }).catch(e => alert("Vui lòng chạm màn hình lần nữa để phát nhạc!"));
+            }
+        }
+        document.body.addEventListener('click', function() {
+            if(!isPlaying) toggleMusic();
+        }, { once: true });
+
+        let currentJackpot = 36549230500;
+        function updateJackpot() {
+            currentJackpot += Math.floor(Math.random() * 200000) + 50000;
+            document.getElementById('jackpot').innerText = currentJackpot.toLocaleString('vi-VN');
+        }
+        setInterval(updateJackpot, 2000);
+
+        // --- CÁC CÂU TROLL MỚI ---
+        const promos = [
+            "🧧 Lì Xì đầu năm 500k - đéo cho rút 🧧",
+            "💀 Đua top tài xỉu, cho ngay cái nịt 💀",
+            "💸 Xuân này con không về 💸",
+            "💎 Nạp từ 36k khuyến mãi 0.36% 💎"
+        ];
+        let pIndex = 0;
+        setInterval(() => {
+            pIndex = (pIndex + 1) % promos.length;
+            document.getElementById('promoText').innerText = promos[pIndex];
+        }, 3500);
+
+        const players = [
+            "Minh Cùi", "Tí Đỉnh", "Hạt Nhân", "Tiện Nhân", "Thương Nhân", 
+            "Phu Nhân", "Mười Răng", "Thanh Quốc", "Trần Gái"
+        ];
+        const actions = [
+            "vừa nhận lì xì", "vừa nổ hũ lộc", "vừa hái lộc đầu xuân", 
+            "thắng lớn khai xuân", "rước thần tài"
+        ];
+        
+        function genMarquee() {
+            let html = "";
+            for(let i=0; i<30; i++) { 
+                let p = players[Math.floor(Math.random() * players.length)];
+                let a = actions[Math.floor(Math.random() * actions.length)];
+                let m = (Math.floor(Math.random() * 800) + 200) + ".000.000";
+                html += `<span>🔔 Chúc mừng <b>${p}</b> ${a} ${m} VNĐ</span>`;
+            }
+            document.getElementById('marqueeText').innerHTML = html;
+        }
+        genMarquee();
+
+        function createFlower() {
+            const container = document.getElementById('flower-container');
+            const flower = document.createElement('div');
+            const isPeach = Math.random() > 0.6; 
+            flower.className = isPeach ? 'petal peach' : 'petal';
+            flower.style.left = Math.random() * 100 + 'vw';
+            flower.style.animationDuration = Math.random() * 5 + 5 + 's';
+            flower.style.opacity = Math.random() * 0.7 + 0.3;
+            flower.style.fontSize = Math.random() * 10 + 10 + 'px';
+            container.appendChild(flower);
+            setTimeout(() => { flower.remove(); }, 10000);
+        }
+        setInterval(createFlower, 400);
+
+        function openGame(url) {
+            if (navigator.vibrate) navigator.vibrate(50);
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s';
+            setTimeout(() => { window.location.href = url; }, 500);
+        }
+    </script>
+
+</body>
+</html>
