@@ -1,0 +1,2706 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NamKyBet 🧤 Sút Pen Petr Čech</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Be Vietnam Pro & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =====================================================================
+           NAMKYBET - SÚT PEN PETR ČECH (SNOWY STAMFORD BRIDGE THEME)
+           Mobile-First Vertical Layout | 100% Procedural Canvas + Web Audio API
+        ===================================================================== */
+        :root {
+            --chelsea-blue: #034694;
+            --night-deep: #06101f;
+            --pitch-green: #15803d;
+            --gold: #f5c542;
+            --crimson: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        input {
+            user-select: text;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+            background: radial-gradient(circle at top center, #0e2447 0%, #071326 55%, #030914 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .font-mono-num {
+            font-family: 'JetBrains Mono', 'Be Vietnam Pro', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .app-shell {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 24px;
+            position: relative;
+            background: linear-gradient(180deg, rgba(8, 22, 46, 0.7) 0%, rgba(4, 12, 24, 0.92) 100%);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.75);
+        }
+
+        /* =====================================================================
+           TOP MARQUEE TICKER
+        ===================================================================== */
+        .marquee-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+            background: linear-gradient(90deg, #022c63, #034694, #022c63);
+            border-bottom: 1.5px solid rgba(245, 197, 66, 0.75);
+        }
+
+        .marquee-track {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marqueeRun 32s linear infinite;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #fef9c3;
+        }
+
+        @keyframes marqueeRun {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* =====================================================================
+           GLASS CARDS, STADIUM STAGE & TACTILE BUTTONS
+        ===================================================================== */
+        .glass-card {
+            background: linear-gradient(160deg, rgba(13, 30, 58, 0.94), rgba(6, 15, 32, 0.98));
+            border: 1px solid rgba(245, 197, 66, 0.34);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .stadium-stage {
+            position: relative;
+            width: 100%;
+            border-radius: 22px;
+            overflow: hidden;
+            border: 2px solid rgba(245, 197, 66, 0.75);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.75), inset 0 0 24px rgba(3, 70, 148, 0.45);
+            background: #06101f;
+        }
+
+        .canvas-wrap {
+            position: relative;
+            width: 100%;
+            height: clamp(395px, 56vh, 495px);
+            touch-action: manipulation;
+        }
+
+        #penCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Ladder overlay panel (Top-Right over Stadium, matching reference video) */
+        .ladder-panel {
+            background: linear-gradient(180deg, rgba(6, 16, 34, 0.92), rgba(5, 12, 26, 0.94));
+            border: 1.5px solid rgba(74, 222, 128, 0.65);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.68), inset 0 0 12px rgba(22, 163, 74, 0.16);
+            backdrop-filter: blur(4px);
+        }
+
+        .ladder-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            padding: 1px 6px;
+            border-radius: 5px;
+            font-size: 9px;
+            line-height: 1.2;
+            transition: all 0.2s ease;
+        }
+
+        .ladder-row-current {
+            background: linear-gradient(90deg, #facc15, #f59e0b);
+            color: #0f172a !important;
+            font-weight: 900;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.9);
+            transform: scale(1.03);
+        }
+
+        .ladder-row-passed {
+            background: rgba(16, 185, 129, 0.22);
+            color: #86efac;
+        }
+
+        .ladder-row-next {
+            background: rgba(56, 189, 248, 0.18);
+            border: 1px dashed rgba(250, 204, 21, 0.7);
+            color: #fef08a;
+        }
+
+        .ladder-row-jackpot {
+            background: linear-gradient(90deg, rgba(220, 38, 38, 0.45), rgba(245, 158, 11, 0.45));
+            border: 1px solid rgba(253, 224, 71, 0.75);
+            color: #fef08a;
+        }
+
+        /* Difficulty Pill Buttons (Left Side over Stadium, matching reference video) */
+        .diff-btn {
+            transition: all 0.16s ease;
+            text-align: left;
+            position: relative;
+        }
+        .diff-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .btn-press {
+            transition: transform 0.1s ease, filter 0.14s ease, box-shadow 0.14s ease;
+        }
+        .btn-press:active:not(:disabled) {
+            transform: scale(0.95);
+            filter: brightness(1.1);
+        }
+        .btn-press:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cta-play {
+            background: linear-gradient(180deg, #22c55e 0%, #15803d 60%, #14532d 100%);
+            border: 2.5px solid #fef08a;
+            box-shadow: 0 7px 20px rgba(34, 197, 94, 0.45), inset 0 2px 3px rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+        }
+
+        .cta-cashout {
+            background: linear-gradient(180deg, #fde047 0%, #f59e0b 55%, #b45309 100%);
+            border: 2.5px solid #ffffff;
+            box-shadow: 0 0 24px rgba(245, 197, 66, 0.75), inset 0 2px 3px rgba(255, 255, 255, 0.55);
+            color: #0f172a;
+            animation: cashPulse 0.9s ease-in-out infinite alternate;
+        }
+
+        @keyframes cashPulse {
+            0% { box-shadow: 0 0 12px rgba(245, 197, 66, 0.55); transform: scale(1); }
+            100% { box-shadow: 0 0 26px rgba(250, 204, 21, 0.95); transform: scale(1.015); }
+        }
+
+        .cta-shoot-dir {
+            background: linear-gradient(180deg, #034694 0%, #022c63 100%);
+            border: 2px solid #f5c542;
+            box-shadow: 0 5px 14px rgba(3, 70, 148, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.28);
+            color: #fef08a;
+        }
+
+        @keyframes bailoutGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(220, 38, 38, 0.8), 0 0 22px rgba(245, 197, 66, 0.45); transform: scale(1); }
+            50% { box-shadow: 0 0 24px rgba(220, 38, 38, 1), 0 0 38px rgba(245, 197, 66, 0.95); transform: scale(1.018); }
+        }
+        .bailout-pulse {
+            animation: bailoutGlow 1.2s ease-in-out infinite;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            72% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in {
+            animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes shakeErr {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .shake-error {
+            animation: shakeErr 0.34s ease;
+        }
+
+        .thin-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+        .thin-scroll::-webkit-scrollbar-track { background: rgba(6, 16, 31, 0.55); border-radius: 99px; }
+        .thin-scroll::-webkit-scrollbar-thumb { background: rgba(245, 197, 66, 0.48); border-radius: 99px; }
+    </style>
+</head>
+<body>
+    <!-- Toast Notifications Stack (Zero alert() / confirm()) -->
+    <div id="toastContainer" class="fixed top-12 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-[440px] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Main Mobile-First Vertical App Shell -->
+    <div class="app-shell">
+
+        <!-- 1. TOP MARQUEE TICKER -->
+        <div class="marquee-wrap py-1.5">
+            <div class="marquee-track">
+                🧤 ChelseaBlue_99 vừa đánh bại Petr Čech 9 quả liên tiếp ở chế độ NGOẠI HẠNG húp ĐỘC ĐẮC 117x (58.500.000đ)! &nbsp;&nbsp;•&nbsp;&nbsp;
+                ❄️ TuanAnh_2k9 vừa chốt lời Rút Tiền Mặt ở bậc 6 Ngoại Hạng nhận 10.500.000đ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                ⚽ MinhQuan_SG sút góc trái đánh lừa Petr Čech 7 trái thông ở Câu Lạc Bộ ăn 17.000.000đ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                🔥 HoangNam_VIP tham sút quả thứ 8 bị Petr Čech bay người cản phá mất trắng 21 củ!
+            </div>
+        </div>
+
+        <!-- 2. HEADER: BACK TO LOBBY, BRAND, WALLET, SOUND & SUBTLE "TND" -->
+        <header class="px-3 pt-2 pb-1.5 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+                <a href="index.html" id="backLobbyBtn" aria-label="Về Sảnh Chính" class="btn-press px-2.5 h-9 rounded-xl bg-[#034694] border border-[#f5c542]/80 text-yellow-200 font-black text-[11px] flex items-center gap-1 shrink-0 shadow">
+                    <span>🏠</span><span>Sảnh</span>
+                </a>
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs sm:text-sm font-black tracking-wide bg-gradient-to-r from-sky-200 via-[#f5c542] to-emerald-300 bg-clip-text text-transparent truncate">
+                            SÚT PEN • PETR ČECH
+                        </span>
+                        <span class="px-1.5 py-0.5 rounded-md bg-[#034694] border border-sky-300/60 text-[9px] font-black text-white shrink-0">
+                            #1 CFC
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-sm leading-none">💰</span>
+                        <span id="balanceDisplay" class="font-mono-num text-base sm:text-lg font-black text-[#f5c542] tracking-tight truncate leading-none">
+                            20.000.000đ
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button id="soundBtn" aria-label="Bật tắt âm thanh" class="btn-press w-8 h-8 rounded-xl bg-[#0b1c36] border border-[#f5c542]/50 text-sm flex items-center justify-center shadow">
+                    🔊
+                </button>
+                <button id="tndLogoBtn" title="TND" class="btn-press px-2.5 h-8 rounded-xl bg-slate-900/75 border border-slate-700/80 hover:border-[#f5c542]/50 text-[10px] font-black tracking-widest text-slate-400 flex items-center justify-center">
+                    TND
+                </button>
+            </div>
+        </header>
+
+        <!-- 3. BÁO NHÀ (+10 CỦ) RESCUE BANNER (VISIBLE WHEN BALANCE < 100,000đ & IDLE) -->
+        <div id="bailoutWrap" class="px-3 pb-1.5 hidden">
+            <button id="bailoutBtn" class="btn-press bailout-pulse w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-red-700 via-rose-600 to-amber-600 border-2 border-[#fef08a] text-white font-black text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2">
+                <span>🆘</span>
+                <span>BÁO NHÀ (+10 CỦ GỠ PENALTY)</span>
+            </button>
+        </div>
+
+        <!-- 4. RECENT HISTORY STRIP -->
+        <section class="px-3 pb-1.5">
+            <div class="glass-card rounded-xl px-2.5 py-1.5 flex items-center gap-2">
+                <span class="text-[10px] font-extrabold text-slate-400 shrink-0 uppercase">Lịch sử:</span>
+                <div id="historyStrip" class="flex items-center gap-1.5 overflow-x-auto thin-scroll py-0.5 flex-1">
+                    <span class="text-[11px] text-slate-400 italic">Chọn chế độ, đặt cược rồi đấu trí cùng Petr Čech 🧤❄️</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. MAIN SNOWY STADIUM PENALTY STAGE (VIDEO-ACCURATE LAYOUT) -->
+        <section class="px-3">
+            <div class="stadium-stage">
+                <div class="canvas-wrap" id="canvasWrap">
+                    <canvas id="penCanvas"></canvas>
+
+                    <!-- TOP-LEFT OVERLAY: 3 DIFFICULTY MODE BUTTONS (Matching Video) -->
+                    <div class="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1.5 w-[112px] sm:w-[122px]">
+                        <button data-diff="amateur" class="diff-btn btn-press rounded-xl px-2.5 py-1.5 border-2 text-[10px] font-black leading-tight shadow-lg">
+                            <div class="flex items-center justify-between">
+                                <span>NGHIỆP DƯ</span>
+                                <span class="text-[9px] opacity-90">15x</span>
+                            </div>
+                        </button>
+                        <button data-diff="club" class="diff-btn btn-press rounded-xl px-2.5 py-1.5 border-2 text-[10px] font-black leading-tight shadow-lg">
+                            <div class="flex items-center justify-between">
+                                <span>CÂU LẠC BỘ</span>
+                                <span class="text-[9px] opacity-90">45x</span>
+                            </div>
+                        </button>
+                        <button data-diff="premier" class="diff-btn btn-press rounded-xl px-2.5 py-1.5 border-2 text-[10px] font-black leading-tight shadow-lg">
+                            <div class="flex items-center justify-between">
+                                <span>NGOẠI HẠNG</span>
+                                <span class="text-[9px] opacity-90">117x</span>
+                            </div>
+                        </button>
+
+                        <!-- Goalkeeper Badge -->
+                        <div class="mt-0.5 px-2 py-1 rounded-lg bg-[#034694]/85 border border-sky-300/50 text-[8.5px] font-extrabold text-sky-100 leading-tight shadow">
+                            🧤 GK: <span class="text-[#f5c542]">Petr Čech</span><br>
+                            <span class="opacity-85">Chelsea FC • Tuyết rơi</span>
+                        </div>
+                    </div>
+
+                    <!-- TOP-RIGHT OVERLAY: 9-STEP JACKPOT LADDER ("ĐỘC ĐẮC", Matching Video) -->
+                    <div class="ladder-panel absolute top-2 right-2 z-10 rounded-xl p-1.5 w-[148px] sm:w-[162px]">
+                        <div class="text-center text-[10px] font-black tracking-wider uppercase text-transparent bg-gradient-to-r from-yellow-200 via-[#f5c542] to-red-400 bg-clip-text border-b border-emerald-400/35 pb-0.5 mb-1">
+                            👑 ĐỘC ĐẮC (9 BẬC)
+                        </div>
+                        <div id="ladderList" class="flex flex-col gap-[2px]">
+                            <!-- Rendered dynamically from step 9 down to step 1 -->
+                        </div>
+                    </div>
+
+                    <!-- BIG FLOATING GOAL / SAVED / JACKPOT BANNER -->
+                    <div id="bigBannerOverlay" class="hidden absolute inset-0 z-20 items-center justify-center pointer-events-none px-4">
+                        <div id="bigBannerBox" class="px-6 py-3 rounded-3xl border-2 text-center shadow-2xl pop-in backdrop-blur-sm">
+                            <div id="bigBannerTitle" class="text-3xl sm:text-4xl font-black tracking-wider drop-shadow">VÀO!!</div>
+                            <div id="bigBannerSub" class="text-xs sm:text-sm font-extrabold mt-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM STATUS BAR (CLEANLY BELOW PITCH, NEVER COVERS PETR ČECH OR BALL) -->
+                <div id="stagePromptWrap" class="w-full px-3 py-2 bg-[#040d1d]/95 border-t border-[#f5c542]/45 text-center">
+                    <div id="stagePromptText" class="text-[11px] sm:text-xs font-extrabold text-yellow-100 leading-tight">
+                        ❄️ Bấm CHƠI để vào chấm 11m đối mặt Petr Čech!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CONTROLS DECK (SWAPS SMOOTHLY BETWEEN BETTING MODE & ACTIVE SHOOT/CASHOUT MODE) -->
+        <section class="px-3 mt-2.5">
+            <div class="glass-card rounded-2xl p-3">
+
+                <!-- A. ACTIVE SHOOTOUT MODE (3 DIRECTION BUTTONS + BIG CASHOUT BUTTON) -->
+                <div id="activeRoundControls" class="hidden space-y-2.5">
+                    <div class="flex items-center justify-between text-[11px] font-bold px-0.5">
+                        <span class="text-sky-200">Chuỗi ghi bàn: <b id="streakCountText" class="text-[#f5c542]">0 / 9</b></span>
+                        <span class="text-emerald-300">Mốc tới: <b id="nextTargetMult" class="font-mono-num text-[#fef08a]">1.2x</b></span>
+                    </div>
+
+                    <!-- 3 Big Tactile Shoot Buttons (Also clickable directly on Canvas arrows/goal!) -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <button id="shootLeftBtn" data-dir="left" class="shoot-dir-btn btn-press cta-shoot-dir py-2.5 rounded-2xl font-black text-xs sm:text-sm flex flex-col items-center justify-center leading-tight">
+                            <span class="text-lg leading-none">↖️</span>
+                            <span class="mt-0.5">SÚT TRÁI</span>
+                        </button>
+                        <button id="shootCenterBtn" data-dir="center" class="shoot-dir-btn btn-press cta-shoot-dir py-2.5 rounded-2xl font-black text-xs sm:text-sm flex flex-col items-center justify-center leading-tight">
+                            <span class="text-lg leading-none">⬆️</span>
+                            <span class="mt-0.5">SÚT GIỮA</span>
+                        </button>
+                        <button id="shootRightBtn" data-dir="right" class="shoot-dir-btn btn-press cta-shoot-dir py-2.5 rounded-2xl font-black text-xs sm:text-sm flex flex-col items-center justify-center leading-tight">
+                            <span class="text-lg leading-none">↗️</span>
+                            <span class="mt-0.5">SÚT PHẢI</span>
+                        </button>
+                    </div>
+
+                    <!-- RÚT TIỀN MẶT BUTTON (Matching video's bottom green/gold bar!) -->
+                    <button id="cashoutBtn" disabled class="btn-press w-full py-3.5 px-4 rounded-2xl bg-slate-800 border-2 border-slate-600 text-slate-400 font-black text-sm sm:text-base tracking-wide flex items-center justify-center gap-2">
+                        <span>💵</span>
+                        <span id="cashoutBtnText">RÚT TIỀN MẶT (GHI 1 BÀN ĐỂ RÚT)</span>
+                    </button>
+                </div>
+
+                <!-- B. PRE-ROUND BETTING MODE (- / BET / + / CHIPS / CHƠI) -->
+                <div id="bettingControls" class="space-y-2.5">
+                    <!-- Bet Stepper (- / Editable Input / +) -->
+                    <div class="flex items-center gap-1.5">
+                        <button id="betMinusBtn" aria-label="Giảm cược" class="btn-press w-11 h-11 rounded-xl bg-slate-900 border border-[#f5c542]/45 text-[#f5c542] text-xl font-black flex items-center justify-center shrink-0">
+                            −
+                        </button>
+
+                        <div class="flex-1 h-11 rounded-xl bg-[#040c1a] border border-[#f5c542]/55 focus-within:border-[#f5c542] flex flex-col items-center justify-center px-2">
+                            <span class="text-[8.5px] font-bold text-slate-400 uppercase tracking-wider leading-none">Tiền Cược (Tối thiểu 100K)</span>
+                            <div class="flex items-center justify-center w-full mt-0.5">
+                                <input
+                                    id="betInput"
+                                    type="text"
+                                    inputmode="numeric"
+                                    autocomplete="off"
+                                    value="100.000"
+                                    aria-label="Nhập tiền cược"
+                                    class="font-mono-num w-full bg-transparent text-center text-base font-black text-[#f5c542] focus:outline-none leading-none"
+                                />
+                                <span class="text-xs font-extrabold text-yellow-500/80 ml-0.5">đ</span>
+                            </div>
+                        </div>
+
+                        <button id="betPlusBtn" aria-label="Tăng cược" class="btn-press w-11 h-11 rounded-xl bg-slate-900 border border-[#f5c542]/45 text-[#f5c542] text-xl font-black flex items-center justify-center shrink-0">
+                            +
+                        </button>
+                    </div>
+
+                    <!-- Quick Chips -->
+                    <div class="grid grid-cols-6 gap-1">
+                        <button data-chip="100000" class="chip-btn btn-press py-2 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-black text-emerald-300">100K</button>
+                        <button data-chip="200000" class="chip-btn btn-press py-2 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-black text-sky-300">200K</button>
+                        <button data-chip="500000" class="chip-btn btn-press py-2 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-black text-amber-300">500K</button>
+                        <button data-chip="1000000" class="chip-btn btn-press py-2 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-black text-purple-300">1M</button>
+                        <button data-chip="5000000" class="chip-btn btn-press py-2 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-black text-rose-300">5M</button>
+                        <button id="allInBtn" class="btn-press py-2 rounded-xl bg-gradient-to-b from-red-600 to-amber-700 border border-[#f5c542]/80 text-[10px] font-black text-white">All-in</button>
+                    </div>
+
+                    <!-- Big Green CHƠI Button (Matching video) -->
+                    <button id="playBtn" class="btn-press cta-play w-full py-3.5 rounded-2xl font-black text-base sm:text-lg tracking-wider flex items-center justify-center gap-2">
+                        <span>⚽</span>
+                        <span id="playBtnLabel">CHƠI • 100.000đ</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. COMPACT COLLAPSIBLE STADIUM BOT CHAT -->
+        <section class="px-3 mt-2.5">
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <button id="toggleChatBtn" class="w-full px-3.5 py-2.5 flex items-center justify-between text-xs font-extrabold text-slate-200">
+                    <span class="flex items-center gap-2">
+                        <span>💬</span> Khán Đài Stamford Bridge Tuyết
+                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-[#034694]/90 text-sky-200 text-[10px]">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span id="onlineCount">618</span> online
+                        </span>
+                        <span id="chatUnreadDot" class="hidden px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[9px]">Mới</span>
+                    </span>
+                    <span id="chatChevron" class="transition-transform duration-200">▼</span>
+                </button>
+
+                <div id="chatDrawer" class="hidden border-t border-[#f5c542]/20">
+                    <div id="chatMessages" class="h-36 overflow-y-auto thin-scroll p-2.5 flex flex-col gap-1.5 text-xs bg-[#040a16]/85"></div>
+                    <form id="chatForm" class="p-2 flex items-center gap-1.5 bg-slate-900/90 border-t border-slate-800">
+                        <input id="chatInput" type="text" maxlength="120" placeholder="Gáy với Petr Čech và anh em..." class="flex-1 bg-[#040a16] border border-slate-700 focus:border-[#f5c542] focus:outline-none rounded-xl px-3 py-2 text-xs text-white" />
+                        <button type="submit" class="btn-press px-3.5 py-2 rounded-xl bg-[#f5c542] text-slate-950 font-black text-xs">Gửi</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-[10px] text-slate-500 mt-3 px-4">
+            NamKyBet • Sút Pen Petr Čech (Chelsea FC) • Game giải trí mô phỏng tiền ảo, không quy đổi tiền thật.
+        </footer>
+    </div>
+
+    <!-- =====================================================================
+         SECRET PASSWORD PROMPT MODAL ("TND" -> "memaybeo123")
+    ===================================================================== -->
+    <div id="adminPassModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div id="adminPassBox" class="w-full max-w-xs rounded-3xl bg-slate-950 border-2 border-slate-700 p-5 shadow-2xl pop-in">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black tracking-widest text-slate-400 uppercase">TND ACCESS</span>
+                <button id="closePassBtn" class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+            </div>
+            <form id="adminPassForm" class="space-y-3">
+                <input id="adminPassInput" type="password" autocomplete="off" placeholder="Nhập mật khẩu..." class="w-full bg-black border border-slate-700 focus:border-[#f5c542] focus:outline-none rounded-xl px-3.5 py-2.5 text-sm font-bold text-white" />
+                <div id="adminPassError" class="text-[11px] font-bold text-red-400 hidden">❌ Sai mật khẩu truy cập!</div>
+                <button type="submit" class="btn-press w-full py-2.5 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+                    Xác Nhận
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         SECRET ADMIN CONTROL PANEL (UNLOCKED WITH "memaybeo123")
+    ===================================================================== -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-md p-3">
+        <div class="w-full max-w-md rounded-3xl bg-gradient-to-b from-slate-900 via-[#071429] to-black border-2 border-[#f5c542] p-4 shadow-2xl max-h-[92vh] overflow-y-auto thin-scroll pop-in">
+            <div class="flex items-start justify-between border-b border-[#f5c542]/30 pb-2.5 gap-2">
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest">TND BACKDOOR</span>
+                        <span id="adminStatusBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-400/60 text-emerald-300">
+                            Auto (10% / 30%)
+                        </span>
+                    </div>
+                    <h2 class="text-base font-black text-[#f5c542] tracking-wide mt-0.5">
+                        👑 ADMIN CONTROL - SÚT PEN ČECH
+                    </h2>
+                </div>
+                <button id="closeAdminTopBtn" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold shrink-0">✕</button>
+            </div>
+
+            <!-- 1. Outcome Override -->
+            <div class="mt-3">
+                <div class="text-xs font-extrabold text-yellow-200 mb-2">⚽ Ép Kết Quả Cú Sút Kế Tiếp:</div>
+                <div class="grid grid-cols-1 gap-1.5">
+                    <button data-mode="auto" class="admin-mode-btn btn-press py-2.5 px-3 rounded-xl border text-xs font-extrabold text-left">🤖 Auto (Theo phản xạ Petr Čech &amp; tỉ lệ bịp)</button>
+                    <button data-mode="goal" class="admin-mode-btn btn-press py-2.5 px-3 rounded-xl border text-xs font-extrabold text-left">⚽ Ép Sút VÀO 100% (Čech đổ sai hướng)</button>
+                    <button data-mode="save" class="admin-mode-btn btn-press py-2.5 px-3 rounded-xl border text-xs font-extrabold text-left">🧤 Ép Petr Čech Bắt Dính 100% (Nuốt sạch)</button>
+                    <button data-mode="jackpot" class="admin-mode-btn btn-press py-2.5 px-3 rounded-xl border text-xs font-extrabold text-left">👑 Nhảy Thẳng ĐỘC ĐẮC (Bậc 9 ở cú sút tới)</button>
+                </div>
+
+                <label class="mt-2 flex items-center gap-2 text-xs text-slate-300 font-semibold cursor-pointer bg-slate-900/90 p-2 rounded-xl border border-slate-800">
+                    <input id="adminOneShotCheck" type="checkbox" class="w-4 h-4 accent-yellow-400 rounded" checked>
+                    <span>Chỉ ép 1 cú sút rồi tự quay về Auto</span>
+                </label>
+            </div>
+
+            <!-- 2. Dual Rigging Sliders -->
+            <div class="mt-3 bg-slate-900/85 p-3 rounded-2xl border border-[#f5c542]/25 space-y-3">
+                <div>
+                    <div class="flex items-center justify-between text-xs font-extrabold mb-1">
+                        <span class="text-yellow-200">🎯 Tỉ lệ bịp cược nhỏ (&lt; 500K):</span>
+                        <span id="rigSmallVal" class="text-emerald-400 text-sm font-black font-mono-num">10%</span>
+                    </div>
+                    <input id="rigSmallSlider" type="range" min="0" max="100" value="10" class="w-full accent-emerald-400 cursor-pointer">
+                </div>
+
+                <div class="pt-2 border-t border-slate-800">
+                    <div class="flex items-center justify-between text-xs font-extrabold mb-1">
+                        <span class="text-yellow-200">🔥 Tỉ lệ bịp cược to (&gt;= 500K + Bẫy tham):</span>
+                        <span id="rigBigVal" class="text-rose-400 text-sm font-black font-mono-num">30%</span>
+                    </div>
+                    <input id="rigBigSlider" type="range" min="0" max="100" value="30" class="w-full accent-rose-500 cursor-pointer">
+                </div>
+            </div>
+
+            <!-- 3. Wallet Manager -->
+            <div class="mt-3 bg-slate-900/85 p-3 rounded-2xl border border-[#f5c542]/25">
+                <div class="text-xs font-extrabold text-yellow-200 mb-2">💵 Quản Lý Ví Chung:</div>
+                <div class="flex gap-2">
+                    <input id="adminBalInput" type="number" min="0" step="10000" placeholder="Nhập số dư..." class="flex-1 bg-black border border-[#f5c542]/45 rounded-xl px-3 py-2 text-xs font-bold font-mono-num text-[#f5c542] focus:outline-none focus:border-[#f5c542]" />
+                    <button id="adminSetBalBtn" class="btn-press px-3.5 py-2 rounded-xl bg-[#f5c542] text-slate-950 font-black text-xs">Đặt</button>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 mt-2">
+                    <button id="adminAdd10M" class="btn-press py-2 rounded-xl bg-emerald-950 border border-emerald-500/50 text-[11px] font-extrabold text-emerald-300">+10 Củ</button>
+                    <button id="adminAdd50M" class="btn-press py-2 rounded-xl bg-amber-950 border border-amber-500/50 text-[11px] font-extrabold text-amber-300">+50 Củ</button>
+                    <button id="adminSetZero" class="btn-press py-2 rounded-xl bg-rose-950 border border-rose-500/50 text-[11px] font-extrabold text-rose-300">Set 0đ</button>
+                </div>
+            </div>
+
+            <button id="hideAdminBtn" class="btn-press w-full mt-4 py-3 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+                🔒 Đóng &amp; Ẩn Sạch Dấu Vết
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           NAMKYBET - SÚT PEN PETR ČECH (CHELSEA FC • SNOWY STAMFORD BRIDGE)
+           9-Step Jackpot Ladder | 3 Difficulties (15x / 45x / 117x)
+           Shared Wallet (namkybet_balance) | Delta-Time Normalized Canvas
+        ===================================================================== */
+        (() => {
+            'use strict';
+
+            /* -----------------------------------------------------------------
+               1. CONSTANTS, 3 DIFFICULTY LADDERS & BOT POOL
+            ----------------------------------------------------------------- */
+            const STORAGE_KEY = 'namkybet_sutpen_cech_v1';
+            const SHARED_BALANCE_KEY = 'namkybet_balance';
+            const SHARED_USERNAME_KEY = 'namkybet_username';
+            const ADMIN_PASS = 'memaybeo123';
+
+            const STARTING_BALANCE = 20_000_000;
+            const MIN_BET = 100_000;
+            const BIG_BET_THRESHOLD = 500_000;
+            const BAILOUT_AMOUNT = 10_000_000;
+
+            // Exact 9-Step Multiplier Tables (Premier League 9th step = 117x matching 250 -> 29,250 in video!)
+            const DIFFICULTIES = {
+                amateur: {
+                    id: 'amateur',
+                    label: 'Nghiệp Dư',
+                    baseSaveProb: 0.24,
+                    multipliers: [1.2, 1.5, 2.0, 2.6, 3.5, 4.8, 6.5, 9.5, 15.0],
+                    activeCls: 'bg-gradient-to-r from-emerald-600 to-green-700 border-[#fef08a] text-white shadow-[0_0_12px_rgba(34,197,94,0.75)]',
+                    idleCls: 'bg-[#091c15]/85 border-emerald-700/60 text-emerald-200/80'
+                },
+                club: {
+                    id: 'club',
+                    label: 'Câu Lạc Bộ',
+                    baseSaveProb: 0.33,
+                    multipliers: [1.5, 2.2, 3.2, 4.8, 7.2, 11.0, 17.0, 28.0, 45.0],
+                    activeCls: 'bg-gradient-to-r from-amber-500 to-orange-600 border-[#fef08a] text-slate-950 shadow-[0_0_12px_rgba(245,158,11,0.75)]',
+                    idleCls: 'bg-[#211507]/85 border-amber-700/60 text-amber-200/80'
+                },
+                premier: {
+                    id: 'premier',
+                    label: 'Ngoại Hạng',
+                    baseSaveProb: 0.42,
+                    multipliers: [1.2, 1.6, 2.2, 3.5, 5.8, 10.5, 21.0, 47.5, 117.0],
+                    activeCls: 'bg-gradient-to-r from-red-600 to-rose-700 border-[#fef08a] text-white shadow-[0_0_14px_rgba(225,29,72,0.8)]',
+                    idleCls: 'bg-[#26080f]/85 border-rose-800/60 text-rose-200/80'
+                }
+            };
+
+            const BOT_NAMES = [
+                'ChelseaBlue_99', 'DrogbaVN', 'Lampard_8', 'TuanAnh_2k9', 'MinhQuan_SG',
+                'HoangNam_VIP', 'KhangPen11m', 'DatCuChi', 'LinhNhi_2k8', 'BaoLong_CFC'
+            ];
+
+            const BOT_LINES = [
+                'Petr Čech đội mũ bảo hiểm nhìn uy tín vãi, mới bị ông ấy bay người đẩy mất quả bậc 6 😭🧤',
+                'Ngoại Hạng ăn 117x phê thật nhưng qua bậc 4 nhớ Rút Tiền Mặt đừng tham mấy ông ơi!',
+                'Tao cứ đá Nghiệp Dư ăn 3-4 trái là rút cơm gạo, đều tay vl ⚽💰',
+                'Đặt 500K trở lên đá tới trái thứ 3 là Čech bật phản xạ siêu nhân liền, cẩn thận!',
+                'Sút giữa lừa Petr Čech đổ góc phải nhìn sướng mắt thật sự 🔥',
+                'Trời tuyết rơi ở Stamford Bridge mà sút vào 9 quả nổ pháo hoa đỉnh cao ❄️🎆',
+                'Cháy túi bấm Báo Nhà lấy 10 củ vào phục thù ông Čech nào 🆘'
+            ];
+
+            /* -----------------------------------------------------------------
+               2. GAME STATE & ANIMATION STATE
+            ----------------------------------------------------------------- */
+            const state = {
+                balance: STARTING_BALANCE,
+                bet: 100_000,
+                activeBet: 0,
+                difficulty: 'premier', // Default Ngoại Hạng (117x)
+                phase: 'IDLE',         // 'IDLE' | 'AIMING' | 'SHOOTING' | 'RESULT_WAIT'
+                streak: 0,             // 0..9
+                muted: false,
+                chatOpen: false,
+                history: [],
+                admin: {
+                    mode: 'auto',      // 'auto' | 'goal' | 'save' | 'jackpot'
+                    rigSmallPct: 10,   // < 500K
+                    rigBigPct: 30,     // >= 500K
+                    oneShot: true
+                }
+            };
+
+            const anim = {
+                time: 0,
+                hoveredDir: null, // 'left' | 'center' | 'right' | null
+                // Current kick trajectory
+                kickActive: false,
+                kickElapsed: 0,
+                kickDuration: 0.44,
+                kickDir: 'center',
+                gkDiveDir: 'center',
+                kickOutcome: 'goal', // 'goal' | 'save'
+                // GK state
+                gkState: 'IDLE',     // 'IDLE' | 'DIVING' | 'SAVED' | 'BEATEN'
+                gkProgress: 0,
+                // Ball rebound after save / settle in net
+                postPhase: 'NONE',   // 'NONE' | 'IN_NET' | 'DEFLECTED'
+                postTimer: 0,
+                ballX: 0,
+                ballY: 0,
+                ballScale: 1,
+                ballRot: 0,
+                ballVx: 0,
+                ballVy: 0,
+                ballTrail: [],
+                // Net ripple
+                netRipple: 0,
+                netImpactX: 0.5,
+                netImpactY: 0.5,
+                // Camera shake, snow, particles, fireworks
+                shakeTimer: 0,
+                shakeMag: 0,
+                snow: [],
+                particles: [],
+                fireworks: [],
+                crowdFlashes: []
+            };
+
+            /* -----------------------------------------------------------------
+               3. WEB AUDIO API SYNTHESIZER (ZERO EXTERNAL FILES)
+            ----------------------------------------------------------------- */
+            class PenAudio {
+                constructor() { this.ctx = null; }
+
+                unlock() {
+                    try {
+                        if (!this.ctx) {
+                            const AC = window.AudioContext || window.webkitAudioContext;
+                            if (AC) this.ctx = new AC();
+                        }
+                        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+                    } catch (_) {}
+                }
+
+                ready() {
+                    if (state.muted) return false;
+                    this.unlock();
+                    return !!this.ctx;
+                }
+
+                playClick() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const g = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(1040, t);
+                    osc.frequency.exponentialRampToValueAtTime(520, t + 0.036);
+                    g.gain.setValueAtTime(0.12, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+                    osc.connect(g); g.connect(this.ctx.destination);
+                    osc.start(t); osc.stop(t + 0.045);
+                }
+
+                playWhistle() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const lfo = this.ctx.createOscillator();
+                    const lfoGain = this.ctx.createGain();
+                    const g = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(2850, t);
+                    lfo.frequency.value = 34;
+                    lfoGain.gain.value = 95;
+                    lfo.connect(lfoGain);
+                    lfoGain.connect(osc.frequency);
+                    g.gain.setValueAtTime(0.11, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
+                    osc.connect(g); g.connect(this.ctx.destination);
+                    osc.start(t); lfo.start(t);
+                    osc.stop(t + 0.25); lfo.stop(t + 0.25);
+                }
+
+                playKick() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const g = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(190, t);
+                    osc.frequency.exponentialRampToValueAtTime(42, t + 0.13);
+                    g.gain.setValueAtTime(0.42, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+                    osc.connect(g); g.connect(this.ctx.destination);
+                    osc.start(t); osc.stop(t + 0.15);
+                }
+
+                playGoal(streakLevel) {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    // Rising triumphant triad scaled slightly higher with streak
+                    const shift = Math.pow(2, Math.min(6, streakLevel - 1) / 12);
+                    [523.25, 659.25, 783.99, 1046.5].forEach((f, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(f * shift, t + idx * 0.048);
+                        g.gain.setValueAtTime(0.16, t + idx * 0.048);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.048 + 0.24);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(t + idx * 0.048); osc.stop(t + idx * 0.048 + 0.26);
+                    });
+
+                    // Stadium crowd roar burst
+                    const len = Math.floor(this.ctx.sampleRate * 0.72);
+                    const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+                    const d = buf.getChannelData(0);
+                    for (let i = 0; i < len; i++) {
+                        d[i] = (Math.random() * 2 - 1) * Math.sin((i / len) * Math.PI);
+                    }
+                    const crowd = this.ctx.createBufferSource();
+                    crowd.buffer = buf;
+                    const bp = this.ctx.createBiquadFilter();
+                    bp.type = 'bandpass'; bp.frequency.value = 1050; bp.Q.value = 0.75;
+                    const cg = this.ctx.createGain();
+                    cg.gain.setValueAtTime(0.18, t);
+                    cg.gain.exponentialRampToValueAtTime(0.001, t + 0.72);
+                    crowd.connect(bp); bp.connect(cg); cg.connect(this.ctx.destination);
+                    crowd.start(t);
+                }
+
+                playSave() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    // Leather glove slap
+                    const len = Math.floor(this.ctx.sampleRate * 0.14);
+                    const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+                    const d = buf.getChannelData(0);
+                    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.22));
+                    const slap = this.ctx.createBufferSource();
+                    slap.buffer = buf;
+                    const lp = this.ctx.createBiquadFilter();
+                    lp.type = 'lowpass'; lp.frequency.value = 1200;
+                    const sg = this.ctx.createGain();
+                    sg.gain.setValueAtTime(0.36, t);
+                    sg.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+                    slap.connect(lp); lp.connect(sg); sg.connect(this.ctx.destination);
+                    slap.start(t);
+
+                    // Descending stadium groan
+                    [293.66, 246.94, 196.0].forEach((f, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = 'sawtooth';
+                        const fLp = this.ctx.createBiquadFilter();
+                        fLp.type = 'lowpass'; fLp.frequency.value = 580;
+                        osc.frequency.setValueAtTime(f, t + 0.08 + idx * 0.11);
+                        g.gain.setValueAtTime(0.09, t + 0.08 + idx * 0.11);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + 0.24 + idx * 0.11);
+                        osc.connect(fLp); fLp.connect(g); g.connect(this.ctx.destination);
+                        osc.start(t + 0.08 + idx * 0.11); osc.stop(t + 0.26 + idx * 0.11);
+                    });
+                }
+
+                playCashout() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    [880, 1174.66, 1567.98, 2093].forEach((f, i) => {
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(f, t + i * 0.055);
+                        g.gain.setValueAtTime(0.16, t + i * 0.055);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.055 + 0.24);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(t + i * 0.055); osc.stop(t + i * 0.055 + 0.26);
+                    });
+                }
+
+                playJackpotFanfare() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const notes = [
+                        { f: 523.25, s: 0.00, d: 0.11 }, { f: 659.25, s: 0.12, d: 0.11 }, { f: 783.99, s: 0.24, d: 0.11 },
+                        { f: 1046.5, s: 0.36, d: 0.22 }, { f: 783.99, s: 0.60, d: 0.11 }, { f: 1046.5, s: 0.72, d: 0.45 }
+                    ];
+                    notes.forEach(n => {
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(n.f, t + n.s);
+                        g.gain.setValueAtTime(0.22, t + n.s);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + n.s + n.d);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(t + n.s); osc.stop(t + n.s + n.d + 0.03);
+                    });
+                }
+            }
+
+            const sfx = new PenAudio();
+
+            /* -----------------------------------------------------------------
+               4. DOM REFERENCES & CANVAS SIZING
+            ----------------------------------------------------------------- */
+            const el = {
+                backLobbyBtn: document.getElementById('backLobbyBtn'),
+                balanceDisplay: document.getElementById('balanceDisplay'),
+                soundBtn: document.getElementById('soundBtn'),
+                tndLogoBtn: document.getElementById('tndLogoBtn'),
+                bailoutWrap: document.getElementById('bailoutWrap'),
+                bailoutBtn: document.getElementById('bailoutBtn'),
+                historyStrip: document.getElementById('historyStrip'),
+                canvasWrap: document.getElementById('canvasWrap'),
+                canvas: document.getElementById('penCanvas'),
+                ladderList: document.getElementById('ladderList'),
+                stagePromptText: document.getElementById('stagePromptText'),
+                bigBannerOverlay: document.getElementById('bigBannerOverlay'),
+                bigBannerBox: document.getElementById('bigBannerBox'),
+                bigBannerTitle: document.getElementById('bigBannerTitle'),
+                bigBannerSub: document.getElementById('bigBannerSub'),
+                // Controls
+                activeRoundControls: document.getElementById('activeRoundControls'),
+                bettingControls: document.getElementById('bettingControls'),
+                streakCountText: document.getElementById('streakCountText'),
+                nextTargetMult: document.getElementById('nextTargetMult'),
+                shootLeftBtn: document.getElementById('shootLeftBtn'),
+                shootCenterBtn: document.getElementById('shootCenterBtn'),
+                shootRightBtn: document.getElementById('shootRightBtn'),
+                cashoutBtn: document.getElementById('cashoutBtn'),
+                cashoutBtnText: document.getElementById('cashoutBtnText'),
+                betMinusBtn: document.getElementById('betMinusBtn'),
+                betPlusBtn: document.getElementById('betPlusBtn'),
+                betInput: document.getElementById('betInput'),
+                allInBtn: document.getElementById('allInBtn'),
+                playBtn: document.getElementById('playBtn'),
+                playBtnLabel: document.getElementById('playBtnLabel'),
+                // Chat
+                toggleChatBtn: document.getElementById('toggleChatBtn'),
+                chatChevron: document.getElementById('chatChevron'),
+                chatDrawer: document.getElementById('chatDrawer'),
+                chatMessages: document.getElementById('chatMessages'),
+                chatUnreadDot: document.getElementById('chatUnreadDot'),
+                chatForm: document.getElementById('chatForm'),
+                chatInput: document.getElementById('chatInput'),
+                onlineCount: document.getElementById('onlineCount'),
+                toastContainer: document.getElementById('toastContainer'),
+                // Admin Modals
+                adminPassModal: document.getElementById('adminPassModal'),
+                adminPassBox: document.getElementById('adminPassBox'),
+                adminPassForm: document.getElementById('adminPassForm'),
+                adminPassInput: document.getElementById('adminPassInput'),
+                adminPassError: document.getElementById('adminPassError'),
+                closePassBtn: document.getElementById('closePassBtn'),
+                adminModal: document.getElementById('adminModal'),
+                adminStatusBadge: document.getElementById('adminStatusBadge'),
+                adminOneShotCheck: document.getElementById('adminOneShotCheck'),
+                rigSmallSlider: document.getElementById('rigSmallSlider'),
+                rigSmallVal: document.getElementById('rigSmallVal'),
+                rigBigSlider: document.getElementById('rigBigSlider'),
+                rigBigVal: document.getElementById('rigBigVal'),
+                adminBalInput: document.getElementById('adminBalInput'),
+                adminSetBalBtn: document.getElementById('adminSetBalBtn'),
+                adminAdd10M: document.getElementById('adminAdd10M'),
+                adminAdd50M: document.getElementById('adminAdd50M'),
+                adminSetZero: document.getElementById('adminSetZero'),
+                closeAdminTopBtn: document.getElementById('closeAdminTopBtn'),
+                hideAdminBtn: document.getElementById('hideAdminBtn')
+            };
+
+            const ctx = el.canvas.getContext('2d');
+            let viewW = 390;
+            let viewH = 430;
+
+            function resizeCanvas() {
+                const rect = el.canvasWrap.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+                viewW = Math.max(280, Math.floor(rect.width));
+                viewH = Math.max(360, Math.floor(rect.height));
+                el.canvas.width = Math.floor(viewW * dpr);
+                el.canvas.height = Math.floor(viewH * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                // Re-seed snowfall particles
+                anim.snow = Array.from({ length: 78 }, () => ({
+                    x: Math.random() * viewW,
+                    y: Math.random() * viewH,
+                    r: Math.random() * 2.2 + 0.7,
+                    vy: 26 + Math.random() * 44,
+                    vx: (Math.random() - 0.5) * 18,
+                    phase: Math.random() * Math.PI * 2,
+                    alpha: 0.28 + Math.random() * 0.55
+                }));
+
+                if (!anim.kickActive && anim.postPhase === 'NONE') {
+                    const spot = getPenaltySpot();
+                    anim.ballX = spot.x;
+                    anim.ballY = spot.y;
+                    anim.ballScale = 1;
+                }
+            }
+
+            /* -----------------------------------------------------------------
+               5. UTILITIES: CRYPTO RNG, FORMATTERS, SHARED WALLET STORAGE
+            ----------------------------------------------------------------- */
+            function getPlayerName() {
+                try {
+                    const n = localStorage.getItem(SHARED_USERNAME_KEY);
+                    if (n && n.trim()) return n.trim();
+                } catch (_) {}
+                return 'Bạn (VIP)';
+            }
+
+            function secureRand() {
+                if (window.crypto && window.crypto.getRandomValues) {
+                    const buf = new Uint32Array(1);
+                    window.crypto.getRandomValues(buf);
+                    return buf[0] / 4294967296;
+                }
+                return Math.random();
+            }
+
+            function secureInt(min, max) {
+                return min + Math.floor(secureRand() * (max - min + 1));
+            }
+
+            function formatDots(num) {
+                const safe = Math.max(0, Math.floor(Number(num) || 0));
+                return String(safe).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            function formatVND(num) {
+                return formatDots(num) + 'đ';
+            }
+
+            function formatShort(num) {
+                const n = Math.max(0, Math.floor(Number(num) || 0));
+                if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(2).replace(/\.?0+$/, '') + 'B';
+                if (n >= 1_000_000) return (n / 1_000_000).toFixed(2).replace(/\.?0+$/, '') + 'M';
+                if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+                return String(n);
+            }
+
+            function showToast(msg, type = 'info', duration = 2800) {
+                const styles = {
+                    info: 'bg-[#08172e]/95 border-[#f5c542]/85 text-yellow-100',
+                    win:  'bg-emerald-950/95 border-emerald-400 text-emerald-200',
+                    loss: 'bg-rose-950/95 border-rose-400 text-rose-200',
+                    warn: 'bg-amber-950/95 border-amber-400 text-amber-200'
+                };
+                const div = document.createElement('div');
+                div.className = `pointer-events-auto px-4 py-2.5 rounded-2xl border-2 text-xs font-extrabold shadow-2xl text-center pop-in ${styles[type] || styles.info}`;
+                div.textContent = msg;
+                el.toastContainer.appendChild(div);
+                setTimeout(() => {
+                    div.style.transition = 'opacity 0.28s ease, transform 0.28s ease';
+                    div.style.opacity = '0';
+                    div.style.transform = 'translateY(-10px)';
+                    setTimeout(() => div.remove(), 300);
+                }, duration);
+            }
+
+            function syncSharedBalance() {
+                try {
+                    const raw = localStorage.getItem(SHARED_BALANCE_KEY);
+                    if (raw !== null && raw.trim() !== '' && !Number.isNaN(Number(raw)) && Number(raw) >= 0) {
+                        state.balance = Math.floor(Number(raw));
+                    } else {
+                        localStorage.setItem(SHARED_BALANCE_KEY, String(Math.max(0, Math.floor(state.balance))));
+                    }
+                } catch (_) {}
+            }
+
+            function saveState() {
+                try {
+                    const cleanBal = Math.max(0, Math.floor(Number(state.balance) || 0));
+                    state.balance = cleanBal;
+                    localStorage.setItem(SHARED_BALANCE_KEY, String(cleanBal));
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                        bet: state.bet,
+                        difficulty: state.difficulty,
+                        muted: state.muted,
+                        history: state.history.slice(0, 14),
+                        admin: {
+                            rigSmallPct: state.admin.rigSmallPct,
+                            rigBigPct: state.admin.rigBigPct,
+                            oneShot: state.admin.oneShot
+                        }
+                    }));
+                } catch (_) {}
+            }
+
+            function loadState() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const data = JSON.parse(raw);
+                        if (typeof data.bet === 'number' && data.bet >= MIN_BET) state.bet = Math.floor(data.bet);
+                        if (DIFFICULTIES[data.difficulty]) state.difficulty = data.difficulty;
+                        if (typeof data.muted === 'boolean') state.muted = data.muted;
+                        if (Array.isArray(data.history)) state.history = data.history.slice(0, 14);
+                        if (data.admin) {
+                            if (typeof data.admin.rigSmallPct === 'number') state.admin.rigSmallPct = Math.max(0, Math.min(100, data.admin.rigSmallPct));
+                            if (typeof data.admin.rigBigPct === 'number') state.admin.rigBigPct = Math.max(0, Math.min(100, data.admin.rigBigPct));
+                            if (typeof data.admin.oneShot === 'boolean') state.admin.oneShot = data.admin.oneShot;
+                        }
+                    }
+                } catch (_) {}
+                syncSharedBalance();
+            }
+
+            function getCurrentDiff() {
+                return DIFFICULTIES[state.difficulty] || DIFFICULTIES.premier;
+            }
+
+            function getCurrentCashoutValue() {
+                if (state.streak <= 0 || state.activeBet <= 0) return 0;
+                const mult = getCurrentDiff().multipliers[state.streak - 1] || 1;
+                return Math.floor(state.activeBet * mult);
+            }
+
+            /* -----------------------------------------------------------------
+               6. PENALTY MATH & PETR ČECH SAVE / "BẪY LÒNG THAM" ENGINE
+            ----------------------------------------------------------------- */
+            /**
+             * Calculates whether Petr Čech saves this shot or gets beaten:
+             * 1. Honors Admin overrides ('goal', 'save', 'jackpot') first.
+             * 2. Base GK reflexes: Nghiệp Dư 24%, Câu Lạc Bộ 33%, Ngoại Hạng 42%.
+             * 3. Dual-tier Rigging & Greed Trap:
+             *    - Small Bet (< 500K): rigSmallPct (default 10%). Smooth early streak (steps 1-4),
+             *      ramps up clutch saves near steps 7-9 before Độc Đắc.
+             *    - Big Bet (>= 500K): rigBigPct (default 30%). If player scores 2-3+ goals and gets
+             *      greedy instead of cashing out, Petr Čech unlocks "God Mode" dive accuracy!
+             */
+            function evaluateShotOutcome(nextStepNum) {
+                const mode = state.admin.mode;
+                if (mode === 'goal' || mode === 'jackpot') {
+                    const isJp = mode === 'jackpot';
+                    if (state.admin.oneShot) state.admin.mode = 'auto';
+                    return { outcome: 'goal', instantJackpot: isJp };
+                }
+                if (mode === 'save') {
+                    if (state.admin.oneShot) state.admin.mode = 'auto';
+                    return { outcome: 'save', instantJackpot: false };
+                }
+
+                const diff = getCurrentDiff();
+                const isBigBet = state.activeBet >= BIG_BET_THRESHOLD;
+                const rigFactor = (isBigBet ? state.admin.rigBigPct : state.admin.rigSmallPct) / 100;
+
+                // Base save rate
+                let saveProb = diff.baseSaveProb;
+
+                if (!isBigBet) {
+                    // Small bet (<500K): gently rewarding on steps 1..4, tightens near steps 7..9
+                    if (nextStepNum <= 3) saveProb -= 0.04;
+                    if (nextStepNum >= 6) saveProb += (nextStepNum - 5) * 0.055;
+                    saveProb += rigFactor * 0.25;
+                } else {
+                    // Big bet (>=500K): Greed Trap kicks in sharply from step 3+
+                    saveProb += rigFactor * 0.45;
+                    if (nextStepNum >= 3) saveProb += 0.14;
+                    if (nextStepNum >= 5) saveProb += 0.12;
+                    if (nextStepNum >= 7) saveProb += 0.10;
+                }
+
+                // Clamp sensibly so it's always playable & exciting (never 0% or 100% in Auto)
+                saveProb = Math.max(0.08, Math.min(0.88, saveProb));
+                const saved = secureRand() < saveProb;
+                return { outcome: saved ? 'save' : 'goal', instantJackpot: false };
+            }
+
+            /* -----------------------------------------------------------------
+               7. GEOMETRY HELPERS FOR SNOWY STADIUM & CLICKABLE ARROWS
+            ----------------------------------------------------------------- */
+            function getStageMetrics() {
+                const horizonY = Math.floor(viewH * 0.62);
+                const goalW = Math.min(viewW * 0.78, 326);
+                const goalH = Math.min(viewH * 0.23, 102);
+                const goalLeft = (viewW - goalW) * 0.5;
+                const goalRight = goalLeft + goalW;
+                const goalBottom = horizonY + 12;
+                const goalTop = goalBottom - goalH;
+                const spotX = viewW * 0.5;
+                const spotY = viewH - 36;
+                return { horizonY, goalW, goalH, goalLeft, goalRight, goalTop, goalBottom, spotX, spotY };
+            }
+
+            function getPenaltySpot() {
+                const m = getStageMetrics();
+                return { x: m.spotX, y: m.spotY };
+            }
+
+            function getArrowHitZones() {
+                const m = getStageMetrics();
+                return {
+                    left:   { x: m.spotX - 78, y: m.spotY - 52, r: 34, targetX: m.goalLeft + m.goalW * 0.18, targetY: m.goalTop + m.goalH * 0.46 },
+                    center: { x: m.spotX,      y: m.spotY - 64, r: 34, targetX: m.goalLeft + m.goalW * 0.50, targetY: m.goalTop + m.goalH * 0.34 },
+                    right:  { x: m.spotX + 78, y: m.spotY - 52, r: 34, targetX: m.goalLeft + m.goalW * 0.82, targetY: m.goalTop + m.goalH * 0.46 }
+                };
+            }
+
+            /* -----------------------------------------------------------------
+               8. ROUND LIFECYCLE: PLAY -> SHOOT (L/C/R) -> CASHOUT / SAVE / JACKPOT
+            ----------------------------------------------------------------- */
+            function syncBetFromInput() {
+                const digits = (el.betInput.value || '').replace(/[^\d]/g, '');
+                let val = parseInt(digits, 10);
+                if (!Number.isFinite(val) || val < MIN_BET) val = MIN_BET;
+                if (state.balance >= MIN_BET && val > state.balance) val = state.balance;
+                state.bet = val;
+                el.betInput.value = formatDots(state.bet);
+            }
+
+            function showStageBanner(title, sub, theme = 'goal', duration = 1200) {
+                const styles = {
+                    goal:    'bg-emerald-950/90 border-[#f5c542] text-[#fef08a]',
+                    save:    'bg-rose-950/92 border-rose-400 text-rose-200',
+                    cashout: 'bg-amber-950/92 border-yellow-300 text-[#fef08a]',
+                    jackpot: 'bg-gradient-to-b from-red-700/95 via-amber-600/95 to-red-900/95 border-white text-white'
+                };
+                el.bigBannerBox.className = `px-6 py-3 rounded-3xl border-2 text-center shadow-2xl pop-in backdrop-blur-sm ${styles[theme] || styles.goal}`;
+                el.bigBannerTitle.textContent = title;
+                el.bigBannerSub.textContent = sub;
+                el.bigBannerOverlay.classList.remove('hidden');
+                el.bigBannerOverlay.classList.add('flex');
+
+                clearTimeout(showStageBanner._t);
+                showStageBanner._t = setTimeout(() => {
+                    el.bigBannerOverlay.classList.add('hidden');
+                    el.bigBannerOverlay.classList.remove('flex');
+                }, duration);
+            }
+
+            function resetBallAndKeeperForAim() {
+                const spot = getPenaltySpot();
+                anim.kickActive = false;
+                anim.postPhase = 'NONE';
+                anim.gkState = 'IDLE';
+                anim.gkProgress = 0;
+                anim.ballX = spot.x;
+                anim.ballY = spot.y;
+                anim.ballScale = 1;
+                anim.ballRot = 0;
+                anim.ballTrail = [];
+            }
+
+            function startNewRound() {
+                sfx.unlock();
+                if (state.phase !== 'IDLE') return;
+
+                syncBetFromInput();
+                if (state.balance < MIN_BET) {
+                    showToast('Cháy túi rồi! Bấm nút BÁO NHÀ (+10 Củ) ở trên nhé 🆘', 'loss', 2800);
+                    return;
+                }
+                if (state.bet > state.balance) {
+                    showToast(`Ví chỉ còn ${formatVND(state.balance)}, giảm tiền cược nhé!`, 'warn', 2200);
+                    return;
+                }
+
+                state.balance -= state.bet;
+                state.activeBet = state.bet;
+                state.streak = 0;
+                state.phase = 'AIMING';
+
+                resetBallAndKeeperForAim();
+                sfx.playWhistle();
+                saveState();
+                renderUI();
+            }
+
+            function takePenaltyShot(dir) {
+                sfx.unlock();
+                if (state.phase !== 'AIMING') return;
+
+                state.phase = 'SHOOTING';
+                const nextStep = state.streak + 1;
+                const evalRes = evaluateShotOutcome(nextStep);
+
+                anim.kickActive = true;
+                anim.kickElapsed = 0;
+                anim.kickDir = dir;
+                anim.kickOutcome = evalRes.outcome;
+                anim.instantJackpot = evalRes.instantJackpot;
+                anim.postPhase = 'NONE';
+                anim.gkState = 'DIVING';
+                anim.gkProgress = 0;
+                anim.ballTrail = [];
+
+                // Choose Petr Čech's dive direction
+                if (evalRes.outcome === 'save') {
+                    anim.gkDiveDir = dir;
+                } else {
+                    const others = ['left', 'center', 'right'].filter(d => d !== dir);
+                    anim.gkDiveDir = others[secureInt(0, others.length - 1)];
+                }
+
+                sfx.playKick();
+                const spot = getPenaltySpot();
+                spawnParticles(spot.x, spot.y, '#e2e8f0', 12, 110);
+                renderUI();
+            }
+
+            function onKickImpact() {
+                anim.kickActive = false;
+                const zones = getArrowHitZones();
+                const target = zones[anim.kickDir];
+                const m = getStageMetrics();
+
+                if (anim.kickOutcome === 'goal') {
+                    // GOAL SCORED!
+                    state.streak = anim.instantJackpot ? 9 : Math.min(9, state.streak + 1);
+                    anim.gkState = 'BEATEN';
+                    anim.postPhase = 'IN_NET';
+                    anim.postTimer = 0;
+                    anim.netRipple = 1.0;
+                    anim.netImpactX = (target.targetX - m.goalLeft) / m.goalW;
+                    anim.netImpactY = (target.targetY - m.goalTop) / m.goalH;
+
+                    anim.shakeTimer = 0.2;
+                    anim.shakeMag = 5;
+                    spawnParticles(target.targetX, target.targetY, '#f5c542', 20, 150);
+                    spawnParticles(target.targetX, target.targetY, '#4ade80', 14, 130);
+
+                    const currentWin = getCurrentCashoutValue();
+                    const mult = getCurrentDiff().multipliers[state.streak - 1];
+
+                    if (state.streak >= 9) {
+                        // STEP 9: JACKPOT ("ĐỘC ĐẮC") AUTO-PAYOUT!
+                        state.balance += currentWin;
+                        state.history.unshift({
+                            win: true,
+                            jackpot: true,
+                            streak: 9,
+                            mult,
+                            prize: currentWin,
+                            diff: getCurrentDiff().label
+                        });
+                        if (state.history.length > 14) state.history.pop();
+
+                        sfx.playJackpotFanfare();
+                        launchFireworks(6);
+                        showStageBanner('👑 ĐỘC ĐẮC!!', `+${formatVND(currentWin)} (${mult}x • ${getCurrentDiff().label})`, 'jackpot', 3000);
+                        postBotMsg(`Á ĐÙ!! Có đại gia vừa đánh bại Petr Čech 9 trái thông nổ ĐỘC ĐẮC ${mult}x húp ${formatVND(currentWin)} kìa trời ơi!! 👑🎆`);
+
+                        state.phase = 'RESULT_WAIT';
+                        saveState();
+                        renderUI();
+
+                        setTimeout(() => {
+                            state.streak = 0;
+                            state.activeBet = 0;
+                            state.phase = 'IDLE';
+                            resetBallAndKeeperForAim();
+                            renderUI();
+                        }, 2400);
+                    } else {
+                        sfx.playGoal(state.streak);
+                        if (state.streak >= 5) launchFireworks(2);
+                        showStageBanner('VÀO!! ⚽', `Bậc ${state.streak}/9 • Quỹ thưởng: ${formatVND(currentWin)} (${mult}x)`, 'goal', 1100);
+                        state.phase = 'RESULT_WAIT';
+                        renderUI();
+
+                        setTimeout(() => {
+                            if (state.phase !== 'RESULT_WAIT') return;
+                            state.phase = 'AIMING';
+                            resetBallAndKeeperForAim();
+                            renderUI();
+                        }, 980);
+                    }
+                } else {
+                    // PETR ČECH SAVES IT!
+                    anim.gkState = 'SAVED';
+                    anim.postPhase = 'DEFLECTED';
+                    anim.postTimer = 0;
+                    anim.ballVx = anim.kickDir === 'left' ? -155 : (anim.kickDir === 'right' ? 155 : (secureRand() < 0.5 ? -90 : 90));
+                    anim.ballVy = -95;
+                    anim.shakeTimer = 0.28;
+                    anim.shakeMag = 7;
+
+                    spawnParticles(target.targetX, target.targetY, '#38bdf8', 18, 145);
+                    spawnParticles(target.targetX, target.targetY, '#ffffff', 14, 120);
+                    sfx.playSave();
+
+                    const lostPot = state.streak > 0 ? getCurrentCashoutValue() : state.activeBet;
+                    state.history.unshift({
+                        win: false,
+                        streak: state.streak,
+                        lostBet: state.activeBet,
+                        diff: getCurrentDiff().label
+                    });
+                    if (state.history.length > 14) state.history.pop();
+
+                    showStageBanner('🧤 BỊ CẢN PHÁ!', `Petr Čech bay người cứu thua! Bay mất ${formatVND(lostPot)}`, 'save', 1500);
+                    if (state.streak >= 3) {
+                        postBotMsg(`Cay đứt ruột!! Đang thông ${state.streak} quả (${formatShort(lostPot)}) không chịu rút bị Petr Čech đẩy mất 😭🧤`);
+                    }
+
+                    state.phase = 'RESULT_WAIT';
+                    saveState();
+                    renderUI();
+
+                    setTimeout(() => {
+                        state.streak = 0;
+                        state.activeBet = 0;
+                        state.phase = 'IDLE';
+                        resetBallAndKeeperForAim();
+                        renderUI();
+                    }, 1450);
+                }
+            }
+
+            function handleCashout() {
+                sfx.unlock();
+                if (state.phase !== 'AIMING' || state.streak <= 0) return;
+
+                const payout = getCurrentCashoutValue();
+                const mult = getCurrentDiff().multipliers[state.streak - 1];
+
+                state.balance += payout;
+                state.history.unshift({
+                    win: true,
+                    jackpot: false,
+                    streak: state.streak,
+                    mult,
+                    prize: payout,
+                    diff: getCurrentDiff().label
+                });
+                if (state.history.length > 14) state.history.pop();
+
+                sfx.playCashout();
+                launchFireworks(state.streak >= 5 ? 4 : 2);
+                showStageBanner('💵 RÚT TIỀN THÀNH CÔNG!', `+${formatVND(payout)} (Bậc ${state.streak} • ${mult}x)`, 'cashout', 1650);
+                showToast(`🎉 Chốt lời +${formatVND(payout)} thành công về ví chung!`, 'win', 3200);
+
+                if (state.streak >= 4) {
+                    postBotMsg(`Quá tỉnh!! Chốt lời non ở bậc ${state.streak} (${mult}x) húp gọn ${formatVND(payout)} trước mũi Petr Čech 💵🔥`);
+                }
+
+                state.streak = 0;
+                state.activeBet = 0;
+                state.phase = 'IDLE';
+                resetBallAndKeeperForAim();
+                saveState();
+                renderUI();
+            }
+
+            /* -----------------------------------------------------------------
+               9. PARTICLES & FIREWORKS ENGINE
+            ----------------------------------------------------------------- */
+            function spawnParticles(x, y, color, count = 14, speed = 130) {
+                for (let i = 0; i < count; i++) {
+                    const ang = Math.random() * Math.PI * 2;
+                    const spd = speed * (0.3 + Math.random() * 0.85);
+                    anim.particles.push({
+                        x, y,
+                        vx: Math.cos(ang) * spd,
+                        vy: Math.sin(ang) * spd,
+                        r: 2 + Math.random() * 3,
+                        color,
+                        life: 0.4 + Math.random() * 0.35,
+                        maxLife: 0.75
+                    });
+                }
+            }
+
+            function launchFireworks(bursts = 3) {
+                const palette = ['#f5c542', '#4ade80', '#38bdf8', '#f43f5e', '#ffffff', '#fb923c'];
+                for (let b = 0; b < bursts; b++) {
+                    const cx = viewW * (0.18 + Math.random() * 0.64);
+                    const cy = viewH * (0.12 + Math.random() * 0.30);
+                    const col = palette[Math.floor(Math.random() * palette.length)];
+                    setTimeout(() => {
+                        for (let i = 0; i < 28; i++) {
+                            const ang = (i / 28) * Math.PI * 2 + (Math.random() - 0.5) * 0.15;
+                            const spd = 60 + Math.random() * 145;
+                            anim.fireworks.push({
+                                x: cx, y: cy,
+                                vx: Math.cos(ang) * spd,
+                                vy: Math.sin(ang) * spd,
+                                r: 2 + Math.random() * 2.5,
+                                color: i % 3 === 0 ? '#ffffff' : col,
+                                life: 0.75 + Math.random() * 0.4,
+                                maxLife: 1.15
+                            });
+                        }
+                    }, b * 220);
+                }
+            }
+
+            /* -----------------------------------------------------------------
+               10. PROCEDURAL CANVAS RENDERER: SNOWY STAMFORD BRIDGE + PETR ČECH
+            ----------------------------------------------------------------- */
+            function drawSnowyStadium(m) {
+                // 1. Night Sky & Stadium Floodlights
+                const sky = ctx.createLinearGradient(0, 0, 0, m.horizonY);
+                sky.addColorStop(0, '#020612');
+                sky.addColorStop(0.55, '#091a36');
+                sky.addColorStop(1, '#102c57');
+                ctx.fillStyle = sky;
+                ctx.fillRect(0, 0, viewW, m.horizonY);
+
+                // Twin Glowing Stadium Floodlight Cones
+                [viewW * 0.16, viewW * 0.84].forEach(lx => {
+                    const cone = ctx.createRadialGradient(lx, 12, 4, lx, m.horizonY * 0.75, viewW * 0.48);
+                    cone.addColorStop(0, 'rgba(224, 242, 254, 0.32)');
+                    cone.addColorStop(0.45, 'rgba(56, 189, 248, 0.08)');
+                    cone.addColorStop(1, 'rgba(56, 189, 248, 0)');
+                    ctx.fillStyle = cone;
+                    ctx.fillRect(0, 0, viewW, m.horizonY + 40);
+
+                    ctx.fillStyle = '#f8fafc';
+                    ctx.beginPath();
+                    ctx.arc(lx, 12, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // 2. Stamford Bridge Stadium Stands & Chelsea Blue Banners
+                const standTop = m.horizonY - 96;
+                ctx.fillStyle = '#071326';
+                ctx.fillRect(0, standTop, viewW, 96);
+
+                // Tiered crowd dots
+                for (let row = 0; row < 5; row++) {
+                    const ry = standTop + 14 + row * 14;
+                    ctx.fillStyle = row % 2 === 0 ? 'rgba(30, 58, 138, 0.55)' : 'rgba(15, 23, 42, 0.75)';
+                    ctx.fillRect(0, ry, viewW, 10);
+                    for (let cx = 8; cx < viewW; cx += 11) {
+                        const huePick = (cx * 7 + row * 13) % 5;
+                        ctx.fillStyle = huePick === 0 ? 'rgba(59, 130, 246, 0.55)'
+                            : (huePick === 1 ? 'rgba(248, 250, 252, 0.35)' : 'rgba(100, 116, 139, 0.32)');
+                        ctx.beginPath();
+                        ctx.arc(cx, ry + 5, 2.3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                // Subtle Camera Flashes in Crowd
+                for (let i = 0; i < anim.crowdFlashes.length; i++) {
+                    const fl = anim.crowdFlashes[i];
+                    ctx.fillStyle = `rgba(255, 255, 255, ${fl.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(fl.x, fl.y, 4.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Chelsea Advertising Perimeter Boards along pitch edge
+                ctx.fillStyle = '#034694';
+                ctx.fillRect(0, m.horizonY - 14, viewW, 14);
+                ctx.fillStyle = '#f5c542';
+                ctx.fillRect(0, m.horizonY - 15, viewW, 1.5);
+                ctx.font = '900 8px "Be Vietnam Pro", sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.78)';
+                ctx.textAlign = 'center';
+                for (let bx = 45; bx < viewW; bx += 115) {
+                    ctx.fillText('CHELSEA FC • NAMKYBET', bx, m.horizonY - 4.5);
+                }
+
+                // 3. Snowy Winter Pitch with Perspective Mowing Stripes
+                const grass = ctx.createLinearGradient(0, m.horizonY, 0, viewH);
+                grass.addColorStop(0, '#166534');
+                grass.addColorStop(0.45, '#15803d');
+                grass.addColorStop(1, '#14532d');
+                ctx.fillStyle = grass;
+                ctx.fillRect(0, m.horizonY, viewW, viewH - m.horizonY);
+
+                // Alternating winter turf bands
+                const bands = 7;
+                for (let b = 0; b < bands; b += 2) {
+                    const y0 = m.horizonY + ((viewH - m.horizonY) * b) / bands;
+                    const y1 = m.horizonY + ((viewH - m.horizonY) * (b + 1)) / bands;
+                    ctx.fillStyle = 'rgba(74, 222, 128, 0.11)';
+                    ctx.fillRect(0, y0, viewW, y1 - y0);
+                }
+
+                // Subtle Frosted Snow Patches on the Pitch
+                const snowMist = ctx.createLinearGradient(0, m.horizonY, 0, viewH);
+                snowMist.addColorStop(0, 'rgba(241, 245, 249, 0.28)');
+                snowMist.addColorStop(0.5, 'rgba(226, 232, 240, 0.10)');
+                snowMist.addColorStop(1, 'rgba(241, 245, 249, 0.22)');
+                ctx.fillStyle = snowMist;
+                ctx.fillRect(0, m.horizonY, viewW, viewH - m.horizonY);
+
+                // Crisp White Penalty Box & 6-Yard Box Perspective Lines
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.72)';
+                ctx.lineWidth = 2;
+                // Goal line
+                ctx.beginPath();
+                ctx.moveTo(0, m.goalBottom);
+                ctx.lineTo(viewW, m.goalBottom);
+                ctx.stroke();
+
+                // 6-yard box
+                ctx.beginPath();
+                ctx.moveTo(m.goalLeft - 18, m.goalBottom);
+                ctx.lineTo(m.goalLeft - 38, m.goalBottom + 36);
+                ctx.lineTo(m.goalRight + 38, m.goalBottom + 36);
+                ctx.lineTo(m.goalRight + 18, m.goalBottom);
+                ctx.stroke();
+
+                // Penalty Spot
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.ellipse(m.spotX, m.spotY + 4, 8, 3.2, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            function drawGoalAndNet(m) {
+                const depthX = 18;
+                const depthY = 14;
+                const backL = m.goalLeft + depthX;
+                const backR = m.goalRight - depthX;
+                const backT = m.goalTop + depthY;
+                const backB = m.goalBottom - 4;
+
+                const rippleOffset = (nx, ny) => {
+                    if (anim.netRipple <= 0) return { dx: 0, dy: 0 };
+                    const dist = Math.hypot(nx - anim.netImpactX, ny - anim.netImpactY);
+                    const wave = Math.sin(anim.time * 38 - dist * 12) * Math.max(0, 1 - dist * 1.4) * anim.netRipple * 8;
+                    return { dx: wave * 0.5, dy: wave };
+                };
+
+                // Semi-transparent net interior backdrop
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.34)';
+                ctx.fillRect(m.goalLeft, m.goalTop, m.goalW, m.goalH);
+
+                // Net mesh lines (back net)
+                ctx.strokeStyle = 'rgba(241, 245, 249, 0.36)';
+                ctx.lineWidth = 1;
+                const cols = 18;
+                for (let i = 0; i <= cols; i++) {
+                    const frac = i / cols;
+                    const topX = m.goalLeft + frac * m.goalW;
+                    const bx = backL + frac * (backR - backL);
+                    const rip = rippleOffset(frac, 0.5);
+                    ctx.beginPath();
+                    ctx.moveTo(topX, m.goalTop);
+                    ctx.lineTo(bx + rip.dx, backT + rip.dy);
+                    ctx.lineTo(bx + rip.dx * 0.6, backB);
+                    ctx.stroke();
+                }
+
+                const rows = 7;
+                for (let j = 0; j <= rows; j++) {
+                    const frac = j / rows;
+                    const y = backT + frac * (backB - backT);
+                    ctx.beginPath();
+                    for (let i = 0; i <= cols; i++) {
+                        const xf = i / cols;
+                        const x = backL + xf * (backR - backL);
+                        const rip = rippleOffset(xf, frac);
+                        if (i === 0) ctx.moveTo(x + rip.dx, y + rip.dy);
+                        else ctx.lineTo(x + rip.dx, y + rip.dy);
+                    }
+                    ctx.stroke();
+                }
+
+                // Side net depth diagonals
+                ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+                ctx.beginPath();
+                ctx.moveTo(m.goalLeft, m.goalTop); ctx.lineTo(backL, backT); ctx.lineTo(backL, backB); ctx.lineTo(m.goalLeft, m.goalBottom);
+                ctx.moveTo(m.goalRight, m.goalTop); ctx.lineTo(backR, backT); ctx.lineTo(backR, backB); ctx.lineTo(m.goalRight, m.goalBottom);
+                ctx.stroke();
+
+                // Crisp White Crossbar & Posts with Snow Cap on Top!
+                ctx.save();
+                ctx.shadowColor = 'rgba(0,0,0,0.6)';
+                ctx.shadowBlur = 8;
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 6.5;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(m.goalLeft, m.goalBottom);
+                ctx.lineTo(m.goalLeft, m.goalTop);
+                ctx.lineTo(m.goalRight, m.goalTop);
+                ctx.lineTo(m.goalRight, m.goalBottom);
+                ctx.stroke();
+
+                // Frosted snow layer sitting on top of the crossbar
+                ctx.strokeStyle = '#e0f2fe';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.moveTo(m.goalLeft + 3, m.goalTop - 2);
+                ctx.lineTo(m.goalRight - 3, m.goalTop - 2);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            /**
+             * Draws Legendary Chelsea Goalkeeper PETR ČECH:
+             * - Signature black rugby helmet with chinstrap
+             * - Iconic Chelsea GK bright lime-green jersey with royal Chelsea blue trim & lion crest & #1
+             * - Chelsea shorts, tall socks, and padded white/blue GK gloves
+             * - Smooth Idle Bounce, Full Horizontal Left/Right Dive, Center Parry, Save Celebrate & Defeated Pose
+             */
+            function drawPetrCech(m) {
+                const baseX = viewW * 0.5;
+                const baseY = m.goalBottom - 2;
+                const scale = Math.min(1.08, Math.max(0.84, m.goalW / 305));
+
+                let offsetX = 0;
+                let offsetY = 0;
+                let bodyRot = 0;
+                let armSpread = 0;
+                let kneeBend = 0;
+
+                if (anim.gkState === 'IDLE') {
+                    // Ready athletic stance bouncing on toes
+                    offsetY = -Math.abs(Math.sin(anim.time * 4.2)) * 3.5;
+                    kneeBend = Math.sin(anim.time * 4.2) * 2;
+                    armSpread = Math.sin(anim.time * 3.4) * 0.08;
+                } else {
+                    const p = Math.min(1, anim.gkProgress);
+                    const ease = 1 - Math.pow(1 - p, 2.6);
+                    const diveDist = m.goalW * 0.30;
+
+                    if (anim.gkDiveDir === 'left') {
+                        offsetX = -diveDist * ease;
+                        offsetY = -Math.sin(ease * Math.PI) * 26 - (anim.gkState === 'SAVED' ? 6 : 0);
+                        bodyRot = -1.22 * ease;
+                        armSpread = 0.85 * ease;
+                    } else if (anim.gkDiveDir === 'right') {
+                        offsetX = diveDist * ease;
+                        offsetY = -Math.sin(ease * Math.PI) * 26 - (anim.gkState === 'SAVED' ? 6 : 0);
+                        bodyRot = 1.22 * ease;
+                        armSpread = 0.85 * ease;
+                    } else {
+                        // Center leap / parry stance
+                        offsetY = -Math.sin(ease * Math.PI) * 24 - (anim.gkState === 'SAVED' ? 4 : 0);
+                        armSpread = 0.72 * ease;
+                    }
+                }
+
+                ctx.save();
+                // Ground shadow underneath Petr Čech
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
+                ctx.beginPath();
+                ctx.ellipse(baseX + offsetX, baseY + 2, 22 * scale + Math.abs(bodyRot) * 14, 5.5 * scale, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.translate(baseX + offsetX, baseY + offsetY - 34 * scale);
+                ctx.rotate(bodyRot);
+                ctx.scale(scale, scale);
+
+                // --- LEGS & BOOTS ---
+                const legSpread = anim.gkState === 'IDLE' ? 10 : 7;
+                // Left leg
+                ctx.strokeStyle = '#fde68a'; // skin knee
+                ctx.lineWidth = 6.5;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(-7, 10);
+                ctx.lineTo(-legSpread - kneeBend * 0.5, 22);
+                ctx.stroke();
+                // Chelsea blue/white GK sock
+                ctx.strokeStyle = '#034694';
+                ctx.lineWidth = 6.2;
+                ctx.beginPath();
+                ctx.moveTo(-legSpread - kneeBend * 0.5, 21);
+                ctx.lineTo(-legSpread, 33);
+                ctx.stroke();
+                // Boot
+                ctx.fillStyle = '#0f172a';
+                ctx.beginPath();
+                ctx.ellipse(-legSpread - 2, 34, 6, 3.2, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Right leg
+                ctx.strokeStyle = '#fde68a';
+                ctx.lineWidth = 6.5;
+                ctx.beginPath();
+                ctx.moveTo(7, 10);
+                ctx.lineTo(legSpread + kneeBend * 0.5, 22);
+                ctx.stroke();
+                ctx.strokeStyle = '#034694';
+                ctx.lineWidth = 6.2;
+                ctx.beginPath();
+                ctx.moveTo(legSpread + kneeBend * 0.5, 21);
+                ctx.lineTo(legSpread, 33);
+                ctx.stroke();
+                ctx.fillStyle = '#0f172a';
+                ctx.beginPath();
+                ctx.ellipse(legSpread + 2, 34, 6, 3.2, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // --- CHELSEA GK SHORTS (Dark Navy / Royal Blue Trim) ---
+                ctx.fillStyle = '#0a1f44';
+                ctx.strokeStyle = '#034694';
+                ctx.lineWidth = 1.6;
+                ctx.beginPath();
+                ctx.roundRect(-13, 3, 26, 13, 4);
+                ctx.fill();
+                ctx.stroke();
+                // Chelsea side stripes on shorts
+                ctx.fillStyle = '#38bdf8';
+                ctx.fillRect(-13, 5, 2.5, 9);
+                ctx.fillRect(10.5, 5, 2.5, 9);
+
+                // --- ARMS & PADDED GK GLOVES ---
+                const leftArmAng = -0.65 - armSpread * 1.15;
+                const rightArmAng = 0.65 + armSpread * 1.15;
+
+                // Left Arm
+                ctx.save();
+                ctx.translate(-13, -16);
+                ctx.rotate(leftArmAng);
+                ctx.strokeStyle = '#22c55e'; // Chelsea iconic green GK sleeve
+                ctx.lineWidth = 7.5;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-14, -10);
+                ctx.stroke();
+                // Chelsea Blue Cuff
+                ctx.strokeStyle = '#034694';
+                ctx.lineWidth = 7.5;
+                ctx.beginPath();
+                ctx.moveTo(-11, -8);
+                ctx.lineTo(-15, -11);
+                ctx.stroke();
+                // Big White/Blue Padded GK Glove
+                ctx.fillStyle = '#ffffff';
+                ctx.strokeStyle = '#034694';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                ctx.arc(-18, -13, 6.2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+
+                // Right Arm
+                ctx.save();
+                ctx.translate(13, -16);
+                ctx.rotate(rightArmAng);
+                ctx.strokeStyle = '#22c55e';
+                ctx.lineWidth = 7.5;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(14, -10);
+                ctx.stroke();
+                ctx.strokeStyle = '#034694';
+                ctx.lineWidth = 7.5;
+                ctx.beginPath();
+                ctx.moveTo(11, -8);
+                ctx.lineTo(15, -11);
+                ctx.stroke();
+                ctx.fillStyle = '#ffffff';
+                ctx.strokeStyle = '#034694';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                ctx.arc(18, -13, 6.2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+
+                // --- CHELSEA GOALKEEPER JERSEY (#1 PETR ČECH) ---
+                const jerseyGrad = ctx.createLinearGradient(0, -22, 0, 6);
+                jerseyGrad.addColorStop(0, '#4ade80');
+                jerseyGrad.addColorStop(0.55, '#16a34a');
+                jerseyGrad.addColorStop(1, '#15803d');
+                ctx.fillStyle = jerseyGrad;
+                ctx.strokeStyle = '#034694';
+                ctx.lineWidth = 1.8;
+                ctx.beginPath();
+                ctx.roundRect(-14, -22, 28, 28, 6);
+                ctx.fill();
+                ctx.stroke();
+
+                // Chelsea Royal Blue Shoulder Panels & Collar
+                ctx.fillStyle = '#034694';
+                ctx.fillRect(-13.5, -21.5, 27, 5);
+                // White Sponsor Chest Bar ("SAMSUNG" style clean bar)
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+                ctx.font = '900 5.5px "Be Vietnam Pro", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('CHELSEA', 0, -9);
+
+                // Chelsea Blue Crest Circle on Left Chest
+                ctx.fillStyle = '#034694';
+                ctx.strokeStyle = '#f5c542';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.arc(7, -15, 3.4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Iconic #1 on lower chest
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '900 8px "Be Vietnam Pro", sans-serif';
+                ctx.fillText('1', 0, 1);
+
+                // --- HEAD & ICONIC BLACK RUGBY SCRUM CAP (PETR ČECH SIGNATURE!) ---
+                // Neck & Face
+                ctx.fillStyle = '#fed7aa';
+                ctx.strokeStyle = '#78350f';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.arc(0, -31, 9.2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Black Protective Rugby Helmet Dome (covers top, sides, ears)
+                const helmGrad = ctx.createRadialGradient(-3, -36, 2, 0, -32, 11.5);
+                helmGrad.addColorStop(0, '#475569');
+                helmGrad.addColorStop(0.45, '#1e293b');
+                helmGrad.addColorStop(1, '#020617');
+                ctx.fillStyle = helmGrad;
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(0, -32, 10.6, Math.PI * 0.88, Math.PI * 2.12);
+                ctx.lineTo(9.8, -28);
+                ctx.quadraticCurveTo(6.5, -34, 0, -34.2);
+                ctx.quadraticCurveTo(-6.5, -34, -9.8, -28);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Helmet Padded Seam Lines & Ear Holes
+                ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(0, -42); ctx.lineTo(0, -34.5);
+                ctx.moveTo(-5, -40); ctx.lineTo(-4, -34.5);
+                ctx.moveTo(5, -40); ctx.lineTo(4, -34.5);
+                ctx.stroke();
+
+                // Black Chinstrap under chin (super recognizable!)
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = 2.2;
+                ctx.beginPath();
+                ctx.arc(0, -30, 8.6, Math.PI * 0.22, Math.PI * 0.78);
+                ctx.stroke();
+
+                // Intense Focused Eyes
+                ctx.fillStyle = '#0f172a';
+                ctx.beginPath();
+                ctx.arc(-3.2, -30.5, 1.35, 0, Math.PI * 2);
+                ctx.arc(3.2, -30.5, 1.35, 0, Math.PI * 2);
+                ctx.fill();
+                // Determined brow
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(-5.2, -32.6); ctx.lineTo(-1.4, -31.8);
+                ctx.moveTo(5.2, -32.6); ctx.lineTo(1.4, -31.8);
+                ctx.stroke();
+
+                ctx.restore();
+            }
+
+            /**
+             * Draws the 3 Glowing Golden Shooting Arrows (Left ↖, Center ⬆, Right ↗)
+             * exactly like the reference video when phase === 'AIMING'
+             */
+            function drawShootingArrows() {
+                if (state.phase !== 'AIMING') return;
+
+                const zones = getArrowHitZones();
+                const pulse = 0.85 + 0.15 * Math.sin(anim.time * 6.5);
+
+                const drawSingleArrow = (dir, x, y, rotRad) => {
+                    const isHover = anim.hoveredDir === dir;
+                    const sc = (isHover ? 1.18 : 1.0) * pulse;
+
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(rotRad);
+                    ctx.scale(sc, sc);
+
+                    // Soft Golden Glow Aura
+                    const glow = ctx.createRadialGradient(0, 0, 4, 0, 0, 30);
+                    glow.addColorStop(0, isHover ? 'rgba(254, 240, 138, 0.75)' : 'rgba(245, 197, 66, 0.35)');
+                    glow.addColorStop(1, 'rgba(245, 197, 66, 0)');
+                    ctx.fillStyle = glow;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 30, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Sleek Curved Golden Arrow Body
+                    const aGrad = ctx.createLinearGradient(0, 22, 0, -24);
+                    aGrad.addColorStop(0, 'rgba(245, 158, 11, 0.25)');
+                    aGrad.addColorStop(0.5, '#f5c542');
+                    aGrad.addColorStop(1, '#fef08a');
+
+                    ctx.fillStyle = aGrad;
+                    ctx.strokeStyle = '#78350f';
+                    ctx.lineWidth = 1.8;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -24);
+                    ctx.lineTo(16, -4);
+                    ctx.lineTo(7, -6);
+                    ctx.lineTo(6, 20);
+                    ctx.lineTo(-6, 20);
+                    ctx.lineTo(-7, -6);
+                    ctx.lineTo(-16, -4);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.restore();
+                };
+
+                drawSingleArrow('left',   zones.left.x,   zones.left.y,   -0.48);
+                drawSingleArrow('center', zones.center.x, zones.center.y,  0.00);
+                drawSingleArrow('right',  zones.right.x,  zones.right.y,   0.48);
+            }
+
+            function drawSoccerBall() {
+                const r = 15.5 * anim.ballScale;
+
+                // Trail during flight
+                if (anim.ballTrail.length > 2) {
+                    const hotStreak = state.streak >= 3;
+                    for (let i = 1; i < anim.ballTrail.length; i++) {
+                        const prev = anim.ballTrail[i - 1];
+                        const curr = anim.ballTrail[i];
+                        const frac = i / anim.ballTrail.length;
+                        ctx.strokeStyle = hotStreak
+                            ? `rgba(245, 197, 66, ${frac * 0.78})`
+                            : `rgba(255, 255, 255, ${frac * 0.45})`;
+                        ctx.lineWidth = frac * r * 1.4;
+                        ctx.lineCap = 'round';
+                        ctx.beginPath();
+                        ctx.moveTo(prev.x, prev.y);
+                        ctx.lineTo(curr.x, curr.y);
+                        ctx.stroke();
+                    }
+                }
+
+                // Shadow under ball
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.42)';
+                ctx.beginPath();
+                ctx.ellipse(anim.ballX, anim.ballY + r * 0.88, r * 0.9, r * 0.3, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.save();
+                ctx.translate(anim.ballX, anim.ballY);
+                ctx.rotate(anim.ballRot);
+
+                // Classic 3D Winter Soccer Ball (White + High-Vis Blue/Black Pentagons)
+                const bGrad = ctx.createRadialGradient(-r * 0.3, -r * 0.3, 1, 0, 0, r);
+                bGrad.addColorStop(0, '#ffffff');
+                bGrad.addColorStop(0.75, '#e2e8f0');
+                bGrad.addColorStop(1, '#94a3b8');
+                ctx.fillStyle = bGrad;
+                ctx.beginPath();
+                ctx.arc(0, 0, r, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#0f172a';
+                ctx.strokeStyle = '#0f172a';
+                ctx.lineWidth = Math.max(1, 1.4 * anim.ballScale);
+                const pr = r * 0.38;
+                ctx.beginPath();
+                for (let p = 0; p < 5; p++) {
+                    const a = (p * Math.PI * 2) / 5 - Math.PI / 2;
+                    const px = Math.cos(a) * pr;
+                    const py = Math.sin(a) * pr;
+                    if (p === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+                ctx.fill();
+
+                for (let p = 0; p < 5; p++) {
+                    const a = (p * Math.PI * 2) / 5 - Math.PI / 2;
+                    ctx.beginPath();
+                    ctx.moveTo(Math.cos(a) * pr, Math.sin(a) * pr);
+                    ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+                    ctx.stroke();
+                }
+
+                ctx.lineWidth = Math.max(1.2, 1.8 * anim.ballScale);
+                ctx.beginPath();
+                ctx.arc(0, 0, r, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            function renderCanvas() {
+                const m = getStageMetrics();
+                ctx.save();
+
+                if (anim.shakeTimer > 0) {
+                    const mag = anim.shakeMag * (anim.shakeTimer / 0.28);
+                    ctx.translate((Math.random() - 0.5) * mag * 2, (Math.random() - 0.5) * mag * 2);
+                }
+
+                drawSnowyStadium(m);
+                drawGoalAndNet(m);
+                drawPetrCech(m);
+                drawShootingArrows();
+                drawSoccerBall();
+
+                // Impact sparks & snow bursts
+                for (let i = 0; i < anim.particles.length; i++) {
+                    const p = anim.particles[i];
+                    ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                // Fireworks for big streaks / Độc Đắc
+                for (let i = 0; i < anim.fireworks.length; i++) {
+                    const fw = anim.fireworks[i];
+                    ctx.globalAlpha = Math.max(0, fw.life / fw.maxLife);
+                    ctx.fillStyle = fw.color;
+                    ctx.beginPath();
+                    ctx.arc(fw.x, fw.y, fw.r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+
+                // Continuous Falling Snowflakes over the Pitch
+                for (let i = 0; i < anim.snow.length; i++) {
+                    const f = anim.snow[i];
+                    ctx.fillStyle = `rgba(255, 255, 255, ${f.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            }
+
+            /* -----------------------------------------------------------------
+               11. DELTA-TIME NORMALIZED UPDATE LOOP (60Hz / 120Hz / 144Hz)
+            ----------------------------------------------------------------- */
+            let lastTs = 0;
+            function tick(ts) {
+                if (!lastTs) lastTs = ts;
+                const dt = Math.min(0.05, Math.max(0.001, (ts - lastTs) / 1000));
+                lastTs = ts;
+
+                anim.time += dt;
+
+                // Update snowfall
+                for (let i = 0; i < anim.snow.length; i++) {
+                    const f = anim.snow[i];
+                    f.y += f.vy * dt;
+                    f.phase += 1.5 * dt;
+                    f.x += (Math.sin(f.phase) * 16 + f.vx) * dt;
+                    if (f.y > viewH + 5) { f.y = -5; f.x = Math.random() * viewW; }
+                    if (f.x > viewW + 5) f.x = -5;
+                    if (f.x < -5) f.x = viewW + 5;
+                }
+
+                // Random subtle crowd flashes
+                if (Math.random() < dt * 2.5) {
+                    const m = getStageMetrics();
+                    anim.crowdFlashes.push({
+                        x: Math.random() * viewW,
+                        y: Math.max(14, m.horizonY - 90 + Math.random() * 68),
+                        alpha: 0.9
+                    });
+                }
+                for (let i = anim.crowdFlashes.length - 1; i >= 0; i--) {
+                    anim.crowdFlashes[i].alpha -= dt * 3.8;
+                    if (anim.crowdFlashes[i].alpha <= 0) anim.crowdFlashes.splice(i, 1);
+                }
+
+                if (anim.shakeTimer > 0) anim.shakeTimer = Math.max(0, anim.shakeTimer - dt);
+                if (anim.netRipple > 0) anim.netRipple = Math.max(0, anim.netRipple - dt * 1.15);
+
+                // Update kick flight + Petr Čech dive
+                if (anim.kickActive) {
+                    anim.kickElapsed += dt;
+                    const t = Math.min(1, anim.kickElapsed / anim.kickDuration);
+                    const ease = 1 - Math.pow(1 - t, 1.65);
+
+                    const spot = getPenaltySpot();
+                    const target = getArrowHitZones()[anim.kickDir];
+                    const arcHeight = anim.kickDir === 'center' ? 38 : 28;
+
+                    anim.ballX = spot.x + (target.targetX - spot.x) * ease;
+                    anim.ballY = spot.y + (target.targetY - spot.y) * ease - Math.sin(t * Math.PI) * arcHeight;
+                    anim.ballScale = 1 - 0.44 * ease;
+                    anim.ballRot += (anim.kickDir === 'left' ? -18 : 18) * dt;
+
+                    anim.ballTrail.push({ x: anim.ballX, y: anim.ballY });
+                    if (anim.ballTrail.length > 14) anim.ballTrail.shift();
+
+                    // Petr Čech reacts slightly after ball leaves foot for realistic drama
+                    anim.gkProgress = Math.min(1, Math.max(0, (t - 0.08) / 0.85));
+
+                    if (t >= 1) {
+                        onKickImpact();
+                    }
+                } else if (anim.postPhase === 'DEFLECTED') {
+                    anim.postTimer += dt;
+                    anim.ballX += anim.ballVx * dt;
+                    anim.ballY += anim.ballVy * dt;
+                    anim.ballVy += 360 * dt;
+                    anim.ballRot += 16 * dt;
+                    anim.ballScale = Math.min(0.85, anim.ballScale + dt * 0.35);
+                } else if (anim.postPhase === 'IN_NET') {
+                    anim.postTimer += dt;
+                    const m = getStageMetrics();
+                    anim.ballY = Math.min(m.goalBottom - 8, anim.ballY + 95 * dt);
+                    anim.ballRot *= Math.pow(0.2, dt);
+                }
+
+                // Update particles & fireworks
+                for (let i = anim.particles.length - 1; i >= 0; i--) {
+                    const p = anim.particles[i];
+                    p.x += p.vx * dt;
+                    p.y += p.vy * dt;
+                    p.vy += 260 * dt;
+                    p.life -= dt;
+                    if (p.life <= 0) anim.particles.splice(i, 1);
+                }
+                for (let i = anim.fireworks.length - 1; i >= 0; i--) {
+                    const fw = anim.fireworks[i];
+                    fw.x += fw.vx * dt;
+                    fw.y += fw.vy * dt;
+                    fw.vy += 120 * dt;
+                    fw.vx *= (1 - 1.2 * dt);
+                    fw.life -= dt;
+                    if (fw.life <= 0) anim.fireworks.splice(i, 1);
+                }
+
+                renderCanvas();
+                requestAnimationFrame(tick);
+            }
+
+            /* -----------------------------------------------------------------
+               12. UI RENDERING (LADDER, DIFFICULTIES, BET & CASHOUT BAR)
+            ----------------------------------------------------------------- */
+            function renderLadder() {
+                const diff = getCurrentDiff();
+                const refBet = state.phase === 'IDLE' ? state.bet : state.activeBet;
+                let html = '';
+
+                for (let step = 9; step >= 1; step--) {
+                    const mult = diff.multipliers[step - 1];
+                    const payout = Math.floor(refBet * mult);
+
+                    let cls = 'text-emerald-200/85 bg-black/30';
+                    if (step === state.streak && state.phase !== 'IDLE') {
+                        cls = 'ladder-row-current';
+                    } else if (step < state.streak && state.phase !== 'IDLE') {
+                        cls = 'ladder-row-passed';
+                    } else if (step === state.streak + 1 && state.phase === 'AIMING') {
+                        cls = 'ladder-row-next';
+                    } else if (step === 9) {
+                        cls = 'ladder-row-jackpot';
+                    }
+
+                    const stepBadge = step === 9 ? '👑' : String(step);
+                    html += `
+                        <div class="ladder-row font-mono-num ${cls}">
+                            <span class="font-black w-4 text-center shrink-0">${stepBadge}</span>
+                            <span class="text-[8.5px] opacity-85 shrink-0">${mult}x</span>
+                            <span class="font-extrabold text-right truncate flex-1">${formatShort(payout)}đ</span>
+                        </div>
+                    `;
+                }
+
+                el.ladderList.innerHTML = html;
+            }
+
+            function renderUI() {
+                const diff = getCurrentDiff();
+                const inRound = state.phase !== 'IDLE';
+
+                el.balanceDisplay.textContent = formatVND(state.balance);
+                el.soundBtn.textContent = state.muted ? '🔇' : '🔊';
+
+                if (document.activeElement !== el.betInput) {
+                    el.betInput.value = formatDots(state.bet);
+                }
+
+                // Difficulty buttons
+                document.querySelectorAll('.diff-btn').forEach(btn => {
+                    const id = btn.dataset.diff;
+                    const cfg = DIFFICULTIES[id];
+                    const active = id === state.difficulty;
+                    btn.disabled = inRound;
+                    btn.className = `diff-btn btn-press rounded-xl px-2.5 py-1.5 border-2 text-[10px] font-black leading-tight shadow-lg ${active ? cfg.activeCls : cfg.idleCls}`;
+                });
+
+                renderLadder();
+
+                // Toggle Betting vs Active Shootout Controls
+                el.bettingControls.classList.toggle('hidden', inRound);
+                el.activeRoundControls.classList.toggle('hidden', !inRound);
+
+                if (!inRound) {
+                    el.playBtnLabel.textContent = `CHƠI • ${formatVND(state.bet)}`;
+                    el.stagePromptText.textContent = `❄️ Chế độ ${diff.label} (Độc Đắc ${diff.multipliers[8]}x) — Bấm CHƠI!`;
+                    el.betMinusBtn.disabled = state.bet <= MIN_BET;
+                    el.betPlusBtn.disabled = state.bet >= state.balance;
+                    el.allInBtn.disabled = state.balance < MIN_BET;
+
+                    document.querySelectorAll('.chip-btn').forEach(btn => {
+                        const v = parseInt(btn.dataset.chip, 10);
+                        const active = state.bet === v;
+                        btn.classList.toggle('ring-2', active);
+                        btn.classList.toggle('ring-[#f5c542]', active);
+                    });
+                } else {
+                    const canAim = state.phase === 'AIMING';
+                    const nextMult = diff.multipliers[Math.min(8, state.streak)];
+                    const remToJackpot = 9 - state.streak;
+
+                    el.streakCountText.textContent = `${state.streak} / 9`;
+                    el.nextTargetMult.textContent = `${nextMult}x (${formatShort(Math.floor(state.activeBet * nextMult))}đ)`;
+
+                    if (canAim) {
+                        el.stagePromptText.textContent = remToJackpot === 1
+                            ? '👑 CÒN 1 BÀN NỮA ĐỂ NỔ ĐỘC ĐẮC! CHỌN GÓC SÚT!'
+                            : `⚽ Ghi thêm ${remToJackpot} bàn để thắng ĐỘC ĐẮC (hoặc Rút Tiền Mặt)!`;
+                    } else {
+                        el.stagePromptText.textContent = '🔥 Bóng đang bay về phía Petr Čech...';
+                    }
+
+                    [el.shootLeftBtn, el.shootCenterBtn, el.shootRightBtn].forEach(b => b.disabled = !canAim);
+
+                    // Cashout Button state
+                    if (state.streak > 0 && canAim) {
+                        const val = getCurrentCashoutValue();
+                        el.cashoutBtn.disabled = false;
+                        el.cashoutBtn.className = 'btn-press cta-cashout w-full py-3.5 px-4 rounded-2xl font-black text-sm sm:text-base tracking-wide flex items-center justify-center gap-2';
+                        el.cashoutBtnText.textContent = `RÚT TIỀN MẶT • ${formatVND(val)}`;
+                    } else {
+                        el.cashoutBtn.disabled = true;
+                        el.cashoutBtn.className = 'btn-press w-full py-3.5 px-4 rounded-2xl bg-slate-800/90 border-2 border-slate-600 text-slate-400 font-black text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2';
+                        el.cashoutBtnText.textContent = state.streak > 0
+                            ? `QUỸ THƯỞNG: ${formatVND(getCurrentCashoutValue())}`
+                            : 'RÚT TIỀN MẶT (GHI 1 BÀN ĐỂ RÚT)';
+                    }
+                }
+
+                // Báo Nhà Banner when balance < 100K & IDLE
+                el.bailoutWrap.classList.toggle('hidden', !(state.balance < MIN_BET && !inRound));
+
+                // History Pills
+                if (state.history.length === 0) {
+                    el.historyStrip.innerHTML = '<span class="text-[11px] text-slate-400 italic">Chọn chế độ, đặt cược rồi đấu trí cùng Petr Čech 🧤❄️</span>';
+                } else {
+                    el.historyStrip.innerHTML = '';
+                    state.history.forEach(item => {
+                        const span = document.createElement('span');
+                        if (item.win) {
+                            span.className = item.jackpot
+                                ? 'shrink-0 px-2 py-0.5 rounded-full text-[10px] font-black bg-[#f5c542] text-slate-950 border border-white'
+                                : 'shrink-0 px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-950 text-emerald-200 border border-emerald-400/60';
+                            span.textContent = item.jackpot
+                                ? `👑 ĐỘC ĐẮC +${formatShort(item.prize)}`
+                                : `Bậc ${item.streak} (${item.mult}x) +${formatShort(item.prize)}`;
+                        } else {
+                            span.className = 'shrink-0 px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-950 text-rose-300 border border-rose-500/50';
+                            span.textContent = `Čech Cản -${formatShort(item.lostBet)}`;
+                        }
+                        el.historyStrip.appendChild(span);
+                    });
+                }
+            }
+
+            /* -----------------------------------------------------------------
+               13. BOT CHAT & SECRET ADMIN PANEL ("TND" -> "memaybeo123")
+            ----------------------------------------------------------------- */
+            function appendChat(name, text, isMe = false) {
+                const row = document.createElement('div');
+                row.className = 'leading-snug break-words';
+                row.innerHTML = `<span class="${isMe ? 'text-[#f5c542] font-black' : 'text-sky-300 font-bold'}"></span> <span class="text-slate-200"></span>`;
+                row.children[0].textContent = `${name}:`;
+                row.children[1].textContent = text;
+                el.chatMessages.appendChild(row);
+                while (el.chatMessages.children.length > 35) el.chatMessages.removeChild(el.chatMessages.firstChild);
+                el.chatMessages.scrollTop = el.chatMessages.scrollHeight;
+                if (!state.chatOpen && !isMe) el.chatUnreadDot.classList.remove('hidden');
+            }
+
+            function postBotMsg(msg) {
+                appendChat(BOT_NAMES[secureInt(0, BOT_NAMES.length - 1)], msg);
+            }
+
+            function startBotChat() {
+                appendChat('ChelseaBlue_99', 'Sân Stamford Bridge tuyết rơi đẹp vãi, vào đấu pen với huyền thoại Petr Čech nào 🧤❄️');
+                appendChat('DrogbaVN', 'Ngoại Hạng ăn tới 117x lận nha anh em, nhắm góc cho chuẩn!');
+
+                const next = () => {
+                    setTimeout(() => {
+                        appendChat(BOT_NAMES[secureInt(0, BOT_NAMES.length - 1)], BOT_LINES[secureInt(0, BOT_LINES.length - 1)]);
+                        el.onlineCount.textContent = String(secureInt(540, 720));
+                        next();
+                    }, secureInt(5800, 10500));
+                };
+                next();
+            }
+
+            function syncAdminUI() {
+                document.querySelectorAll('.admin-mode-btn').forEach(btn => {
+                    const active = btn.dataset.mode === state.admin.mode;
+                    btn.className = active
+                        ? 'admin-mode-btn btn-press py-2.5 px-3 rounded-xl border-2 text-xs font-black text-left bg-[#f5c542] text-slate-950 border-yellow-100 shadow'
+                        : 'admin-mode-btn btn-press py-2.5 px-3 rounded-xl border text-xs font-extrabold text-left bg-slate-900 text-slate-300 border-slate-700';
+                });
+
+                const labels = {
+                    auto: `Auto (${state.admin.rigSmallPct}% / ${state.admin.rigBigPct}%)`,
+                    goal: 'Ép: VÀO 100% ⚽',
+                    save: 'Ép: Čech Bắt Dính 🧤',
+                    jackpot: 'Ép: ĐỘC ĐẮC Bậc 9 👑'
+                };
+                el.adminStatusBadge.textContent = labels[state.admin.mode] || 'Auto';
+                el.adminStatusBadge.className = state.admin.mode === 'auto'
+                    ? 'text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-400/60 text-emerald-300'
+                    : 'text-[10px] font-black px-2 py-0.5 rounded-full bg-rose-950 border border-rose-400 text-yellow-200';
+
+                el.adminOneShotCheck.checked = state.admin.oneShot;
+                el.rigSmallSlider.value = state.admin.rigSmallPct;
+                el.rigSmallVal.textContent = `${state.admin.rigSmallPct}%`;
+                el.rigBigSlider.value = state.admin.rigBigPct;
+                el.rigBigVal.textContent = `${state.admin.rigBigPct}%`;
+                el.adminBalInput.value = state.balance;
+            }
+
+            /* -----------------------------------------------------------------
+               14. CANVAS CLICK / TOUCH DETECTION & EVENT BINDINGS
+            ----------------------------------------------------------------- */
+            function hitTestDirection(clientX, clientY) {
+                const rect = el.canvas.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+                const zones = getArrowHitZones();
+                const m = getStageMetrics();
+
+                // 1. Direct tap on the 3 golden arrows
+                for (const dir of ['left', 'center', 'right']) {
+                    const z = zones[dir];
+                    if (Math.hypot(x - z.x, y - z.y) <= z.r + 10) return dir;
+                }
+
+                // 2. Direct tap inside the Goal frame (left / center / right third)
+                if (x >= m.goalLeft - 8 && x <= m.goalRight + 8 && y >= m.goalTop - 10 && y <= m.goalBottom + 16) {
+                    const frac = (x - m.goalLeft) / m.goalW;
+                    if (frac < 0.34) return 'left';
+                    if (frac > 0.66) return 'right';
+                    return 'center';
+                }
+
+                return null;
+            }
+
+            function bindEvents() {
+                window.addEventListener('pointerdown', () => sfx.unlock(), { once: true });
+                window.addEventListener('resize', resizeCanvas);
+
+                // Safe Return to Lobby: auto-cashout accrued streak or refund un-kicked bet!
+                el.backLobbyBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (state.phase === 'AIMING') {
+                        if (state.streak > 0) {
+                            state.balance += getCurrentCashoutValue();
+                        } else if (state.activeBet > 0) {
+                            state.balance += state.activeBet;
+                        }
+                        state.streak = 0;
+                        state.activeBet = 0;
+                        state.phase = 'IDLE';
+                    }
+                    saveState();
+                    window.location.assign('index.html');
+                });
+
+                // Sync shared wallet on return/tab switch
+                const onSyncReturn = () => {
+                    if (state.phase === 'IDLE') {
+                        syncSharedBalance();
+                        renderUI();
+                    }
+                };
+                window.addEventListener('focus', onSyncReturn);
+                window.addEventListener('pageshow', onSyncReturn);
+                window.addEventListener('storage', (e) => {
+                    if (e.key === SHARED_BALANCE_KEY) onSyncReturn();
+                });
+
+                // Canvas direct tap & hover for arrows/goal
+                el.canvas.addEventListener('pointermove', (e) => {
+                    if (state.phase !== 'AIMING') {
+                        anim.hoveredDir = null;
+                        el.canvas.style.cursor = 'default';
+                        return;
+                    }
+                    const d = hitTestDirection(e.clientX, e.clientY);
+                    anim.hoveredDir = d;
+                    el.canvas.style.cursor = d ? 'pointer' : 'default';
+                });
+
+                el.canvas.addEventListener('pointerleave', () => {
+                    anim.hoveredDir = null;
+                });
+
+                el.canvas.addEventListener('click', (e) => {
+                    if (state.phase !== 'AIMING') return;
+                    const d = hitTestDirection(e.clientX, e.clientY);
+                    if (d) takePenaltyShot(d);
+                });
+
+                // 3 Tactile Shoot Buttons
+                [el.shootLeftBtn, el.shootCenterBtn, el.shootRightBtn].forEach(btn => {
+                    btn.addEventListener('click', () => takePenaltyShot(btn.dataset.dir));
+                });
+
+                el.playBtn.addEventListener('click', startNewRound);
+                el.cashoutBtn.addEventListener('click', handleCashout);
+
+                // Difficulty selector
+                document.querySelectorAll('.diff-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (state.phase !== 'IDLE') return;
+                        sfx.playClick();
+                        state.difficulty = btn.dataset.diff;
+                        saveState();
+                        renderUI();
+                    });
+                });
+
+                // Bet input & chips
+                el.betInput.addEventListener('input', () => {
+                    const digits = el.betInput.value.replace(/[^\d]/g, '');
+                    if (!digits) { el.betInput.value = ''; return; }
+                    const n = parseInt(digits, 10);
+                    if (Number.isFinite(n)) {
+                        state.bet = n;
+                        el.betInput.value = formatDots(n);
+                        renderLadder();
+                        el.playBtnLabel.textContent = `CHƠI • ${formatVND(state.bet)}`;
+                    }
+                });
+
+                el.betInput.addEventListener('blur', () => {
+                    syncBetFromInput();
+                    saveState();
+                    renderUI();
+                });
+
+                el.betMinusBtn.addEventListener('click', () => {
+                    if (state.phase !== 'IDLE') return;
+                    sfx.playClick();
+                    const step = state.bet > 1_000_000 ? 500_000 : 100_000;
+                    state.bet = Math.max(MIN_BET, state.bet - step);
+                    saveState(); renderUI();
+                });
+
+                el.betPlusBtn.addEventListener('click', () => {
+                    if (state.phase !== 'IDLE') return;
+                    sfx.playClick();
+                    const step = state.bet >= 1_000_000 ? 500_000 : 100_000;
+                    state.bet = Math.min(Math.max(MIN_BET, state.balance), state.bet + step);
+                    saveState(); renderUI();
+                });
+
+                document.querySelectorAll('.chip-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (state.phase !== 'IDLE') return;
+                        sfx.playClick();
+                        const val = parseInt(btn.dataset.chip, 10) || MIN_BET;
+                        if (val > state.balance && state.balance >= MIN_BET) {
+                            showToast(`Ví chỉ còn ${formatVND(state.balance)}, không đủ đặt ${formatShort(val)}!`, 'warn', 2000);
+                            return;
+                        }
+                        state.bet = val;
+                        saveState(); renderUI();
+                    });
+                });
+
+                el.allInBtn.addEventListener('click', () => {
+                    if (state.phase !== 'IDLE') return;
+                    sfx.playClick();
+                    if (state.balance < MIN_BET) {
+                        showToast('Không đủ tối thiểu 100K để All-in! Bấm Báo Nhà nhé 🆘', 'warn', 2000);
+                        return;
+                    }
+                    state.bet = state.balance;
+                    saveState(); renderUI();
+                    showToast(`🔥 Đã chốt kèo All-in ${formatVND(state.bet)}!`, 'info', 1800);
+                });
+
+                // Sound & Báo Nhà
+                el.soundBtn.addEventListener('click', () => {
+                    state.muted = !state.muted;
+                    if (!state.muted) sfx.playClick();
+                    saveState(); renderUI();
+                });
+
+                el.bailoutBtn.addEventListener('click', () => {
+                    if (state.balance >= MIN_BET || state.phase !== 'IDLE') return;
+                    state.balance += BAILOUT_AMOUNT;
+                    state.bet = MIN_BET;
+                    sfx.playJackpotFanfare();
+                    launchFireworks(3);
+                    saveState(); renderUI();
+                    showToast('🎅 Bố mẹ vừa chuyển nóng +10.000.000đ, sút tung lưới Petr Čech đi!', 'win', 4000);
+                });
+
+                // Chat drawer
+                el.toggleChatBtn.addEventListener('click', () => {
+                    state.chatOpen = !state.chatOpen;
+                    el.chatDrawer.classList.toggle('hidden', !state.chatOpen);
+                    el.chatChevron.style.transform = state.chatOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                    if (state.chatOpen) {
+                        el.chatUnreadDot.classList.add('hidden');
+                        el.chatMessages.scrollTop = el.chatMessages.scrollHeight;
+                    }
+                });
+
+                el.chatForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const txt = el.chatInput.value.trim();
+                    if (!txt) return;
+                    appendChat(getPlayerName(), txt, true);
+                    el.chatInput.value = '';
+                });
+
+                // Secret Admin ("TND" -> "memaybeo123")
+                const closePass = () => {
+                    el.adminPassModal.classList.add('hidden');
+                    el.adminPassModal.classList.remove('flex');
+                    el.adminPassInput.value = '';
+                };
+                const closeAdmin = () => {
+                    el.adminModal.classList.add('hidden');
+                    el.adminModal.classList.remove('flex');
+                    saveState(); renderUI();
+                };
+
+                el.tndLogoBtn.addEventListener('click', () => {
+                    el.adminPassInput.value = '';
+                    el.adminPassError.classList.add('hidden');
+                    el.adminPassModal.classList.remove('hidden');
+                    el.adminPassModal.classList.add('flex');
+                    setTimeout(() => el.adminPassInput.focus(), 70);
+                });
+                el.closePassBtn.addEventListener('click', closePass);
+
+                el.adminPassForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (el.adminPassInput.value === ADMIN_PASS) {
+                        closePass();
+                        syncAdminUI();
+                        el.adminModal.classList.remove('hidden');
+                        el.adminModal.classList.add('flex');
+                        sfx.playClick();
+                    } else {
+                        el.adminPassError.classList.remove('hidden');
+                        el.adminPassBox.classList.remove('shake-error');
+                        void el.adminPassBox.offsetWidth;
+                        el.adminPassBox.classList.add('shake-error');
+                        el.adminPassInput.value = '';
+                        el.adminPassInput.focus();
+                    }
+                });
+
+                document.querySelectorAll('.admin-mode-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        state.admin.mode = btn.dataset.mode;
+                        syncAdminUI();
+                    });
+                });
+
+                el.adminOneShotCheck.addEventListener('change', () => {
+                    state.admin.oneShot = el.adminOneShotCheck.checked;
+                    saveState();
+                });
+
+                el.rigSmallSlider.addEventListener('input', () => {
+                    state.admin.rigSmallPct = parseInt(el.rigSmallSlider.value, 10) || 0;
+                    syncAdminUI(); saveState();
+                });
+
+                el.rigBigSlider.addEventListener('input', () => {
+                    state.admin.rigBigPct = parseInt(el.rigBigSlider.value, 10) || 0;
+                    syncAdminUI(); saveState();
+                });
+
+                el.adminSetBalBtn.addEventListener('click', () => {
+                    const val = parseInt(el.adminBalInput.value, 10);
+                    if (!Number.isFinite(val) || val < 0) return;
+                    state.balance = val;
+                    syncAdminUI(); renderUI(); saveState();
+                    showToast(`👑 Đã đặt số dư thành ${formatVND(state.balance)}`, 'info', 1800);
+                });
+
+                el.adminAdd10M.addEventListener('click', () => {
+                    state.balance += 10_000_000;
+                    syncAdminUI(); renderUI(); saveState();
+                });
+
+                el.adminAdd50M.addEventListener('click', () => {
+                    state.balance += 50_000_000;
+                    syncAdminUI(); renderUI(); saveState();
+                });
+
+                el.adminSetZero.addEventListener('click', () => {
+                    state.balance = 0;
+                    syncAdminUI(); renderUI(); saveState();
+                    showToast('Đã set 0đ (Đóng bảng để test Báo Nhà)', 'warn', 2000);
+                });
+
+                el.closeAdminTopBtn.addEventListener('click', closeAdmin);
+                el.hideAdminBtn.addEventListener('click', closeAdmin);
+            }
+
+            // Boot on Window Load
+            window.onload = function () {
+                loadState();
+                resizeCanvas();
+                resetBallAndKeeperForAim();
+                bindEvents();
+                renderUI();
+                startBotChat();
+                requestAnimationFrame(tick);
+            };
+        })();
+    </script>
+</body>
+</html>
