@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NamKyBet 🃏 Baccarat Giáng Sinh VIP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Be Vietnam Pro & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =====================================================================
+           NAMKYBET - BACCARAT GIÁNG SINH VIP (MACAU CHRISTMAS FELT THEME)
+           Mobile-First Portrait | Zero External Image/Audio Dependencies
+        ===================================================================== */
+        :root {
+            --felt-deep: #06251b;
+            --felt-mid: #0c3d2d;
+            --wine-deep: #2f0811;
+            --gold: #f5c542;
+            --gold-bright: #fef08a;
+            --player-blue: #2563eb;
+            --banker-red: #dc2626;
+            --tie-green: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        input {
+            user-select: text;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+            background:
+                radial-gradient(circle at top center, rgba(140, 18, 38, 0.32) 0%, transparent 45%),
+                radial-gradient(circle at bottom center, rgba(16, 120, 80, 0.28) 0%, transparent 50%),
+                linear-gradient(180deg, #16050a 0%, #071b15 48%, #040d0a 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .font-mono-num {
+            font-family: 'JetBrains Mono', 'Be Vietnam Pro', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        #snowCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .app-shell {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 24px;
+        }
+
+        /* =====================================================================
+           MARQUEE TICKER & CHRISTMAS STRING LIGHTS
+        ===================================================================== */
+        .marquee-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+            background: linear-gradient(90deg, #6b0c1c, #b91c1c, #6b0c1c);
+            border-bottom: 1.5px solid rgba(245, 197, 66, 0.72);
+        }
+
+        .marquee-track {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marqueeRun 34s linear infinite;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #fff8db;
+        }
+
+        @keyframes marqueeRun {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .fairy-lights {
+            display: flex;
+            justify-content: space-around;
+            height: 12px;
+            padding: 0 10px;
+            pointer-events: none;
+        }
+
+        .bulb {
+            width: 6px;
+            height: 9px;
+            border-radius: 50% 50% 60% 60%;
+            animation: bulbGlow 1.7s ease-in-out infinite alternate;
+        }
+        .bulb:nth-child(4n+1) { background: #ff4d6d; box-shadow: 0 0 8px #ff4d6d; animation-delay: 0s; }
+        .bulb:nth-child(4n+2) { background: #ffd166; box-shadow: 0 0 8px #ffd166; animation-delay: 0.4s; }
+        .bulb:nth-child(4n+3) { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; animation-delay: 0.8s; }
+        .bulb:nth-child(4n+4) { background: #4ade80; box-shadow: 0 0 8px #4ade80; animation-delay: 1.2s; }
+
+        @keyframes bulbGlow {
+            0% { opacity: 0.4; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1.15); }
+        }
+
+        /* =====================================================================
+           LUXURY MACAU FELT TABLE & 3D PLAYING CARDS
+        ===================================================================== */
+        .glass-card {
+            background: linear-gradient(160deg, rgba(13, 42, 32, 0.92), rgba(7, 20, 16, 0.97));
+            border: 1px solid rgba(245, 197, 66, 0.34);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.48);
+        }
+
+        .table-felt {
+            background:
+                radial-gradient(ellipse at 50% 28%, rgba(22, 101, 70, 0.95) 0%, rgba(8, 51, 36, 0.98) 65%, rgba(4, 24, 18, 1) 100%);
+            border: 2.5px solid #f5c542;
+            box-shadow:
+                inset 0 0 36px rgba(0, 0, 0, 0.72),
+                inset 0 0 0 2px rgba(245, 197, 66, 0.25),
+                0 12px 30px rgba(0, 0, 0, 0.65);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle gold felt arc watermark */
+        .table-felt::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 135%;
+            height: 115%;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(245, 197, 66, 0.16);
+            pointer-events: none;
+        }
+
+        /* 3D Card Container */
+        .bacc-card-slot {
+            width: 58px;
+            height: 82px;
+            perspective: 700px;
+            position: relative;
+            transition: transform 0.25s ease;
+        }
+
+        @media (min-width: 400px) {
+            .bacc-card-slot {
+                width: 64px;
+                height: 90px;
+            }
+        }
+
+        /* Authentic Macau 3rd Card rotated 90 degrees horizontally! */
+        .bacc-card-slot.third-card {
+            transform: rotate(90deg);
+            margin: 6px 10px 0 10px;
+        }
+
+        .bacc-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 9px;
+        }
+
+        .bacc-card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 9px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.58);
+        }
+
+        /* Festive Christmas Royal Card Back */
+        .card-back {
+            background:
+                repeating-linear-gradient(
+                    45deg,
+                    #881337 0px,
+                    #881337 6px,
+                    #9f1239 6px,
+                    #9f1239 12px
+                );
+            border: 2.5px solid #fef08a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-back::after {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 5px;
+            border: 1px dashed rgba(254, 240, 138, 0.65);
+            pointer-events: none;
+        }
+
+        /* Squeeze Hint Glow on Face-Down Interactive Cards */
+        .card-squeezable {
+            cursor: pointer;
+            animation: squeezePulse 0.95s ease-in-out infinite alternate;
+        }
+
+        @keyframes squeezePulse {
+            0%   { filter: drop-shadow(0 0 6px rgba(245, 197, 66, 0.65)); transform: translateY(0); }
+            100% { filter: drop-shadow(0 0 16px rgba(254, 240, 138, 1)); transform: translateY(-3px); }
+        }
+
+        .bacc-card-slot.third-card.card-squeezable {
+            animation: squeezePulseThird 0.95s ease-in-out infinite alternate;
+        }
+
+        @keyframes squeezePulseThird {
+            0%   { filter: drop-shadow(0 0 6px rgba(245, 197, 66, 0.65)); transform: rotate(90deg) scale(1); }
+            100% { filter: drop-shadow(0 0 16px rgba(254, 240, 138, 1)); transform: rotate(90deg) scale(1.06); }
+        }
+
+        /* Crisp Front Card Face */
+        .card-front {
+            transform: rotateY(180deg);
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 70%, #e2e8f0 100%);
+            border: 1.5px solid #cbd5e1;
+            padding: 4px 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .card-red   { color: #dc2626; }
+        .card-black { color: #0f172a; }
+
+        @keyframes dealFlyIn {
+            0%   { opacity: 0; transform: translate(65px, -60px) scale(0.55) rotate(-18deg); }
+            100% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+        }
+        .card-deal-anim {
+            animation: dealFlyIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes dealFlyInThird {
+            0%   { opacity: 0; transform: translate(65px, -60px) scale(0.55) rotate(0deg); }
+            100% { opacity: 1; transform: rotate(90deg); }
+        }
+        .card-deal-anim-third {
+            animation: dealFlyInThird 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* =====================================================================
+           BETTING DOORS & ROADMAP CELLS
+        ===================================================================== */
+        .door-player {
+            background: linear-gradient(155deg, #1d4ed8 0%, #1e3a8a 60%, #172554 100%);
+            border: 2px solid #60a5fa;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .door-banker {
+            background: linear-gradient(155deg, #dc2626 0%, #991b1b 60%, #450a0a 100%);
+            border: 2px solid #fca5a5;
+            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .door-tie {
+            background: linear-gradient(155deg, #15803d 0%, #166534 60%, #052e16 100%);
+            border: 2px solid #4ade80;
+            box-shadow: 0 6px 16px rgba(22, 163, 74, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        }
+
+        .door-ppair {
+            background: linear-gradient(155deg, #0369a1 0%, #0c4a6e 100%);
+            border: 1.5px solid #38bdf8;
+        }
+
+        .door-bpair {
+            background: linear-gradient(155deg, #9f1239 0%, #4c0519 100%);
+            border: 1.5px solid #fb7185;
+        }
+
+        .door-winner {
+            border-color: #fef08a !important;
+            animation: winDoorGlow 0.65s ease-in-out infinite alternate;
+        }
+
+        @keyframes winDoorGlow {
+            0%   { box-shadow: 0 0 10px #f5c542, 0 0 22px rgba(245, 197, 66, 0.6); transform: scale(1); }
+            100% { box-shadow: 0 0 22px #fef08a, 0 0 38px rgba(250, 204, 21, 0.95); transform: scale(1.025); }
+        }
+
+        /* Roadmap Grid (6 rows x N columns) */
+        .roadmap-grid {
+            display: grid;
+            grid-template-rows: repeat(6, 20px);
+            grid-auto-flow: column;
+            grid-auto-columns: 20px;
+            gap: 2px;
+            padding: 4px;
+            background: rgba(3, 12, 9, 0.88);
+            border-radius: 12px;
+            border: 1px solid rgba(245, 197, 66, 0.25);
+        }
+
+        .rm-cell {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Big Road hollow rings */
+        .br-ring-P {
+            width: 15px; height: 15px; border-radius: 50%;
+            border: 2.5px solid #3b82f6;
+            position: relative;
+        }
+        .br-ring-B {
+            width: 15px; height: 15px; border-radius: 50%;
+            border: 2.5px solid #ef4444;
+            position: relative;
+        }
+        .br-tie-slash {
+            position: absolute;
+            width: 14px; height: 2px;
+            background: #22c55e;
+            transform: rotate(-45deg);
+        }
+        .br-tie-count {
+            position: absolute;
+            font-size: 8px;
+            font-weight: 900;
+            color: #4ade80;
+            line-height: 1;
+        }
+
+        /* Bead Plate solid dots */
+        .bp-dot {
+            width: 16px; height: 16px; border-radius: 50%;
+            font-size: 8.5px; font-weight: 900; color: #ffffff;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .bp-dot-P { background: #2563eb; border: 1px solid #93c5fd; }
+        .bp-dot-B { background: #dc2626; border: 1px solid #fca5a5; }
+        .bp-dot-T { background: #16a34a; border: 1px solid #86efac; }
+
+        .pair-dot-b {
+            position: absolute; top: -1px; left: -1px;
+            width: 5px; height: 5px; border-radius: 50%;
+            background: #ef4444; border: 0.8px solid #fff;
+        }
+        .pair-dot-p {
+            position: absolute; bottom: -1px; right: -1px;
+            width: 5px; height: 5px; border-radius: 50%;
+            background: #3b82f6; border: 0.8px solid #fff;
+        }
+
+        /* Tactile Buttons */
+        .btn-press {
+            transition: transform 0.1s ease, filter 0.14s ease, box-shadow 0.14s ease;
+        }
+        .btn-press:active:not(:disabled) {
+            transform: scale(0.95);
+            filter: brightness(1.1);
+        }
+        .btn-press:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .chip-selected {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 0 16px rgba(245, 197, 66, 0.9), 0 6px 12px rgba(0, 0, 0, 0.6);
+            border-color: #fef08a !important;
+        }
+
+        @keyframes bailoutGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(220, 38, 38, 0.8), 0 0 22px rgba(245, 197, 66, 0.45); transform: scale(1); }
+            50% { box-shadow: 0 0 24px rgba(220, 38, 38, 1), 0 0 38px rgba(245, 197, 66, 0.95); transform: scale(1.018); }
+        }
+        .bailout-pulse { animation: bailoutGlow 1.2s ease-in-out infinite; }
+
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            72% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in { animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        @keyframes shakeErr {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .shake-error { animation: shakeErr 0.34s ease; }
+
+        .thin-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+        .thin-scroll::-webkit-scrollbar-track { background: rgba(5, 16, 12, 0.55); border-radius: 99px; }
+        .thin-scroll::-webkit-scrollbar-thumb { background: rgba(245, 197, 66, 0.48); border-radius: 99px; }
+    </style>
+</head>
+<body>
+    <!-- Background Falling Snow Canvas -->
+    <canvas id="snowCanvas"></canvas>
+
+    <!-- Toast Notifications Stack (Zero alert() / confirm()) -->
+    <div id="toastContainer" class="fixed top-12 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-[440px] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Main Mobile-First Vertical App Shell -->
+    <div class="app-shell">
+
+        <!-- 1. TOP MARQUEE TICKER -->
+        <div class="marquee-wrap py-1.5">
+            <div class="marquee-track">
+                🃏 DaiGiaMacau_99 vừa ăn cầu bệt 7 tay BANKER liên tiếp húp 84.000.000đ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                💎 LinhXinh_2k8 vừa bắt trúng PLAYER PAIR (1 ăn 11) + Natural 9 húp 36.000.000đ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                🟢 MinhKhoi_SG húp cửa HÒA (TIE 1:8) ở ván 8 điểm hòa 8 điểm nhận 45.000.000đ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                🎄 NamKyBet Baccarat VIP Noel: Bật chế độ Nặn Bài tay siêu hồi hộp • Super 6 chuẩn Macau!
+            </div>
+        </div>
+
+        <!-- Subtle Christmas Fairy Lights -->
+        <div class="fairy-lights" aria-hidden="true">
+            <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+            <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+            <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+            <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+        </div>
+
+        <!-- 2. HEADER BAR: BACK TO LOBBY, BRAND, WALLET, SOUND & SUBTLE "TND" -->
+        <header class="px-3 pt-1 pb-1.5 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+                <a href="index.html" id="backLobbyBtn" aria-label="Về Sảnh Chính" class="btn-press px-2.5 h-9 rounded-xl bg-red-900/90 border border-[#f5c542]/80 text-yellow-200 font-black text-[11px] flex items-center gap-1 shrink-0 shadow">
+                    <span>🏠</span><span>Sảnh</span>
+                </a>
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs sm:text-sm font-black tracking-wide bg-gradient-to-r from-yellow-200 via-[#f5c542] to-emerald-300 bg-clip-text text-transparent truncate">
+                            BACCARAT • NOEL VIP
+                        </span>
+                        <span class="px-1.5 py-0.5 rounded-md bg-emerald-950 border border-[#f5c542]/55 text-[9px] font-black text-[#fef08a] shrink-0">
+                            8 BỘ
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-sm leading-none">💰</span>
+                        <span id="balanceDisplay" class="font-mono-num text-base sm:text-lg font-black text-[#f5c542] tracking-tight truncate leading-none">
+                            20.000.000đ
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button id="rulesBtn" aria-label="Luật chơi" class="btn-press w-8 h-8 rounded-xl bg-[#0b261d] border border-[#f5c542]/50 text-[#fef08a] font-black text-xs flex items-center justify-center shadow">
+                    ?
+                </button>
+                <button id="soundBtn" aria-label="Bật tắt âm thanh" class="btn-press w-8 h-8 rounded-xl bg-[#0b261d] border border-[#f5c542]/50 text-sm flex items-center justify-center shadow">
+                    🔊
+                </button>
+                <button id="tndLogoBtn" title="TND" class="btn-press px-2.5 h-8 rounded-xl bg-black/55 border border-slate-700/80 hover:border-[#f5c542]/50 text-[10px] font-black tracking-widest text-slate-400 flex items-center justify-center">
+                    TND
+                </button>
+            </div>
+        </header>
+
+        <!-- 3. BÁO NHÀ (+10 CỦ) RESCUE BANNER -->
+        <div id="bailoutWrap" class="px-3 pb-1.5 hidden">
+            <button id="bailoutBtn" class="btn-press bailout-pulse w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-red-700 via-rose-600 to-amber-600 border-2 border-[#fef08a] text-white font-black text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2">
+                <span>🆘</span>
+                <span>BÁO NHÀ (+10 CỦ GỠ BACCARAT)</span>
+            </button>
+        </div>
+
+        <!-- 4. MACAU ROADMAP CARD (BIG ROAD CẦU BỆT & BEAD PLATE GIỌT NƯỚC) -->
+        <section class="px-3 pb-2">
+            <div class="glass-card rounded-2xl p-2">
+                <div class="flex items-center justify-between gap-2 mb-1.5 px-0.5">
+                    <div class="flex items-center gap-1">
+                        <button id="rmTabBig" class="btn-press px-2.5 py-1 rounded-lg text-[10px] font-black bg-[#f5c542] text-slate-950">
+                            Cầu Bệt
+                        </button>
+                        <button id="rmTabBead" class="btn-press px-2.5 py-1 rounded-lg text-[10px] font-bold bg-black/45 text-slate-300 border border-white/10">
+                            Giọt Nước
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2 text-[10px] font-extrabold">
+                        <span class="text-sky-300">Con: <b id="statP" class="font-mono-num">0</b></span>
+                        <span class="text-rose-400">Cái: <b id="statB" class="font-mono-num">0</b></span>
+                        <span class="text-emerald-400">Hòa: <b id="statT" class="font-mono-num">0</b></span>
+                    </div>
+                </div>
+
+                <!-- Scrollable 6-Row Roadmap Grid -->
+                <div id="roadmapScroll" class="overflow-x-auto thin-scroll">
+                    <div id="roadmapGrid" class="roadmap-grid w-max min-w-full">
+                        <!-- Dynamically rendered -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. MAIN LUXURY FELT CARD ARENA (PLAYER vs BANKER + SQUEEZE MODE) -->
+        <section class="px-3">
+            <div class="table-felt rounded-3xl p-3">
+                <!-- Felt Top Strip: Shoe Counter & Squeeze Toggle -->
+                <div class="relative z-10 flex items-center justify-between gap-2 pb-2 mb-2 border-b border-[#f5c542]/20">
+                    <div class="flex items-center gap-1.5 text-[10px] font-bold text-emerald-200/90">
+                        <span>🎴 Shoe:</span>
+                        <span id="shoeCountText" class="font-mono-num text-[#fef08a] font-black">416 lá</span>
+                    </div>
+
+                    <button id="squeezeToggleBtn" class="btn-press px-2.5 py-1 rounded-full bg-amber-500/20 border border-[#f5c542] text-[10px] font-black text-[#fef08a] flex items-center gap-1">
+                        <span id="squeezeIcon">🖐️</span>
+                        <span id="squeezeLabel">Nặn Bài: BẬT</span>
+                    </button>
+                </div>
+
+                <!-- PLAYER vs BANKER CARD ZONES -->
+                <div class="relative z-10 grid grid-cols-2 gap-2.5 items-start">
+                    <!-- LEFT: PLAYER (CON) -->
+                    <div id="zonePlayer" class="rounded-2xl p-2 bg-blue-950/45 border border-sky-400/35 flex flex-col items-center min-h-[154px] transition-all">
+                        <div class="w-full flex items-center justify-between px-1 mb-2">
+                            <span class="text-[11px] font-black tracking-wider text-sky-300 uppercase">PLAYER (CON)</span>
+                            <span id="scorePlayer" class="font-mono-num w-7 h-7 rounded-full bg-blue-600 border-2 border-sky-200 text-white text-sm font-black flex items-center justify-center shadow">
+                                0
+                            </span>
+                        </div>
+                        <div id="cardsPlayer" class="flex items-center justify-center flex-wrap gap-1.5 min-h-[94px]">
+                            <div class="text-[10.5px] text-sky-200/50 font-semibold italic self-center">Chờ chia bài...</div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: BANKER (CÁI) -->
+                    <div id="zoneBanker" class="rounded-2xl p-2 bg-red-950/45 border border-rose-400/35 flex flex-col items-center min-h-[154px] transition-all">
+                        <div class="w-full flex items-center justify-between px-1 mb-2">
+                            <span id="scoreBanker" class="font-mono-num w-7 h-7 rounded-full bg-red-600 border-2 border-rose-200 text-white text-sm font-black flex items-center justify-center shadow">
+                                0
+                            </span>
+                            <span class="text-[11px] font-black tracking-wider text-rose-300 uppercase">BANKER (CÁI)</span>
+                        </div>
+                        <div id="cardsBanker" class="flex items-center justify-center flex-wrap gap-1.5 min-h-[94px]">
+                            <div class="text-[10.5px] text-rose-200/50 font-semibold italic self-center">Chờ chia bài...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Reveal All Button (Visible ONLY while face-down squeeze cards exist) -->
+                <div id="revealAllWrap" class="hidden relative z-10 mt-2.5 flex justify-center">
+                    <button id="revealAllBtn" class="btn-press px-5 py-1.5 rounded-full bg-gradient-to-r from-[#fef08a] to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider shadow-lg border border-white">
+                        ⚡ Lật Hết Bài Ngay
+                    </button>
+                </div>
+
+                <!-- Status / Result Strip cleanly at bottom of felt -->
+                <div id="tableStatusBar" class="relative z-10 mt-2.5 px-3 py-1.5 rounded-xl bg-black/55 border border-[#f5c542]/40 text-center text-[11px] sm:text-xs font-extrabold text-[#fef08a]">
+                    🎄 Chọn chip, đặt cửa PLAYER / BANKER rồi bấm CHIA BÀI!
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 5 BETTING DOORS (PAIRS + PLAYER / TIE / BANKER) -->
+        <section class="px-3 mt-2.5 space-y-2">
+            <!-- Row 1: Side Bets (PLAYER PAIR 1:11 & BANKER PAIR 1:11) -->
+            <div class="grid grid-cols-2 gap-2">
+                <button id="door-ppair" data-door="ppair" class="bet-door door-ppair btn-press rounded-2xl px-3 py-2 flex items-center justify-between">
+                    <div class="text-left leading-tight">
+                        <div class="text-[11px] font-black text-sky-200">💎 CON ĐÔI</div>
+                        <div class="text-[9.5px] font-bold text-sky-300/90">Player Pair • 1:11</div>
+                    </div>
+                    <span id="betVal-ppair" class="font-mono-num text-[11px] font-black text-[#fef08a] bg-black/45 px-2 py-0.5 rounded-lg">0đ</span>
+                </button>
+
+                <button id="door-bpair" data-door="bpair" class="bet-door door-bpair btn-press rounded-2xl px-3 py-2 flex items-center justify-between">
+                    <div class="text-left leading-tight">
+                        <div class="text-[11px] font-black text-rose-200">👑 CÁI ĐÔI</div>
+                        <div class="text-[9.5px] font-bold text-rose-300/90">Banker Pair • 1:11</div>
+                    </div>
+                    <span id="betVal-bpair" class="font-mono-num text-[11px] font-black text-[#fef08a] bg-black/45 px-2 py-0.5 rounded-lg">0đ</span>
+                </button>
+            </div>
+
+            <!-- Row 2: Main Doors (PLAYER 1:1 / TIE 1:8 / BANKER 1:1 Super 6) -->
+            <div class="grid grid-cols-12 gap-2">
+                <!-- PLAYER -->
+                <button id="door-player" data-door="player" class="bet-door door-player btn-press col-span-4 rounded-2xl p-2.5 text-center flex flex-col items-center justify-between min-h-[86px]">
+                    <div class="text-xs font-black text-sky-200 tracking-wide">PLAYER</div>
+                    <div class="text-[10px] font-bold text-sky-100/90">Con • 1:1</div>
+                    <div id="betVal-player" class="font-mono-num mt-1.5 w-full py-0.5 px-1 rounded-lg bg-black/45 text-[11px] font-black text-[#fef08a] truncate">0đ</div>
+                </button>
+
+                <!-- TIE -->
+                <button id="door-tie" data-door="tie" class="bet-door door-tie btn-press col-span-4 rounded-2xl p-2.5 text-center flex flex-col items-center justify-between min-h-[86px]">
+                    <div class="text-xs font-black text-emerald-200 tracking-wide">TIE (HÒA)</div>
+                    <div class="text-[10px] font-bold text-emerald-100/90">Hòa • 1:8</div>
+                    <div id="betVal-tie" class="font-mono-num mt-1.5 w-full py-0.5 px-1 rounded-lg bg-black/45 text-[11px] font-black text-[#fef08a] truncate">0đ</div>
+                </button>
+
+                <!-- BANKER -->
+                <button id="door-banker" data-door="banker" class="bet-door door-banker btn-press col-span-4 rounded-2xl p-2.5 text-center flex flex-col items-center justify-between min-h-[86px]">
+                    <div class="text-xs font-black text-rose-200 tracking-wide">BANKER</div>
+                    <div class="text-[9.5px] font-bold text-rose-100/90 leading-tight">Cái • 1:1 (6đ 0.5)</div>
+                    <div id="betVal-banker" class="font-mono-num mt-1 w-full py-0.5 px-1 rounded-lg bg-black/45 text-[11px] font-black text-[#fef08a] truncate">0đ</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- 7. CHIP SELECTOR & ACTION DECK -->
+        <section class="px-3 mt-2.5">
+            <div class="glass-card rounded-2xl p-2.5">
+                <div class="flex items-center justify-between text-[10.5px] font-bold text-slate-300 px-0.5 mb-2">
+                    <span>Chọn chip đặt cửa: <b id="selectedChipLabel" class="text-[#f5c542] font-mono-num">100.000đ</b></span>
+                    <span>Tổng bàn: <b id="totalBetDisplay" class="text-emerald-300 font-mono-num">0đ</b></span>
+                </div>
+
+                <!-- 6 Tactile Casino Chips -->
+                <div class="grid grid-cols-6 gap-1.5 mb-2.5" id="chipSelectorRow">
+                    <button data-chip="100000"  class="chip-btn btn-press h-11 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-800 border-2 border-dashed border-white/80 text-[10px] font-black text-white shadow">100K</button>
+                    <button data-chip="200000"  class="chip-btn btn-press h-11 rounded-full bg-gradient-to-b from-sky-500 to-blue-800 border-2 border-dashed border-white/80 text-[10px] font-black text-white shadow">200K</button>
+                    <button data-chip="500000"  class="chip-btn btn-press h-11 rounded-full bg-gradient-to-b from-amber-500 to-orange-700 border-2 border-dashed border-white/80 text-[10px] font-black text-white shadow">500K</button>
+                    <button data-chip="1000000" class="chip-btn btn-press h-11 rounded-full bg-gradient-to-b from-purple-500 to-indigo-800 border-2 border-dashed border-white/80 text-[10px] font-black text-white shadow">1M</button>
+                    <button data-chip="5000000" class="chip-btn btn-press h-11 rounded-full bg-gradient-to-b from-rose-500 to-red-800 border-2 border-dashed border-white/80 text-[10px] font-black text-white shadow">5M</button>
+                    <button id="allInChipBtn"   class="btn-press h-11 rounded-full bg-gradient-to-b from-yellow-400 to-red-700 border-2 border-[#fef08a] text-[10px] font-black text-white shadow">ALL</button>
+                </div>
+
+                <!-- Action Buttons: Hủy / Cược Lại / CHIA BÀI -->
+                <div class="grid grid-cols-12 gap-2">
+                    <button id="clearBetsBtn" class="btn-press col-span-3 py-3 rounded-xl bg-slate-900 border border-slate-600 text-[11px] font-extrabold text-slate-200">
+                        ↩️ Hủy
+                    </button>
+                    <button id="rebetBtn" class="btn-press col-span-3 py-3 rounded-xl bg-slate-900 border border-[#f5c542]/45 text-[11px] font-extrabold text-yellow-200">
+                        🔁 Lặp
+                    </button>
+                    <button id="dealBtn" class="btn-press col-span-6 py-3 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 border-2 border-[#fef08a] text-sm font-black text-white tracking-wider shadow-lg">
+                        🃏 CHIA BÀI
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. COMPACT COLLAPSIBLE BOT CHAT -->
+        <section class="px-3 mt-2.5">
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <button id="toggleChatBtn" class="w-full px-3.5 py-2.5 flex items-center justify-between text-xs font-extrabold text-slate-200">
+                    <span class="flex items-center gap-2">
+                        <span>💬</span> Bàn VIP Baccarat Noel
+                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 text-[10px]">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span id="onlineCount">894</span> online
+                        </span>
+                        <span id="chatUnreadDot" class="hidden px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[9px]">Mới</span>
+                    </span>
+                    <span id="chatChevron" class="transition-transform duration-200">▼</span>
+                </button>
+
+                <div id="chatDrawer" class="hidden border-t border-[#f5c542]/20">
+                    <div id="chatMessages" class="h-36 overflow-y-auto thin-scroll p-2.5 flex flex-col gap-1.5 text-xs bg-black/55"></div>
+                    <form id="chatForm" class="p-2 flex items-center gap-1.5 bg-slate-900/90 border-t border-slate-800">
+                        <input id="chatInput" type="text" maxlength="120" placeholder="Hô cầu Cái / Con với anh em..." class="flex-1 bg-black/70 border border-slate-700 focus:border-[#f5c542] focus:outline-none rounded-xl px-3 py-2 text-xs text-white" />
+                        <button type="submit" class="btn-press px-3.5 py-2 rounded-xl bg-[#f5c542] text-slate-950 font-black text-xs">Gửi</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-[10px] text-slate-500 mt-3 px-4">
+            NamKyBet • Baccarat Giáng Sinh VIP • Game mô phỏng giải trí tiền ảo, không quy đổi tiền thật.
+        </footer>
+    </div>
+
+    <!-- =====================================================================
+         RULES MODAL (?)
+    ===================================================================== -->
+    <div id="rulesModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/82 backdrop-blur-sm p-3">
+        <div class="w-full max-w-sm rounded-3xl glass-card border-2 border-[#f5c542] p-4 shadow-2xl max-h-[88vh] overflow-y-auto thin-scroll pop-in">
+            <div class="flex items-center justify-between border-b border-[#f5c542]/25 pb-2.5">
+                <h3 class="text-sm font-black text-[#f5c542]">🃏 LUẬT CHƠI BACCARAT SUPER 6</h3>
+                <button id="closeRulesTopBtn" class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+            </div>
+            <div class="mt-3 space-y-2 text-xs text-slate-200 leading-relaxed">
+                <p>• <b>Tính điểm:</b> Át = 1, 2–9 = đúng số nút, 10/J/Q/K = 0. Chỉ lấy chữ số hàng đơn vị (ví dụ 8 + 7 = 15 → <b>5 điểm</b>). Bên nào gần <b>9 điểm</b> hơn thì thắng!</p>
+                <p>• <b>Thắng Tự Nhiên (Natural):</b> 2 lá đầu đạt <b>8</b> hoặc <b>9 điểm</b> dừng bài ngay không rút thêm.</p>
+                <p>• <b>Tỉ lệ trả thưởng:</b></p>
+                <ul class="list-disc pl-4 space-y-1 text-[11.5px]">
+                    <li><b class="text-sky-300">PLAYER (Con):</b> 1 ăn 1 (Hòa hoàn tiền).</li>
+                    <li><b class="text-rose-300">BANKER (Cái):</b> 1 ăn 1 — riêng <b>Cái thắng đúng 6 điểm</b> ăn nửa <b>1 : 0.5</b> (Hòa hoàn tiền).</li>
+                    <li><b class="text-emerald-300">TIE (Hòa):</b> 1 ăn 8.</li>
+                    <li><b class="text-amber-300">CON ĐÔI / CÁI ĐÔI:</b> 2 lá đầu cùng giá trị → 1 ăn 11.</li>
+                </ul>
+                <p>• <b>Nặn Bài:</b> Khi bật <b>🖐️ Nặn Bài</b>, chạm hoặc vuốt lên lá bài úp để tự tay lật bài hồi hộp!</p>
+            </div>
+            <button id="closeRulesBtn" class="btn-press w-full mt-4 py-2.5 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs uppercase">
+                Đã Hiểu &amp; Vào Bàn
+            </button>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         SECRET PASSWORD PROMPT MODAL ("TND" -> "memaybeo123")
+    ===================================================================== -->
+    <div id="adminPassModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/82 backdrop-blur-md p-4">
+        <div id="adminPassBox" class="w-full max-w-xs rounded-3xl bg-[#07110e] border-2 border-slate-700 p-5 shadow-2xl pop-in">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black tracking-widest text-slate-400 uppercase">TND ACCESS</span>
+                <button id="closePassBtn" class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+            </div>
+            <form id="adminPassForm" class="space-y-3">
+                <input id="adminPassInput" type="password" autocomplete="off" placeholder="Nhập mật khẩu..." class="w-full bg-black border border-slate-700 focus:border-[#f5c542] focus:outline-none rounded-xl px-3.5 py-2.5 text-sm font-bold text-white" />
+                <div id="adminPassError" class="text-[11px] font-bold text-red-400 hidden">❌ Sai mật khẩu truy cập!</div>
+                <button type="submit" class="btn-press w-full py-2.5 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+                    Xác Nhận
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         SECRET ADMIN CONTROL PANEL (UNLOCKED WITH "memaybeo123")
+    ===================================================================== -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/88 backdrop-blur-md p-3">
+        <div class="w-full max-w-md rounded-3xl bg-gradient-to-b from-slate-900 via-[#081712] to-black border-2 border-[#f5c542] p-4 shadow-2xl max-h-[92vh] overflow-y-auto thin-scroll pop-in">
+            <div class="flex items-start justify-between border-b border-[#f5c542]/30 pb-2.5 gap-2">
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest">TND BACKDOOR</span>
+                        <span id="adminStatusBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-400/60 text-emerald-300">
+                            Auto (10% / 30%)
+                        </span>
+                    </div>
+                    <h2 class="text-base font-black text-[#f5c542] tracking-wide mt-0.5">
+                        👑 ADMIN CONTROL - BACCARAT
+                    </h2>
+                </div>
+                <button id="closeAdminTopBtn" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold shrink-0">✕</button>
+            </div>
+
+            <!-- 1. Outcome Override -->
+            <div class="mt-3">
+                <div class="text-xs font-extrabold text-yellow-200 mb-2">🃏 Ép Kết Quả Ván Kế Tiếp:</div>
+                <div class="grid grid-cols-2 gap-1.5">
+                    <button data-mode="auto"    class="admin-mode-btn btn-press col-span-2 py-2 px-3 rounded-xl border text-xs font-extrabold text-left">🤖 Auto (Thuật toán bịp &amp; bẻ cầu)</button>
+                    <button data-mode="player"  class="admin-mode-btn btn-press py-2 px-2.5 rounded-xl border text-xs font-extrabold text-left">🔵 Ép PLAYER Thắng</button>
+                    <button data-mode="banker"  class="admin-mode-btn btn-press py-2 px-2.5 rounded-xl border text-xs font-extrabold text-left">🔴 Ép BANKER Thắng</button>
+                    <button data-mode="banker6" class="admin-mode-btn btn-press py-2 px-2.5 rounded-xl border text-xs font-extrabold text-left">🔴6️⃣ Ép CÁI Thắng 6đ</button>
+                    <button data-mode="tie"     class="admin-mode-btn btn-press py-2 px-2.5 rounded-xl border text-xs font-extrabold text-left">🟢 Ép HÒA (TIE 1:8)</button>
+                    <button data-mode="pair"    class="admin-mode-btn btn-press col-span-2 py-2 px-3 rounded-xl border text-xs font-extrabold text-left">💎 Ép NỔ ĐÔI (Player + Banker Pair 1:11)</button>
+                </div>
+
+                <label class="mt-2 flex items-center gap-2 text-xs text-slate-300 font-semibold cursor-pointer bg-slate-900/90 p-2 rounded-xl border border-slate-800">
+                    <input id="adminOneShotCheck" type="checkbox" class="w-4 h-4 accent-yellow-400 rounded" checked>
+                    <span>Chỉ ép 1 ván rồi tự quay về Auto</span>
+                </label>
+            </div>
+
+            <!-- 2. Dual Rigging Sliders -->
+            <div class="mt-3 bg-slate-900/85 p-3 rounded-2xl border border-[#f5c542]/25 space-y-3">
+                <div>
+                    <div class="flex items-center justify-between text-xs font-extrabold mb-1">
+                        <span class="text-yellow-200">🎯 Tỉ lệ bịp cược nhỏ (&lt; 500K):</span>
+                        <span id="rigSmallVal" class="text-emerald-400 text-sm font-black font-mono-num">10%</span>
+                    </div>
+                    <input id="rigSmallSlider" type="range" min="0" max="100" value="10" class="w-full accent-emerald-400 cursor-pointer">
+                </div>
+
+                <div class="pt-2 border-t border-slate-800">
+                    <div class="flex items-center justify-between text-xs font-extrabold mb-1">
+                        <span class="text-yellow-200">🔥 Tỉ lệ bịp cược to (&gt;= 500K + Bẻ cầu):</span>
+                        <span id="rigBigVal" class="text-rose-400 text-sm font-black font-mono-num">30%</span>
+                    </div>
+                    <input id="rigBigSlider" type="range" min="0" max="100" value="30" class="w-full accent-rose-500 cursor-pointer">
+                </div>
+            </div>
+
+            <!-- 3. Wallet Manager -->
+            <div class="mt-3 bg-slate-900/85 p-3 rounded-2xl border border-[#f5c542]/25">
+                <div class="text-xs font-extrabold text-yellow-200 mb-2">💵 Quản Lý Ví Chung:</div>
+                <div class="flex gap-2">
+                    <input id="adminBalInput" type="number" min="0" step="10000" placeholder="Nhập số dư..." class="flex-1 bg-black border border-[#f5c542]/45 rounded-xl px-3 py-2 text-xs font-bold font-mono-num text-[#f5c542] focus:outline-none focus:border-[#f5c542]" />
+                    <button id="adminSetBalBtn" class="btn-press px-3.5 py-2 rounded-xl bg-[#f5c542] text-slate-950 font-black text-xs">Đặt</button>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 mt-2">
+                    <button id="adminAdd10M" class="btn-press py-2 rounded-xl bg-emerald-950 border border-emerald-500/50 text-[11px] font-extrabold text-emerald-300">+10 Củ</button>
+                    <button id="adminAdd50M" class="btn-press py-2 rounded-xl bg-amber-950 border border-amber-500/50 text-[11px] font-extrabold text-amber-300">+50 Củ</button>
+                    <button id="adminSetZero" class="btn-press py-2 rounded-xl bg-rose-950 border border-rose-500/50 text-[11px] font-extrabold text-rose-300">Set 0đ</button>
+                </div>
+            </div>
+
+            <button id="hideAdminBtn" class="btn-press w-full mt-4 py-3 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+                🔒 Đóng &amp; Ẩn Sạch Dấu Vết
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           NAMKYBET - BACCARAT GIÁNG SINH VIP (SUPER 6 MACAU ENGINE)
+           8-Deck Shoe | Authentic 3rd-Card Tableau | Card Squeeze | Dual Roadmaps
+           Shared Wallet (namkybet_balance) | Delta-Time Normalized Snowfall
+        ===================================================================== */
+        (() => {
+            'use strict';
+
+            /* -----------------------------------------------------------------
+               1. CONSTANTS, CARD RANKS, INITIAL HISTORY & BOT POOL
+            ----------------------------------------------------------------- */
+            const STORAGE_KEY = 'namkybet_baccarat_noel_v1';
+            const SHARED_BALANCE_KEY = 'namkybet_balance';
+            const SHARED_USERNAME_KEY = 'namkybet_username';
+            const ADMIN_PASS = 'memaybeo123';
+
+            const STARTING_BALANCE = 20_000_000;
+            const MIN_CHIP = 100_000;
+            const BIG_BET_THRESHOLD = 500_000;
+            const BAILOUT_AMOUNT = 10_000_000;
+
+            const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+            const SUITS = [
+                { sym: '♠', red: false },
+                { sym: '♥', red: true  },
+                { sym: '♣', red: false },
+                { sym: '♦', red: true  }
+            ];
+
+            // Pre-seeded realistic Macau history so Roadmaps look alive right away
+            const INITIAL_ROADMAP = [
+                { winner: 'B', pScore: 4, bScore: 8, pPair: false, bPair: false, bWin6: false },
+                { winner: 'B', pScore: 2, bScore: 7, pPair: false, bPair: false, bWin6: false },
+                { winner: 'B', pScore: 5, bScore: 9, pPair: false, bPair: true,  bWin6: false },
+                { winner: 'P', pScore: 8, bScore: 6, pPair: false, bPair: false, bWin6: false },
+                { winner: 'T', pScore: 7, bScore: 7, pPair: false, bPair: false, bWin6: false },
+                { winner: 'P', pScore: 9, bScore: 3, pPair: true,  bPair: false, bWin6: false },
+                { winner: 'B', pScore: 1, bScore: 6, pPair: false, bPair: false, bWin6: true  },
+                { winner: 'P', pScore: 7, bScore: 5, pPair: false, bPair: false, bWin6: false },
+                { winner: 'B', pScore: 3, bScore: 8, pPair: false, bPair: false, bWin6: false },
+                { winner: 'B', pScore: 4, bScore: 7, pPair: false, bPair: false, bWin6: false },
+                { winner: 'P', pScore: 8, bScore: 2, pPair: false, bPair: false, bWin6: false },
+                { winner: 'P', pScore: 6, bScore: 4, pPair: false, bPair: false, bWin6: false }
+            ];
+
+            const BOT_NAMES = [
+                'DaiGiaMacau_99', 'LinhXinh_2k8', 'MinhKhoi_SG', 'AnhBa_CuChi',
+                'TuanAnh_2k9', 'HoangLong_VIP', 'TrangHupTie', 'CuongBetCai', 'KhangNatural9'
+            ];
+
+            const BOT_LINES = [
+                'Cầu bệt BANKER đang đẹp như tranh, vào theo đi anh em ơi 🔴🔥',
+                'Bật chế độ Nặn Bài vuốt lá thứ 3 ra 9 điểm tim muốn rớt ra ngoài 😂🃏',
+                'Sợ nhất quả đặt to vào Cái mà Cái thắng đúng 6 điểm ăn có nửa tiền 😭',
+                'Vừa lót nhẹ 100K cửa Hòa 1:8 ai dè nổ thật húp 800K ấm no 🟢',
+                'Soi Cầu Bệt bên trên thấy đi 1-1 đều lắm, tay sau quất PLAYER nha!',
+                'Đặt thêm Con Đôi với Cái Đôi lót đường, nổ phát 1:11 về bờ ngay 💎',
+                'Cháy túi bấm Báo Nhà lấy 10 củ ngồi nặn bài tiếp với Ông Già Noel 🆘🎄'
+            ];
+
+            /* -----------------------------------------------------------------
+               2. GAME STATE
+            ----------------------------------------------------------------- */
+            const state = {
+                balance: STARTING_BALANCE,
+                selectedChip: 100_000,
+                bets: { player: 0, banker: 0, tie: 0, ppair: 0, bpair: 0 },
+                lastBets: null,
+                phase: 'BETTING', // 'BETTING' | 'DEALING' | 'SQUEEZE_INIT' | 'SQUEEZE_THIRD' | 'SETTLED'
+                squeezeEnabled: true,
+                roadmapTab: 'big', // 'big' | 'bead'
+                muted: false,
+                chatOpen: false,
+                shoe: [],
+                history: [...INITIAL_ROADMAP],
+                // Current hand data
+                hand: null, // { pCards, bCards, pRevealed: [bool...], bRevealed: [bool...], stage: 'init'|'third'|'done', ... }
+                admin: {
+                    mode: 'auto',      // 'auto' | 'player' | 'banker' | 'banker6' | 'tie' | 'pair'
+                    rigSmallPct: 10,   // < 500K
+                    rigBigPct: 30,     // >= 500K
+                    oneShot: true
+                }
+            };
+
+            /* -----------------------------------------------------------------
+               3. WEB AUDIO API SOUND ENGINE (ZERO EXTERNAL FILES)
+            ----------------------------------------------------------------- */
+            class BaccAudio {
+                constructor() { this.ctx = null; }
+
+                unlock() {
+                    try {
+                        if (!this.ctx) {
+                            const AC = window.AudioContext || window.webkitAudioContext;
+                            if (AC) this.ctx = new AC();
+                        }
+                        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+                    } catch (_) {}
+                }
+
+                ready() {
+                    if (state.muted) return false;
+                    this.unlock();
+                    return !!this.ctx;
+                }
+
+                playChip() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const g = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(1680, t);
+                    osc.frequency.exponentialRampToValueAtTime(580, t + 0.042);
+                    g.gain.setValueAtTime(0.15, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.048);
+                    osc.connect(g); g.connect(this.ctx.destination);
+                    osc.start(t); osc.stop(t + 0.052);
+                }
+
+                playCardDeal() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const len = Math.floor(this.ctx.sampleRate * 0.065);
+                    const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+                    const d = buf.getChannelData(0);
+                    for (let i = 0; i < len; i++) {
+                        d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (len * 0.32));
+                    }
+                    const src = this.ctx.createBufferSource();
+                    src.buffer = buf;
+                    const bp = this.ctx.createBiquadFilter();
+                    bp.type = 'bandpass'; bp.frequency.value = 1800; bp.Q.value = 1.4;
+                    const g = this.ctx.createGain();
+                    g.gain.setValueAtTime(0.24, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.065);
+                    src.connect(bp); bp.connect(g); g.connect(this.ctx.destination);
+                    src.start(t);
+                }
+
+                playCardFlip() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const g = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(420, t);
+                    osc.frequency.exponentialRampToValueAtTime(1180, t + 0.06);
+                    g.gain.setValueAtTime(0.12, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.075);
+                    osc.connect(g); g.connect(this.ctx.destination);
+                    osc.start(t); osc.stop(t + 0.08);
+                }
+
+                playWin(isBig = false) {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const notes = isBig
+                        ? [523.25, 659.25, 783.99, 1046.5, 1318.5]
+                        : [659.25, 783.99, 1046.5];
+                    notes.forEach((f, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(f, t + idx * 0.06);
+                        g.gain.setValueAtTime(0.16, t + idx * 0.06);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.06 + 0.25);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(t + idx * 0.06); osc.stop(t + idx * 0.06 + 0.27);
+                    });
+                }
+
+                playLoss() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    [293.66, 246.94].forEach((f, idx) => {
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(f, t + idx * 0.14);
+                        g.gain.setValueAtTime(0.11, t + idx * 0.14);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.14 + 0.22);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(t + idx * 0.14); osc.stop(t + idx * 0.14 + 0.24);
+                    });
+                }
+            }
+
+            const sfx = new BaccAudio();
+
+            /* -----------------------------------------------------------------
+               4. DOM REFERENCES
+            ----------------------------------------------------------------- */
+            const el = {
+                backLobbyBtn: document.getElementById('backLobbyBtn'),
+                balanceDisplay: document.getElementById('balanceDisplay'),
+                rulesBtn: document.getElementById('rulesBtn'),
+                soundBtn: document.getElementById('soundBtn'),
+                tndLogoBtn: document.getElementById('tndLogoBtn'),
+                bailoutWrap: document.getElementById('bailoutWrap'),
+                bailoutBtn: document.getElementById('bailoutBtn'),
+                rmTabBig: document.getElementById('rmTabBig'),
+                rmTabBead: document.getElementById('rmTabBead'),
+                statP: document.getElementById('statP'),
+                statB: document.getElementById('statB'),
+                statT: document.getElementById('statT'),
+                roadmapScroll: document.getElementById('roadmapScroll'),
+                roadmapGrid: document.getElementById('roadmapGrid'),
+                shoeCountText: document.getElementById('shoeCountText'),
+                squeezeToggleBtn: document.getElementById('squeezeToggleBtn'),
+                squeezeIcon: document.getElementById('squeezeIcon'),
+                squeezeLabel: document.getElementById('squeezeLabel'),
+                zonePlayer: document.getElementById('zonePlayer'),
+                zoneBanker: document.getElementById('zoneBanker'),
+                scorePlayer: document.getElementById('scorePlayer'),
+                scoreBanker: document.getElementById('scoreBanker'),
+                cardsPlayer: document.getElementById('cardsPlayer'),
+                cardsBanker: document.getElementById('cardsBanker'),
+                revealAllWrap: document.getElementById('revealAllWrap'),
+                revealAllBtn: document.getElementById('revealAllBtn'),
+                tableStatusBar: document.getElementById('tableStatusBar'),
+                selectedChipLabel: document.getElementById('selectedChipLabel'),
+                totalBetDisplay: document.getElementById('totalBetDisplay'),
+                allInChipBtn: document.getElementById('allInChipBtn'),
+                clearBetsBtn: document.getElementById('clearBetsBtn'),
+                rebetBtn: document.getElementById('rebetBtn'),
+                dealBtn: document.getElementById('dealBtn'),
+                toggleChatBtn: document.getElementById('toggleChatBtn'),
+                chatChevron: document.getElementById('chatChevron'),
+                chatDrawer: document.getElementById('chatDrawer'),
+                chatMessages: document.getElementById('chatMessages'),
+                chatUnreadDot: document.getElementById('chatUnreadDot'),
+                chatForm: document.getElementById('chatForm'),
+                chatInput: document.getElementById('chatInput'),
+                onlineCount: document.getElementById('onlineCount'),
+                toastContainer: document.getElementById('toastContainer'),
+                // Rules Modal
+                rulesModal: document.getElementById('rulesModal'),
+                closeRulesTopBtn: document.getElementById('closeRulesTopBtn'),
+                closeRulesBtn: document.getElementById('closeRulesBtn'),
+                // Admin Modals
+                adminPassModal: document.getElementById('adminPassModal'),
+                adminPassBox: document.getElementById('adminPassBox'),
+                adminPassForm: document.getElementById('adminPassForm'),
+                adminPassInput: document.getElementById('adminPassInput'),
+                adminPassError: document.getElementById('adminPassError'),
+                closePassBtn: document.getElementById('closePassBtn'),
+                adminModal: document.getElementById('adminModal'),
+                adminStatusBadge: document.getElementById('adminStatusBadge'),
+                adminOneShotCheck: document.getElementById('adminOneShotCheck'),
+                rigSmallSlider: document.getElementById('rigSmallSlider'),
+                rigSmallVal: document.getElementById('rigSmallVal'),
+                rigBigSlider: document.getElementById('rigBigSlider'),
+                rigBigVal: document.getElementById('rigBigVal'),
+                adminBalInput: document.getElementById('adminBalInput'),
+                adminSetBalBtn: document.getElementById('adminSetBalBtn'),
+                adminAdd10M: document.getElementById('adminAdd10M'),
+                adminAdd50M: document.getElementById('adminAdd50M'),
+                adminSetZero: document.getElementById('adminSetZero'),
+                closeAdminTopBtn: document.getElementById('closeAdminTopBtn'),
+                hideAdminBtn: document.getElementById('hideAdminBtn')
+            };
+
+            /* -----------------------------------------------------------------
+               5. UTILITIES: CRYPTO RNG, FORMATTERS, SHARED WALLET STORAGE
+            ----------------------------------------------------------------- */
+            function getPlayerName() {
+                try {
+                    const n = localStorage.getItem(SHARED_USERNAME_KEY);
+                    if (n && n.trim()) return n.trim();
+                } catch (_) {}
+                return 'Bạn (VIP)';
+            }
+
+            function secureRand() {
+                if (window.crypto && window.crypto.getRandomValues) {
+                    const buf = new Uint32Array(1);
+                    window.crypto.getRandomValues(buf);
+                    return buf[0] / 4294967296;
+                }
+                return Math.random();
+            }
+
+            function secureInt(min, max) {
+                return min + Math.floor(secureRand() * (max - min + 1));
+            }
+
+            function formatDots(num) {
+                const safe = Math.max(0, Math.floor(Number(num) || 0));
+                return String(safe).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            function formatVND(num) {
+                return formatDots(num) + 'đ';
+            }
+
+            function formatShort(num) {
+                const n = Math.max(0, Math.floor(Number(num) || 0));
+                if (n === 0) return '0đ';
+                if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(2).replace(/\.?0+$/, '') + 'B';
+                if (n >= 1_000_000) return (n / 1_000_000).toFixed(2).replace(/\.?0+$/, '') + 'M';
+                if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+                return n + 'đ';
+            }
+
+            function getTotalBet() {
+                return state.bets.player + state.bets.banker + state.bets.tie + state.bets.ppair + state.bets.bpair;
+            }
+
+            function showToast(msg, type = 'info', duration = 2900) {
+                const styles = {
+                    info: 'bg-[#082118]/95 border-[#f5c542]/85 text-yellow-100',
+                    win:  'bg-emerald-950/95 border-emerald-400 text-emerald-200',
+                    loss: 'bg-rose-950/95 border-rose-400 text-rose-200',
+                    warn: 'bg-amber-950/95 border-amber-400 text-amber-200'
+                };
+                const div = document.createElement('div');
+                div.className = `pointer-events-auto px-4 py-2.5 rounded-2xl border-2 text-xs font-extrabold shadow-2xl text-center pop-in ${styles[type] || styles.info}`;
+                div.textContent = msg;
+                el.toastContainer.appendChild(div);
+                setTimeout(() => {
+                    div.style.transition = 'opacity 0.28s ease, transform 0.28s ease';
+                    div.style.opacity = '0';
+                    div.style.transform = 'translateY(-10px)';
+                    setTimeout(() => div.remove(), 300);
+                }, duration);
+            }
+
+            function syncSharedBalance() {
+                try {
+                    const raw = localStorage.getItem(SHARED_BALANCE_KEY);
+                    if (raw !== null && raw.trim() !== '' && !Number.isNaN(Number(raw)) && Number(raw) >= 0) {
+                        state.balance = Math.floor(Number(raw));
+                    } else {
+                        localStorage.setItem(SHARED_BALANCE_KEY, String(Math.max(0, Math.floor(state.balance))));
+                    }
+                } catch (_) {}
+            }
+
+            function saveState() {
+                try {
+                    const cleanBal = Math.max(0, Math.floor(Number(state.balance) || 0));
+                    state.balance = cleanBal;
+                    localStorage.setItem(SHARED_BALANCE_KEY, String(cleanBal));
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                        selectedChip: state.selectedChip,
+                        squeezeEnabled: state.squeezeEnabled,
+                        roadmapTab: state.roadmapTab,
+                        muted: state.muted,
+                        history: state.history.slice(-60),
+                        admin: {
+                            rigSmallPct: state.admin.rigSmallPct,
+                            rigBigPct: state.admin.rigBigPct,
+                            oneShot: state.admin.oneShot
+                        }
+                    }));
+                } catch (_) {}
+            }
+
+            function loadState() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const d = JSON.parse(raw);
+                        if (typeof d.selectedChip === 'number' && d.selectedChip >= MIN_CHIP) state.selectedChip = d.selectedChip;
+                        if (typeof d.squeezeEnabled === 'boolean') state.squeezeEnabled = d.squeezeEnabled;
+                        if (d.roadmapTab === 'big' || d.roadmapTab === 'bead') state.roadmapTab = d.roadmapTab;
+                        if (typeof d.muted === 'boolean') state.muted = d.muted;
+                        if (Array.isArray(d.history) && d.history.length > 0) state.history = d.history.slice(-60);
+                        if (d.admin) {
+                            if (typeof d.admin.rigSmallPct === 'number') state.admin.rigSmallPct = Math.max(0, Math.min(100, d.admin.rigSmallPct));
+                            if (typeof d.admin.rigBigPct === 'number') state.admin.rigBigPct = Math.max(0, Math.min(100, d.admin.rigBigPct));
+                            if (typeof d.admin.oneShot === 'boolean') state.admin.oneShot = d.admin.oneShot;
+                        }
+                    }
+                } catch (_) {}
+                syncSharedBalance();
+            }
+
+            /* -----------------------------------------------------------------
+               6. 8-DECK SHOE & AUTHENTIC BACCARAT 3RD-CARD RULES ENGINE
+            ----------------------------------------------------------------- */
+            function cardPoint(rank) {
+                if (rank === 'A') return 1;
+                if (['10', 'J', 'Q', 'K'].includes(rank)) return 0;
+                return parseInt(rank, 10) || 0;
+            }
+
+            function handTotal(cards) {
+                let sum = 0;
+                for (let i = 0; i < cards.length; i++) sum += cardPoint(cards[i].rank);
+                return sum % 10;
+            }
+
+            function buildShuffledShoe() {
+                const deck = [];
+                for (let d = 0; d < 8; d++) {
+                    for (let s = 0; s < SUITS.length; s++) {
+                        for (let r = 0; r < RANKS.length; r++) {
+                            deck.push({ rank: RANKS[r], suit: SUITS[s].sym, red: SUITS[s].red });
+                        }
+                    }
+                }
+                // Fisher-Yates crypto shuffle
+                for (let i = deck.length - 1; i > 0; i--) {
+                    const j = secureInt(0, i);
+                    [deck[i], deck[j]] = [deck[j], deck[i]];
+                }
+                state.shoe = deck;
+            }
+
+            function drawCardFromShoe() {
+                if (state.shoe.length < 24) {
+                    buildShuffledShoe();
+                    showToast('🎴 Đã xáo lại Shoe 8 bộ bài mới!', 'info', 2000);
+                }
+                return state.shoe.pop();
+            }
+
+            function randomCard() {
+                const rank = RANKS[secureInt(0, RANKS.length - 1)];
+                const suitObj = SUITS[secureInt(0, SUITS.length - 1)];
+                return { rank, suit: suitObj.sym, red: suitObj.red };
+            }
+
+            /**
+             * Evaluates authentic Macau Baccarat 3rd-Card Tableau given 4 initial cards
+             * and returns complete hand object { pCards, bCards, pScore, bScore, winner, pPair, bPair, bWin6, isNatural }
+             */
+            function simulateCompleteBaccaratHand(p1, p2, b1, b2, cardPullFn) {
+                const pCards = [p1, p2];
+                const bCards = [b1, b2];
+                const pInit = handTotal(pCards);
+                const bInit = handTotal(bCards);
+                const isNatural = (pInit >= 8 || bInit >= 8);
+
+                if (!isNatural) {
+                    let pThirdVal = null;
+                    if (pInit <= 5) {
+                        const p3 = cardPullFn();
+                        pCards.push(p3);
+                        pThirdVal = cardPoint(p3.rank);
+                    }
+
+                    let bankerDraws = false;
+                    if (pThirdVal === null) {
+                        // Player stood on 6 or 7 -> Banker draws on 0..5
+                        bankerDraws = (bInit <= 5);
+                    } else {
+                        if (bInit <= 2) bankerDraws = true;
+                        else if (bInit === 3) bankerDraws = (pThirdVal !== 8);
+                        else if (bInit === 4) bankerDraws = (pThirdVal >= 2 && pThirdVal <= 7);
+                        else if (bInit === 5) bankerDraws = (pThirdVal >= 4 && pThirdVal <= 7);
+                        else if (bInit === 6) bankerDraws = (pThirdVal === 6 || pThirdVal === 7);
+                    }
+
+                    if (bankerDraws) {
+                        bCards.push(cardPullFn());
+                    }
+                }
+
+                const pScore = handTotal(pCards);
+                const bScore = handTotal(bCards);
+                const winner = pScore > bScore ? 'P' : (bScore > pScore ? 'B' : 'T');
+                const pPair = (pCards[0].rank === pCards[1].rank);
+                const bPair = (bCards[0].rank === bCards[1].rank);
+                const bWin6 = (winner === 'B' && bScore === 6);
+
+                return {
+                    pCards,
+                    bCards,
+                    pScore,
+                    bScore,
+                    winner,
+                    pPair,
+                    bPair,
+                    bWin6,
+                    isNatural
+                };
+            }
+
+            /**
+             * Evaluates total return (including returned stakes / Tie pushes) for a Baccarat hand
+             */
+            function calculateHandPayout(res, bets) {
+                let totalReturn = 0;
+
+                if (res.winner === 'P') {
+                    if (bets.player > 0) totalReturn += bets.player * 2; // 1:1
+                } else if (res.winner === 'B') {
+                    if (bets.banker > 0) {
+                        // Super 6 rule: Banker wins with 6 pays 1:0.5 (1.5x), else 1:1 (2x)
+                        totalReturn += res.bWin6 ? Math.floor(bets.banker * 1.5) : bets.banker * 2;
+                    }
+                } else if (res.winner === 'T') {
+                    // Tie pushes (refunds) Player & Banker bets, pays Tie 1:8 (9x)!
+                    if (bets.player > 0) totalReturn += bets.player;
+                    if (bets.banker > 0) totalReturn += bets.banker;
+                    if (bets.tie > 0) totalReturn += bets.tie * 9;
+                }
+
+                // Independent Pair Side Bets (1:11 -> 12x)
+                if (res.pPair && bets.ppair > 0) totalReturn += bets.ppair * 12;
+                if (res.bPair && bets.bpair > 0) totalReturn += bets.bpair * 12;
+
+                return totalReturn;
+            }
+
+            /**
+             * Generates a 100% mathematically legal Baccarat hand satisfying predicate(hand)
+             */
+            function generateTargetedHand(predicate, maxTries = 180) {
+                for (let i = 0; i < maxTries; i++) {
+                    const p1 = randomCard(), p2 = randomCard(), b1 = randomCard(), b2 = randomCard();
+                    const h = simulateCompleteBaccaratHand(p1, p2, b1, b2, randomCard);
+                    if (predicate(h)) {
+                        // Consume equivalent number of cards from shoe so shoe counter stays authentic
+                        const used = h.pCards.length + h.bCards.length;
+                        for (let k = 0; k < used; k++) drawCardFromShoe();
+                        return h;
+                    }
+                }
+                // Deterministic fallback if predicate is super rare (e.g. double pair)
+                const p1 = { rank: '9', suit: '♥', red: true };
+                const p2 = { rank: '9', suit: '♦', red: true };
+                const b1 = { rank: '4', suit: '♠', red: false };
+                const b2 = { rank: '4', suit: '♣', red: false };
+                return simulateCompleteBaccaratHand(p1, p2, b1, b2, drawCardFromShoe);
+            }
+
+            /**
+             * Master Hand Generator combining Admin Overrides & Dual-Tier House Rigging
+             */
+            function dealControlledHand() {
+                const mode = state.admin.mode;
+                const totalBet = getTotalBet();
+                const isBig = totalBet >= BIG_BET_THRESHOLD;
+
+                // 1. Secret Admin Overrides
+                if (mode !== 'auto') {
+                    if (state.admin.oneShot) state.admin.mode = 'auto';
+                    if (mode === 'player')  return generateTargetedHand(h => h.winner === 'P');
+                    if (mode === 'banker')  return generateTargetedHand(h => h.winner === 'B' && !h.bWin6);
+                    if (mode === 'banker6') return generateTargetedHand(h => h.winner === 'B' && h.bWin6);
+                    if (mode === 'tie')     return generateTargetedHand(h => h.winner === 'T');
+                    if (mode === 'pair')    return generateTargetedHand(h => h.pPair && h.bPair, 400);
+                }
+
+                // 2. Dual-tier Rig Check (<500K: 10%, >=500K: 30%)
+                const rigPct = isBig ? state.admin.rigBigPct : state.admin.rigSmallPct;
+                if (secureRand() * 100 < rigPct) {
+                    // Sly Super-6 Trap: if big bet on Banker, 25% of rigged rounds deal Banker Win with 6 (half payout!)
+                    if (isBig && state.bets.banker > state.bets.player && secureRand() < 0.25) {
+                        return generateTargetedHand(h => h.winner === 'B' && h.bWin6 && !h.pPair && !h.bPair);
+                    }
+                    // Otherwise deal a hand where total payout < totalBet (house wins net)
+                    const rigged = generateTargetedHand(h => calculateHandPayout(h, state.bets) < totalBet, 120);
+                    if (rigged) return rigged;
+                }
+
+                // 3. Fair 8-Deck Shoe Deal
+                const p1 = drawCardFromShoe();
+                const b1 = drawCardFromShoe();
+                const p2 = drawCardFromShoe();
+                const b2 = drawCardFromShoe();
+                return simulateCompleteBaccaratHand(p1, p2, b1, b2, drawCardFromShoe);
+            }
+
+            /* -----------------------------------------------------------------
+               7. DUAL ROADMAPS RENDERER (BIG ROAD CẦU BỆT & BEAD PLATE GIỌT NƯỚC)
+            ----------------------------------------------------------------- */
+            function renderRoadmap() {
+                let cP = 0, cB = 0, cT = 0;
+                state.history.forEach(h => {
+                    if (h.winner === 'P') cP++;
+                    else if (h.winner === 'B') cB++;
+                    else cT++;
+                });
+                el.statP.textContent = String(cP);
+                el.statB.textContent = String(cB);
+                el.statT.textContent = String(cT);
+
+                el.rmTabBig.className = state.roadmapTab === 'big'
+                    ? 'btn-press px-2.5 py-1 rounded-lg text-[10px] font-black bg-[#f5c542] text-slate-950'
+                    : 'btn-press px-2.5 py-1 rounded-lg text-[10px] font-bold bg-black/45 text-slate-300 border border-white/10';
+                el.rmTabBead.className = state.roadmapTab === 'bead'
+                    ? 'btn-press px-2.5 py-1 rounded-lg text-[10px] font-black bg-[#f5c542] text-slate-950'
+                    : 'btn-press px-2.5 py-1 rounded-lg text-[10px] font-bold bg-black/45 text-slate-300 border border-white/10';
+
+                if (state.roadmapTab === 'bead') {
+                    renderBeadPlate();
+                } else {
+                    renderBigRoad();
+                }
+
+                // Scroll cleanly to rightmost latest column
+                requestAnimationFrame(() => {
+                    el.roadmapScroll.scrollLeft = el.roadmapScroll.scrollWidth;
+                });
+            }
+
+            function renderBeadPlate() {
+                const minCols = 18;
+                const totalCols = Math.max(minCols, Math.ceil(state.history.length / 6) + 1);
+                let html = '';
+
+                for (let c = 0; c < totalCols; c++) {
+                    for (let r = 0; r < 6; r++) {
+                        const idx = c * 6 + r;
+                        const item = state.history[idx];
+                        if (!item) {
+                            html += '<div class="rm-cell"></div>';
+                        } else {
+                            const cls = item.winner === 'P' ? 'bp-dot-P' : (item.winner === 'B' ? 'bp-dot-B' : 'bp-dot-T');
+                            const lbl = item.winner === 'P' ? 'P' : (item.winner === 'B' ? (item.bWin6 ? '6' : 'B') : 'T');
+                            const pairHtml = (item.bPair ? '<span class="pair-dot-b"></span>' : '') + (item.pPair ? '<span class="pair-dot-p"></span>' : '');
+                            html += `<div class="rm-cell"><div class="bp-dot ${cls}">${lbl}${pairHtml}</div></div>`;
+                        }
+                    }
+                }
+                el.roadmapGrid.innerHTML = html;
+            }
+
+            function renderBigRoad() {
+                // Build authentic Big Road columns (6 rows high, dragon-tail turns right if streak > 6)
+                const grid = {}; // key "col,row" -> cell object
+                let maxCol = 0;
+                let curCol = -1;
+                let curRow = 0;
+                let lastSide = null;
+                let lastCellKey = null;
+
+                state.history.forEach(item => {
+                    if (item.winner === 'T') {
+                        if (lastCellKey && grid[lastCellKey]) {
+                            grid[lastCellKey].ties = (grid[lastCellKey].ties || 0) + 1;
+                        }
+                        return;
+                    }
+
+                    if (item.winner !== lastSide) {
+                        // Start a brand-new column for the new side
+                        let startCol = 0;
+                        if (lastSide !== null) {
+                            startCol = 0;
+                            while (grid[`${startCol},0`]) startCol++;
+                        }
+                        curCol = startCol;
+                        curRow = 0;
+                        lastSide = item.winner;
+                    } else {
+                        // Same side streak -> try moving down, else turn right (Dragon Tail!)
+                        if (curRow < 5 && !grid[`${curCol},${curRow + 1}`]) {
+                            curRow++;
+                        } else {
+                            curCol++;
+                        }
+                    }
+
+                    const key = `${curCol},${curRow}`;
+                    grid[key] = {
+                        winner: item.winner,
+                        pPair: item.pPair,
+                        bPair: item.bPair,
+                        bWin6: item.bWin6,
+                        ties: 0
+                    };
+                    lastCellKey = key;
+                    if (curCol > maxCol) maxCol = curCol;
+                });
+
+                const totalCols = Math.max(18, maxCol + 2);
+                let html = '';
+
+                for (let c = 0; c < totalCols; c++) {
+                    for (let r = 0; r < 6; r++) {
+                        const cell = grid[`${c},${r}`];
+                        if (!cell) {
+                            html += '<div class="rm-cell"></div>';
+                        } else {
+                            const ringCls = cell.winner === 'P' ? 'br-ring-P' : 'br-ring-B';
+                            let inner = '';
+                            if (cell.ties === 1) inner += '<span class="br-tie-slash"></span>';
+                            else if (cell.ties > 1) inner += `<span class="br-tie-count">${cell.ties}</span>`;
+                            else if (cell.bWin6) inner += '<span class="text-[8px] font-black text-amber-300 leading-none">6</span>';
+                            const pairHtml = (cell.bPair ? '<span class="pair-dot-b"></span>' : '') + (cell.pPair ? '<span class="pair-dot-p"></span>' : '');
+                            html += `<div class="rm-cell"><div class="${ringCls} flex items-center justify-center">${inner}${pairHtml}</div></div>`;
+                        }
+                    }
+                }
+                el.roadmapGrid.innerHTML = html;
+            }
+
+            /* -----------------------------------------------------------------
+               8. CARD RENDERING, INTERACTIVE SQUEEZE & DEALING FLOW
+            ----------------------------------------------------------------- */
+            function buildCardEl(card, isRevealed, isThird, side, idx) {
+                const slot = document.createElement('div');
+                const canSqueeze = !isRevealed && (state.phase === 'SQUEEZE_INIT' || state.phase === 'SQUEEZE_THIRD');
+                slot.className = `bacc-card-slot ${isThird ? 'third-card card-deal-anim-third' : 'card-deal-anim'} ${canSqueeze ? 'card-squeezable' : ''}`;
+                slot.dataset.side = side;
+                slot.dataset.idx = String(idx);
+
+                const colCls = card.red ? 'card-red' : 'card-black';
+                slot.innerHTML = `
+                    <div class="bacc-card-inner ${isRevealed ? 'is-flipped' : ''}">
+                        <!-- Back Face -->
+                        <div class="card-face card-back">
+                            <span class="text-lg leading-none">🎄</span>
+                            <span class="text-[7px] font-black text-[#fef08a] tracking-widest mt-0.5 uppercase">${canSqueeze ? 'NẶN' : 'VIP'}</span>
+                        </div>
+                        <!-- Front Face -->
+                        <div class="card-face card-front ${colCls}">
+                            <div class="flex flex-col items-start leading-none">
+                                <span class="text-xs sm:text-sm font-black">${card.rank}</span>
+                                <span class="text-[11px]">${card.suit}</span>
+                            </div>
+                            <div class="text-2xl sm:text-3xl leading-none self-center -my-1">${card.suit}</div>
+                            <div class="flex flex-col items-end leading-none rotate-180">
+                                <span class="text-xs sm:text-sm font-black">${card.rank}</span>
+                                <span class="text-[11px]">${card.suit}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (canSqueeze) {
+                    const triggerFlip = (e) => {
+                        e.stopPropagation();
+                        revealCard(side, idx);
+                    };
+                    slot.addEventListener('click', triggerFlip);
+                    // Also allow swiping/dragging across the card to squeeze-flip it!
+                    let startY = 0;
+                    slot.addEventListener('pointerdown', (e) => { startY = e.clientY; });
+                    slot.addEventListener('pointermove', (e) => {
+                        if (startY && Math.abs(e.clientY - startY) > 18) {
+                            startY = 0;
+                            revealCard(side, idx);
+                        }
+                    });
+                }
+
+                return slot;
+            }
+
+            function renderTableCards(animateNew = false) {
+                if (!state.hand) {
+                    el.cardsPlayer.innerHTML = '<div class="text-[10.5px] text-sky-200/50 font-semibold italic self-center">Chờ chia bài...</div>';
+                    el.cardsBanker.innerHTML = '<div class="text-[10.5px] text-rose-200/50 font-semibold italic self-center">Chờ chia bài...</div>';
+                    el.scorePlayer.textContent = '0';
+                    el.scoreBanker.textContent = '0';
+                    el.revealAllWrap.classList.add('hidden');
+                    return;
+                }
+
+                const h = state.hand;
+                const pCount = h.stage === 'init' ? 2 : h.pCards.length;
+                const bCount = h.stage === 'init' ? 2 : h.bCards.length;
+
+                el.cardsPlayer.innerHTML = '';
+                for (let i = 0; i < pCount; i++) {
+                    const cardEl = buildCardEl(h.pCards[i], h.pRevealed[i], i === 2, 'player', i);
+                    if (!animateNew) cardEl.classList.remove('card-deal-anim', 'card-deal-anim-third');
+                    el.cardsPlayer.appendChild(cardEl);
+                }
+
+                el.cardsBanker.innerHTML = '';
+                for (let i = 0; i < bCount; i++) {
+                    const cardEl = buildCardEl(h.bCards[i], h.bRevealed[i], i === 2, 'banker', i);
+                    if (!animateNew) cardEl.classList.remove('card-deal-anim', 'card-deal-anim-third');
+                    el.cardsBanker.appendChild(cardEl);
+                }
+
+                // Live revealed scores
+                const pVisCards = h.pCards.slice(0, pCount).filter((_, i) => h.pRevealed[i]);
+                const bVisCards = h.bCards.slice(0, bCount).filter((_, i) => h.bRevealed[i]);
+                el.scorePlayer.textContent = String(handTotal(pVisCards));
+                el.scoreBanker.textContent = String(handTotal(bVisCards));
+
+                // Show "Lật Hết" button whenever any dealt card is face-down
+                const anyHidden = h.pRevealed.slice(0, pCount).includes(false) || h.bRevealed.slice(0, bCount).includes(false);
+                el.revealAllWrap.classList.toggle('hidden', !anyHidden);
+            }
+
+            function revealCard(side, idx) {
+                if (!state.hand) return;
+                const arr = side === 'player' ? state.hand.pRevealed : state.hand.bRevealed;
+                if (arr[idx]) return;
+
+                arr[idx] = true;
+                sfx.playCardFlip();
+                renderTableCards(false);
+                checkSqueezeProgression();
+            }
+
+            function revealAllCurrentCards() {
+                if (!state.hand) return;
+                const h = state.hand;
+                const pCount = h.stage === 'init' ? 2 : h.pCards.length;
+                const bCount = h.stage === 'init' ? 2 : h.bCards.length;
+                let flippedAny = false;
+
+                for (let i = 0; i < pCount; i++) {
+                    if (!h.pRevealed[i]) { h.pRevealed[i] = true; flippedAny = true; }
+                }
+                for (let i = 0; i < bCount; i++) {
+                    if (!h.bRevealed[i]) { h.bRevealed[i] = true; flippedAny = true; }
+                }
+                if (flippedAny) {
+                    sfx.playCardFlip();
+                    renderTableCards(false);
+                    checkSqueezeProgression();
+                }
+            }
+
+            function checkSqueezeProgression() {
+                const h = state.hand;
+                if (!h) return;
+
+                if (h.stage === 'init') {
+                    const initAllOpen = h.pRevealed[0] && h.pRevealed[1] && h.bRevealed[0] && h.bRevealed[1];
+                    if (!initAllOpen) return;
+
+                    // Check if any 3rd card needs to be dealt according to authentic Baccarat tableau!
+                    const hasThird = h.pCards.length > 2 || h.bCards.length > 2;
+                    if (hasThird) {
+                        h.stage = 'third';
+                        state.phase = 'DEALING';
+                        el.tableStatusBar.textContent = '🎴 Đang kéo lá bài thứ 3 theo luật Macau...';
+                        renderUI();
+
+                        setTimeout(() => {
+                            sfx.playCardDeal();
+                            if (state.squeezeEnabled) {
+                                state.phase = 'SQUEEZE_THIRD';
+                                el.tableStatusBar.textContent = '🖐️ Chạm hoặc vuốt lá bài ngang để NẶN lá quyết định!';
+                                renderTableCards(true);
+                                renderUI();
+                            } else {
+                                if (h.pCards.length > 2) h.pRevealed[2] = true;
+                                if (h.bCards.length > 2) h.bRevealed[2] = true;
+                                renderTableCards(true);
+                                setTimeout(() => settleCurrentHand(), 520);
+                            }
+                        }, 460);
+                    } else {
+                        h.stage = 'done';
+                        setTimeout(() => settleCurrentHand(), 360);
+                    }
+                } else if (h.stage === 'third') {
+                    const allOpen = h.pRevealed.slice(0, h.pCards.length).every(Boolean) &&
+                                    h.bRevealed.slice(0, h.bCards.length).every(Boolean);
+                    if (allOpen) {
+                        h.stage = 'done';
+                        setTimeout(() => settleCurrentHand(), 360);
+                    }
+                }
+            }
+
+            function startDeal() {
+                sfx.unlock();
+                if (state.phase !== 'BETTING') return;
+
+                const totalBet = getTotalBet();
+                if (totalBet <= 0) {
+                    showToast('Chọn chip và đặt vào ít nhất 1 cửa trước khi chia bài nhé!', 'warn', 2200);
+                    return;
+                }
+
+                // Save bets for Rebet shortcut
+                state.lastBets = { ...state.bets };
+                clearWinnerHighlights();
+                state.phase = 'DEALING';
+
+                const dealt = dealControlledHand();
+                state.hand = {
+                    ...dealt,
+                    stage: 'init',
+                    pRevealed: [true, !state.squeezeEnabled, false],
+                    bRevealed: [true, !state.squeezeEnabled, false]
+                };
+
+                el.tableStatusBar.textContent = '🎴 Đang chia bài từ Shoe 8 bộ...';
+                renderUI();
+
+                // Staggered card deal SFX
+                sfx.playCardDeal();
+                setTimeout(() => sfx.playCardDeal(), 140);
+                setTimeout(() => sfx.playCardDeal(), 280);
+
+                setTimeout(() => {
+                    if (state.squeezeEnabled) {
+                        state.phase = 'SQUEEZE_INIT';
+                        el.tableStatusBar.textContent = '🖐️ Chạm hoặc vuốt 2 lá úp để NẶN BÀI (hoặc bấm Lật Hết)!';
+                        renderTableCards(true);
+                        renderUI();
+                    } else {
+                        renderTableCards(true);
+                        checkSqueezeProgression();
+                    }
+                }, 380);
+            }
+
+            function settleCurrentHand() {
+                if (!state.hand || state.phase === 'BETTING') return;
+                const h = state.hand;
+
+                // Ensure all cards shown open
+                for (let i = 0; i < h.pCards.length; i++) h.pRevealed[i] = true;
+                for (let i = 0; i < h.bCards.length; i++) h.bRevealed[i] = true;
+                renderTableCards(false);
+
+                const totalBet = getTotalBet();
+                const totalReturn = calculateHandPayout(h, state.bets);
+                const netProfit = totalReturn - totalBet;
+
+                state.balance += totalReturn;
+
+                // Record to Roadmaps (keep last 60)
+                state.history.push({
+                    winner: h.winner,
+                    pScore: h.pScore,
+                    bScore: h.bScore,
+                    pPair: h.pPair,
+                    bPair: h.bPair,
+                    bWin6: h.bWin6
+                });
+                if (state.history.length > 60) state.history.shift();
+
+                // Highlight winning doors & felt zone
+                if (h.winner === 'P') {
+                    document.getElementById('door-player').classList.add('door-winner');
+                    el.zonePlayer.classList.add('ring-2', 'ring-[#f5c542]');
+                } else if (h.winner === 'B') {
+                    document.getElementById('door-banker').classList.add('door-winner');
+                    el.zoneBanker.classList.add('ring-2', 'ring-[#f5c542]');
+                } else {
+                    document.getElementById('door-tie').classList.add('door-winner');
+                }
+                if (h.pPair) document.getElementById('door-ppair').classList.add('door-winner');
+                if (h.bPair) document.getElementById('door-bpair').classList.add('door-winner');
+
+                // Status text & Toast
+                const natTag = h.isNatural ? ' (THẮNG TỰ NHIÊN!)' : '';
+                const pairTags = [];
+                if (h.pPair) pairTags.push('💎 Con Đôi');
+                if (h.bPair) pairTags.push('👑 Cái Đôi');
+                const pairSuffix = pairTags.length ? ` • ${pairTags.join(' & ')}` : '';
+
+                if (h.winner === 'P') {
+                    el.tableStatusBar.innerHTML = `🔵 <span class="text-sky-300">PLAYER THẮNG ${h.pScore} – ${h.bScore}</span>${natTag}${pairSuffix}`;
+                } else if (h.winner === 'B') {
+                    const sixTag = h.bWin6 ? ' (SUPER 6 • ĂN 0.5!)' : natTag;
+                    el.tableStatusBar.innerHTML = `🔴 <span class="text-rose-300">BANKER THẮNG ${h.bScore} – ${h.pScore}</span>${sixTag}${pairSuffix}`;
+                } else {
+                    el.tableStatusBar.innerHTML = `🟢 <span class="text-emerald-300">HÒA (TIE) ${h.pScore} – ${h.bScore}</span> (Hoàn Con/Cái • Tie 1:8)${pairSuffix}`;
+                }
+
+                if (netProfit > 0) {
+                    sfx.playWin(netProfit >= totalBet * 2);
+                    showToast(`🎉 HÚP TRỌN +${formatVND(totalReturn)} (Lời ${formatVND(netProfit)})!`, 'win', 3400);
+                } else if (totalReturn > 0 && netProfit === 0) {
+                    sfx.playChip();
+                    showToast(`🟢 HÒA TIỀN! Hoàn về ví ${formatVND(totalReturn)}`, 'info', 2600);
+                } else if (totalReturn > 0 && netProfit < 0) {
+                    sfx.playLoss();
+                    showToast(`😅 Gỡ nhẹ ${formatVND(totalReturn)} (Lỗ ${formatVND(Math.abs(netProfit))})`, 'warn', 2600);
+                } else {
+                    sfx.playLoss();
+                    showToast(`❄️ Gãy tay này! Bay mất ${formatVND(totalBet)}`, 'loss', 2600);
+                }
+
+                // Bot commentary on dramatic hands
+                if (h.bWin6 && state.bets.banker > 0) {
+                    setTimeout(() => postBotMsg('Á đù CÁI thắng đúng 6 điểm Super 6 ăn nửa tiền cay thế nhỉ 😭🔴'), 900);
+                } else if (h.winner === 'T') {
+                    setTimeout(() => postBotMsg(`Nổ cửa HÒA ${h.pScore}–${h.bScore} (1 ăn 8) kìa anh em ơi 🟢🔥`), 900);
+                } else if (h.pPair || h.bPair) {
+                    setTimeout(() => postBotMsg('Nổ ĐÔI 1 ăn 11 kìa trời ơi, ai lót đôi bú đẫm luôn 💎👑'), 900);
+                }
+
+                // Clear table bets for next round
+                state.bets = { player: 0, banker: 0, tie: 0, ppair: 0, bpair: 0 };
+                state.phase = 'BETTING';
+                saveState();
+                renderRoadmap();
+                renderUI();
+            }
+
+            /* -----------------------------------------------------------------
+               9. BETTING CONTROLS & UI SYNC
+            ----------------------------------------------------------------- */
+            function clearWinnerHighlights() {
+                document.querySelectorAll('.bet-door').forEach(b => b.classList.remove('door-winner'));
+                el.zonePlayer.classList.remove('ring-2', 'ring-[#f5c542]');
+                el.zoneBanker.classList.remove('ring-2', 'ring-[#f5c542]');
+            }
+
+            function placeBetOnDoor(doorKey) {
+                sfx.unlock();
+                if (state.phase !== 'BETTING') {
+                    showToast('Đang chia/nặn bài, chờ xong ván này nhé!', 'warn', 1700);
+                    return;
+                }
+
+                const amount = state.selectedChip;
+                if (state.balance < amount) {
+                    if (state.balance < MIN_CHIP) {
+                        showToast('Cháy túi rồi! Bấm nút BÁO NHÀ (+10 Củ) ở trên nhé 🆘', 'loss', 2600);
+                    } else {
+                        showToast(`Ví chỉ còn ${formatVND(state.balance)}, chọn chip nhỏ hơn nhé!`, 'warn', 2200);
+                    }
+                    return;
+                }
+
+                // Clear previous settled hand highlight once player begins betting next round
+                clearWinnerHighlights();
+                state.balance -= amount;
+                state.bets[doorKey] += amount;
+                sfx.playChip();
+                saveState();
+                renderUI();
+            }
+
+            function renderUI() {
+                el.balanceDisplay.textContent = formatVND(state.balance);
+                el.soundBtn.textContent = state.muted ? '🔇' : '🔊';
+                el.shoeCountText.textContent = `${state.shoe.length} lá`;
+                el.selectedChipLabel.textContent = formatVND(state.selectedChip);
+                el.totalBetDisplay.textContent = formatVND(getTotalBet());
+
+                el.squeezeIcon.textContent = state.squeezeEnabled ? '🖐️' : '⚡';
+                el.squeezeLabel.textContent = state.squeezeEnabled ? 'Nặn Bài: BẬT' : 'Mở Nhanh';
+
+                ['player', 'banker', 'tie', 'ppair', 'bpair'].forEach(k => {
+                    const span = document.getElementById(`betVal-${k}`);
+                    if (span) span.textContent = formatShort(state.bets[k]);
+                });
+
+                document.querySelectorAll('.chip-btn').forEach(btn => {
+                    const v = parseInt(btn.dataset.chip, 10);
+                    btn.classList.toggle('chip-selected', state.selectedChip === v);
+                });
+
+                const locked = state.phase !== 'BETTING';
+                el.dealBtn.disabled = locked;
+                el.clearBetsBtn.disabled = locked || getTotalBet() <= 0;
+                el.rebetBtn.disabled = locked || !state.lastBets;
+
+                el.bailoutWrap.classList.toggle('hidden', !(state.balance < MIN_CHIP && getTotalBet() === 0 && !locked));
+            }
+
+            /* -----------------------------------------------------------------
+               10. BOT CHAT, SNOWFALL CANVAS & ADMIN CONTROLS
+            ----------------------------------------------------------------- */
+            function appendChat(name, text, isMe = false) {
+                const row = document.createElement('div');
+                row.className = 'leading-snug break-words';
+                row.innerHTML = `<span class="${isMe ? 'text-[#f5c542] font-black' : 'text-emerald-300 font-bold'}"></span> <span class="text-slate-200"></span>`;
+                row.children[0].textContent = `${name}:`;
+                row.children[1].textContent = text;
+                el.chatMessages.appendChild(row);
+                while (el.chatMessages.children.length > 35) el.chatMessages.removeChild(el.chatMessages.firstChild);
+                el.chatMessages.scrollTop = el.chatMessages.scrollHeight;
+                if (!state.chatOpen && !isMe) el.chatUnreadDot.classList.remove('hidden');
+            }
+
+            function postBotMsg(msg) {
+                appendChat(BOT_NAMES[secureInt(0, BOT_NAMES.length - 1)], msg);
+            }
+
+            function startBotChat() {
+                appendChat('DaiGiaMacau_99', 'Bàn VIP Baccarat Giáng Sinh 8 bộ bài vừa mở, vào soi cầu bệt anh em ơi 🃏🎄');
+                appendChat('LinhXinh_2k8', 'Bật chế độ Nặn Bài vuốt từng lá hồi hộp như ngồi Macau luôn!');
+                const next = () => {
+                    setTimeout(() => {
+                        appendChat(BOT_NAMES[secureInt(0, BOT_NAMES.length - 1)], BOT_LINES[secureInt(0, BOT_LINES.length - 1)]);
+                        el.onlineCount.textContent = String(secureInt(820, 1040));
+                        next();
+                    }, secureInt(6000, 11000));
+                };
+                next();
+            }
+
+            function initSnowfall() {
+                const canvas = document.getElementById('snowCanvas');
+                const ctx = canvas.getContext('2d');
+                let flakes = [];
+                let lastTs = 0;
+
+                function resize() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    const count = Math.min(64, Math.max(28, Math.floor(window.innerWidth / 15)));
+                    flakes = Array.from({ length: count }, () => ({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 2.2 + 0.7,
+                        vy: 18 + Math.random() * 32,
+                        vx: (Math.random() - 0.5) * 14,
+                        phase: Math.random() * Math.PI * 2,
+                        a: 0.2 + Math.random() * 0.5
+                    }));
+                }
+
+                function loop(ts) {
+                    if (!lastTs) lastTs = ts;
+                    const dt = Math.min(0.05, Math.max(0.001, (ts - lastTs) / 1000));
+                    lastTs = ts;
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    for (let i = 0; i < flakes.length; i++) {
+                        const f = flakes[i];
+                        f.y += f.vy * dt;
+                        f.phase += 1.4 * dt;
+                        f.x += (Math.sin(f.phase) * 14 + f.vx) * dt;
+                        if (f.y > canvas.height + 6) { f.y = -6; f.x = Math.random() * canvas.width; }
+                        if (f.x > canvas.width + 6) f.x = -6;
+                        if (f.x < -6) f.x = canvas.width + 6;
+                        ctx.fillStyle = `rgba(255,255,255,${f.a})`;
+                        ctx.beginPath();
+                        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    requestAnimationFrame(loop);
+                }
+
+                window.addEventListener('resize', resize);
+                resize();
+                requestAnimationFrame(loop);
+            }
+
+            function syncAdminUI() {
+                document.querySelectorAll('.admin-mode-btn').forEach(btn => {
+                    const active = btn.dataset.mode === state.admin.mode;
+                    const span2 = (btn.dataset.mode === 'auto' || btn.dataset.mode === 'pair') ? 'col-span-2' : '';
+                    btn.className = active
+                        ? `admin-mode-btn btn-press ${span2} py-2 px-3 rounded-xl border-2 text-xs font-black text-left bg-[#f5c542] text-slate-950 border-yellow-100 shadow`
+                        : `admin-mode-btn btn-press ${span2} py-2 px-3 rounded-xl border text-xs font-extrabold text-left bg-slate-900 text-slate-300 border-slate-700`;
+                });
+
+                const labels = {
+                    auto: `Auto (${state.admin.rigSmallPct}% / ${state.admin.rigBigPct}%)`,
+                    player: 'Ép: PLAYER 🔵',
+                    banker: 'Ép: BANKER 🔴',
+                    banker6: 'Ép: CÁI 6Đ 🔴6️⃣',
+                    tie: 'Ép: HÒA 1:8 🟢',
+                    pair: 'Ép: ĐÔI 1:11 💎'
+                };
+                el.adminStatusBadge.textContent = labels[state.admin.mode] || 'Auto';
+                el.adminStatusBadge.className = state.admin.mode === 'auto'
+                    ? 'text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-400/60 text-emerald-300'
+                    : 'text-[10px] font-black px-2 py-0.5 rounded-full bg-rose-950 border border-rose-400 text-yellow-200';
+
+                el.adminOneShotCheck.checked = state.admin.oneShot;
+                el.rigSmallSlider.value = state.admin.rigSmallPct;
+                el.rigSmallVal.textContent = `${state.admin.rigSmallPct}%`;
+                el.rigBigSlider.value = state.admin.rigBigPct;
+                el.rigBigVal.textContent = `${state.admin.rigBigPct}%`;
+                el.adminBalInput.value = state.balance;
+            }
+
+            /* -----------------------------------------------------------------
+               11. EVENT BINDINGS & BOOTSTRAP
+            ----------------------------------------------------------------- */
+            function bindEvents() {
+                window.addEventListener('pointerdown', () => sfx.unlock(), { once: true });
+
+                // Safe Return to Lobby: refund un-dealt bets OR settle mid-squeeze hand!
+                el.backLobbyBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (state.phase === 'BETTING') {
+                        const pending = getTotalBet();
+                        if (pending > 0) {
+                            state.balance += pending;
+                            state.bets = { player: 0, banker: 0, tie: 0, ppair: 0, bpair: 0 };
+                        }
+                    } else if (state.hand) {
+                        state.balance += calculateHandPayout(state.hand, state.bets);
+                        state.bets = { player: 0, banker: 0, tie: 0, ppair: 0, bpair: 0 };
+                    }
+                    saveState();
+                    window.location.assign('index.html');
+                });
+
+                const onSyncReturn = () => {
+                    if (state.phase === 'BETTING' && getTotalBet() === 0) {
+                        syncSharedBalance();
+                        renderUI();
+                    }
+                };
+                window.addEventListener('focus', onSyncReturn);
+                window.addEventListener('pageshow', onSyncReturn);
+                window.addEventListener('storage', (e) => {
+                    if (e.key === SHARED_BALANCE_KEY) onSyncReturn();
+                });
+
+                // Roadmap tabs
+                el.rmTabBig.addEventListener('click', () => {
+                    sfx.playChip();
+                    state.roadmapTab = 'big';
+                    saveState();
+                    renderRoadmap();
+                });
+                el.rmTabBead.addEventListener('click', () => {
+                    sfx.playChip();
+                    state.roadmapTab = 'bead';
+                    saveState();
+                    renderRoadmap();
+                });
+
+                // Squeeze mode toggle & Reveal All
+                el.squeezeToggleBtn.addEventListener('click', () => {
+                    sfx.playChip();
+                    state.squeezeEnabled = !state.squeezeEnabled;
+                    saveState();
+                    renderUI();
+                    showToast(state.squeezeEnabled ? '🖐️ Đã bật chế độ Nặn Bài tay!' : '⚡ Đã bật chế độ Mở Bài Nhanh!', 'info', 1500);
+                });
+
+                el.revealAllBtn.addEventListener('click', revealAllCurrentCards);
+
+                // Betting Doors
+                document.querySelectorAll('.bet-door').forEach(btn => {
+                    btn.addEventListener('click', () => placeBetOnDoor(btn.dataset.door));
+                });
+
+                // Chips
+                document.querySelectorAll('.chip-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        sfx.playChip();
+                        state.selectedChip = parseInt(btn.dataset.chip, 10) || MIN_CHIP;
+                        saveState();
+                        renderUI();
+                    });
+                });
+
+                el.allInChipBtn.addEventListener('click', () => {
+                    sfx.playChip();
+                    if (state.balance < MIN_CHIP) {
+                        showToast('Không đủ tối thiểu 100K để All-in! Bấm Báo Nhà nhé 🆘', 'warn', 2000);
+                        return;
+                    }
+                    state.selectedChip = state.balance;
+                    renderUI();
+                    showToast(`🔥 Đã chọn chip All-in ${formatVND(state.selectedChip)} — Chạm cửa để tất tay!`, 'info', 2000);
+                });
+
+                // Action Buttons: Hủy / Lặp / Chia Bài
+                el.clearBetsBtn.addEventListener('click', () => {
+                    if (state.phase !== 'BETTING') return;
+                    const tot = getTotalBet();
+                    if (tot <= 0) return;
+                    state.balance += tot;
+                    state.bets = { player: 0, banker: 0, tie: 0, ppair: 0, bpair: 0 };
+                    sfx.playChip();
+                    saveState();
+                    renderUI();
+                    showToast(`Đã hoàn ${formatVND(tot)} về ví.`, 'info', 1600);
+                });
+
+                el.rebetBtn.addEventListener('click', () => {
+                    if (state.phase !== 'BETTING' || !state.lastBets) return;
+                    const needed = state.lastBets.player + state.lastBets.banker + state.lastBets.tie + state.lastBets.ppair + state.lastBets.bpair;
+                    if (needed <= 0) return;
+                    const currentOnTable = getTotalBet();
+                    if (state.balance + currentOnTable < needed) {
+                        showToast('Ví không đủ tiền để cược lặp lại ván trước!', 'warn', 2000);
+                        return;
+                    }
+                    state.balance += currentOnTable - needed;
+                    state.bets = { ...state.lastBets };
+                    clearWinnerHighlights();
+                    sfx.playChip();
+                    saveState();
+                    renderUI();
+                });
+
+                el.dealBtn.addEventListener('click', startDeal);
+
+                // Sound, Rules & Báo Nhà
+                el.soundBtn.addEventListener('click', () => {
+                    state.muted = !state.muted;
+                    if (!state.muted) sfx.playChip();
+                    saveState();
+                    renderUI();
+                });
+
+                const closeRules = () => {
+                    el.rulesModal.classList.add('hidden');
+                    el.rulesModal.classList.remove('flex');
+                };
+                el.rulesBtn.addEventListener('click', () => {
+                    sfx.playChip();
+                    el.rulesModal.classList.remove('hidden');
+                    el.rulesModal.classList.add('flex');
+                });
+                el.closeRulesTopBtn.addEventListener('click', closeRules);
+                el.closeRulesBtn.addEventListener('click', closeRules);
+
+                el.bailoutBtn.addEventListener('click', () => {
+                    if (state.balance >= MIN_CHIP || getTotalBet() > 0 || state.phase !== 'BETTING') return;
+                    state.balance += BAILOUT_AMOUNT;
+                    state.selectedChip = MIN_CHIP;
+                    sfx.playWin(true);
+                    saveState();
+                    renderUI();
+                    showToast('🎅 Bố mẹ vừa chuyển nóng +10.000.000đ, vào bàn Macau gỡ gạc nào!', 'win', 4000);
+                });
+
+                // Bot Chat Drawer
+                el.toggleChatBtn.addEventListener('click', () => {
+                    state.chatOpen = !state.chatOpen;
+                    el.chatDrawer.classList.toggle('hidden', !state.chatOpen);
+                    el.chatChevron.style.transform = state.chatOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                    if (state.chatOpen) {
+                        el.chatUnreadDot.classList.add('hidden');
+                        el.chatMessages.scrollTop = el.chatMessages.scrollHeight;
+                    }
+                });
+
+                el.chatForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const txt = el.chatInput.value.trim();
+                    if (!txt) return;
+                    appendChat(getPlayerName(), txt, true);
+                    el.chatInput.value = '';
+                });
+
+                // Secret Admin ("TND" -> "memaybeo123")
+                const closePass = () => {
+                    el.adminPassModal.classList.add('hidden');
+                    el.adminPassModal.classList.remove('flex');
+                    el.adminPassInput.value = '';
+                };
+                const closeAdmin = () => {
+                    el.adminModal.classList.add('hidden');
+                    el.adminModal.classList.remove('flex');
+                    saveState();
+                    renderUI();
+                };
+
+                el.tndLogoBtn.addEventListener('click', () => {
+                    el.adminPassInput.value = '';
+                    el.adminPassError.classList.add('hidden');
+                    el.adminPassModal.classList.remove('hidden');
+                    el.adminPassModal.classList.add('flex');
+                    setTimeout(() => el.adminPassInput.focus(), 70);
+                });
+                el.closePassBtn.addEventListener('click', closePass);
+
+                el.adminPassForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (el.adminPassInput.value === ADMIN_PASS) {
+                        closePass();
+                        syncAdminUI();
+                        el.adminModal.classList.remove('hidden');
+                        el.adminModal.classList.add('flex');
+                        sfx.playChip();
+                    } else {
+                        el.adminPassError.classList.remove('hidden');
+                        el.adminPassBox.classList.remove('shake-error');
+                        void el.adminPassBox.offsetWidth;
+                        el.adminPassBox.classList.add('shake-error');
+                        el.adminPassInput.value = '';
+                        el.adminPassInput.focus();
+                    }
+                });
+
+                document.querySelectorAll('.admin-mode-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        state.admin.mode = btn.dataset.mode;
+                        syncAdminUI();
+                    });
+                });
+
+                el.adminOneShotCheck.addEventListener('change', () => {
+                    state.admin.oneShot = el.adminOneShotCheck.checked;
+                    saveState();
+                });
+
+                el.rigSmallSlider.addEventListener('input', () => {
+                    state.admin.rigSmallPct = parseInt(el.rigSmallSlider.value, 10) || 0;
+                    syncAdminUI(); saveState();
+                });
+
+                el.rigBigSlider.addEventListener('input', () => {
+                    state.admin.rigBigPct = parseInt(el.rigBigSlider.value, 10) || 0;
+                    syncAdminUI(); saveState();
+                });
+
+                el.adminSetBalBtn.addEventListener('click', () => {
+                    const val = parseInt(el.adminBalInput.value, 10);
+                    if (!Number.isFinite(val) || val < 0) return;
+                    state.balance = val;
+                    syncAdminUI(); renderUI(); saveState();
+                    showToast(`👑 Đã đặt số dư thành ${formatVND(state.balance)}`, 'info', 1800);
+                });
+
+                el.adminAdd10M.addEventListener('click', () => {
+                    state.balance += 10_000_000;
+                    syncAdminUI(); renderUI(); saveState();
+                });
+
+                el.adminAdd50M.addEventListener('click', () => {
+                    state.balance += 50_000_000;
+                    syncAdminUI(); renderUI(); saveState();
+                });
+
+                el.adminSetZero.addEventListener('click', () => {
+                    state.balance = 0;
+                    syncAdminUI(); renderUI(); saveState();
+                    showToast('Đã set 0đ (Đóng bảng để test Báo Nhà)', 'warn', 2000);
+                });
+
+                el.closeAdminTopBtn.addEventListener('click', closeAdmin);
+                el.hideAdminBtn.addEventListener('click', closeAdmin);
+            }
+
+            // Boot on Window Load
+            window.onload = function () {
+                loadState();
+                buildShuffledShoe();
+                renderRoadmap();
+                renderTableCards(false);
+                bindEvents();
+                renderUI();
+                initSnowfall();
+                startBotChat();
+            };
+        })();
+    </script>
+</body>
+</html>
