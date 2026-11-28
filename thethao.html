@@ -1,0 +1,2971 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NamKyBet ⚽ Thể Thao & Cá Độ Bóng Đá VIP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Be Vietnam Pro & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =====================================================================
+           NAMKYBET - THỂ THAO & CÁ ĐỘ BÓNG ĐÁ VIP (CHRISTMAS STADIUM THEME)
+           Mobile-First Portrait | Real 5 European Leagues (ESPN) + Virtual 60s
+        ===================================================================== */
+        :root {
+            --bg-deep: #061411;
+            --pitch-dark: #0a261c;
+            --navy-night: #081529;
+            --gold: #f5c542;
+            --gold-soft: #fef08a;
+            --crimson: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        input, select {
+            user-select: text;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+            background:
+                radial-gradient(circle at 15% 5%, rgba(16, 130, 82, 0.34) 0%, transparent 45%),
+                radial-gradient(circle at 85% 15%, rgba(185, 28, 28, 0.25) 0%, transparent 45%),
+                linear-gradient(180deg, #0b182e 0%, #071d16 48%, #040c0a 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .font-mono-num {
+            font-family: 'JetBrains Mono', 'Be Vietnam Pro', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        #snowCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #coinCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 65;
+        }
+
+        .app-shell {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 28px;
+            background: linear-gradient(180deg, rgba(10, 24, 44, 0.55) 0%, rgba(6, 22, 17, 0.78) 50%, rgba(4, 12, 10, 0.92) 100%);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.72);
+        }
+
+        /* =====================================================================
+           MARQUEE & FAIRY LIGHTS
+        ===================================================================== */
+        .marquee-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+            background: linear-gradient(90deg, #0b3b24, #15803d, #0b3b24);
+            border-bottom: 1.5px solid rgba(245, 197, 66, 0.75);
+        }
+
+        .marquee-track {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marqueeRun 36s linear infinite;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #fef9c3;
+        }
+
+        @keyframes marqueeRun {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .fairy-lights {
+            display: flex;
+            justify-content: space-around;
+            height: 12px;
+            padding: 0 10px;
+            pointer-events: none;
+        }
+
+        .bulb {
+            width: 6px;
+            height: 9px;
+            border-radius: 50% 50% 60% 60%;
+            animation: bulbGlow 1.7s ease-in-out infinite alternate;
+        }
+        .bulb:nth-child(4n+1) { background: #ff4d6d; box-shadow: 0 0 8px #ff4d6d; animation-delay: 0s; }
+        .bulb:nth-child(4n+2) { background: #ffd166; box-shadow: 0 0 8px #ffd166; animation-delay: 0.4s; }
+        .bulb:nth-child(4n+3) { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; animation-delay: 0.8s; }
+        .bulb:nth-child(4n+4) { background: #4ade80; box-shadow: 0 0 8px #4ade80; animation-delay: 1.2s; }
+
+        @keyframes bulbGlow {
+            0% { opacity: 0.4; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1.15); }
+        }
+
+        /* =====================================================================
+           CARDS, BUTTONS & ANIMATIONS
+        ===================================================================== */
+        .glass-card {
+            background: linear-gradient(160deg, rgba(14, 38, 30, 0.92), rgba(7, 19, 16, 0.97));
+            border: 1px solid rgba(245, 197, 66, 0.34);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.48);
+        }
+
+        .match-card {
+            background: linear-gradient(165deg, rgba(15, 34, 54, 0.94), rgba(7, 18, 28, 0.98));
+            border: 1.5px solid rgba(245, 197, 66, 0.32);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+            transition: border-color 0.2s ease, transform 0.14s ease;
+        }
+
+        .match-card-live {
+            border-color: rgba(248, 113, 113, 0.72);
+            box-shadow: 0 0 18px rgba(220, 38, 38, 0.24), 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .odds-pill {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(8, 13, 24, 0.98));
+            border: 1.5px solid rgba(148, 163, 184, 0.32);
+            transition: all 0.14s ease;
+        }
+
+        .odds-pill:hover:not(:disabled) {
+            border-color: rgba(245, 197, 66, 0.85);
+            background: linear-gradient(180deg, rgba(22, 78, 55, 0.9), rgba(9, 34, 24, 0.96));
+        }
+
+        .odds-pill-active {
+            background: linear-gradient(180deg, #fde047, #d97706) !important;
+            border-color: #ffffff !important;
+            color: #0f172a !important;
+            box-shadow: 0 0 14px rgba(245, 197, 66, 0.65);
+        }
+
+        .btn-press {
+            transition: transform 0.1s ease, filter 0.14s ease, box-shadow 0.14s ease;
+        }
+        .btn-press:active:not(:disabled) {
+            transform: scale(0.95);
+            filter: brightness(1.1);
+        }
+        .btn-press:disabled {
+            opacity: 0.48;
+            cursor: not-allowed;
+        }
+
+        .team-logo-box {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .team-logo-img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 1px 5px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: 0.2px;
+        }
+
+        .bxh-row-highlight {
+            background: linear-gradient(90deg, rgba(245, 197, 66, 0.28), rgba(16, 185, 129, 0.20)) !important;
+            border: 1px solid rgba(245, 197, 66, 0.85) !important;
+        }
+
+        @keyframes bailoutGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(220, 38, 38, 0.8), 0 0 22px rgba(245, 197, 66, 0.45); transform: scale(1); }
+            50% { box-shadow: 0 0 24px rgba(220, 38, 38, 1), 0 0 38px rgba(245, 197, 66, 0.95); transform: scale(1.018); }
+        }
+        .bailout-pulse { animation: bailoutGlow 1.2s ease-in-out infinite; }
+
+        @keyframes popIn {
+            0% { transform: scale(0.65); opacity: 0; }
+            72% { transform: scale(1.04); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .pop-in { animation: popIn 0.26s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        @keyframes shakeErr {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-6px); }
+            80% { transform: translateX(6px); }
+        }
+        .shake-error { animation: shakeErr 0.34s ease; }
+
+        .thin-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+        .thin-scroll::-webkit-scrollbar-track { background: rgba(5, 16, 12, 0.55); border-radius: 99px; }
+        .thin-scroll::-webkit-scrollbar-thumb { background: rgba(245, 197, 66, 0.48); border-radius: 99px; }
+    </style>
+</head>
+<body>
+    <!-- Ambient Snowfall & Celebration Coin Rain Canvases -->
+    <canvas id="snowCanvas"></canvas>
+    <canvas id="coinCanvas"></canvas>
+
+    <!-- Toast Notifications Stack (Zero alert() / confirm()) -->
+    <div id="toastContainer" class="fixed top-12 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-[440px] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Main Mobile-First Portrait App Shell -->
+    <div class="app-shell">
+
+        <!-- 1. TOP MARQUEE WINNER TICKER -->
+        <div class="marquee-wrap py-1.5">
+            <div class="marquee-track">
+                ⚽ TuanAnh_2k9 vừa bắt chuẩn 10 Phạt Góc (Bảo hiểm ±1 • 5.40x) trận Arsenal húp 27.000.000đ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                🟨 HoangLong_VIP đoán trúng 4 Thẻ Phạt (Bảo hiểm ±0 • 5.50x) trận Real Madrid ăn 11.000.000đ! &nbsp;&nbsp;•&nbsp;&nbsp;
+                🏆 MinhQuan_SG bắt cửa HÒA (3.45x) Cúp C1 húp gọn 17.250.000đ sau khi ngủ dậy mở web! &nbsp;&nbsp;•&nbsp;&nbsp;
+                ⚡ Bóng Đá Ảo 60s chạy 24/7 — Đặt xong tắt web quay lại vẫn tự động trả thưởng về ví chung!
+            </div>
+        </div>
+
+        <!-- Subtle Christmas Fairy Lights -->
+        <div class="fairy-lights" aria-hidden="true">
+            <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+            <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+            <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+            <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+        </div>
+
+        <!-- 2. HEADER BAR: BACK TO LOBBY, BRAND, WALLET, RULES, SOUND & SUBTLE "TND" -->
+        <header class="px-3 pt-1 pb-1.5 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+                <a href="index.html" id="backLobbyBtn" aria-label="Về Sảnh Chính" class="btn-press px-2.5 h-9 rounded-xl bg-emerald-900/95 border border-[#f5c542]/80 text-yellow-200 font-black text-[11px] flex items-center gap-1 shrink-0 shadow">
+                    <span>🏠</span><span>Sảnh</span>
+                </a>
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs sm:text-sm font-black tracking-wide bg-gradient-to-r from-yellow-200 via-[#f5c542] to-emerald-300 bg-clip-text text-transparent truncate">
+                            THỂ THAO • BÓNG ĐÁ VIP
+                        </span>
+                        <span class="px-1.5 py-0.5 rounded-md bg-emerald-950 border border-emerald-400/60 text-[8.5px] font-black text-emerald-200 shrink-0">
+                            TOP 5 ÂU
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-sm leading-none">💰</span>
+                        <span id="balanceDisplay" class="font-mono-num text-base sm:text-lg font-black text-[#f5c542] tracking-tight truncate leading-none">
+                            20.000.000đ
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button id="rulesBtn" aria-label="Luật chơi & Bảo hiểm" class="btn-press w-8 h-8 rounded-xl bg-[#0b261d] border border-[#f5c542]/50 text-[#fef08a] font-black text-xs flex items-center justify-center shadow">
+                    ?
+                </button>
+                <button id="soundBtn" aria-label="Bật tắt âm thanh" class="btn-press w-8 h-8 rounded-xl bg-[#0b261d] border border-[#f5c542]/50 text-sm flex items-center justify-center shadow">
+                    🔊
+                </button>
+                <button id="tndLogoBtn" title="TND" class="btn-press px-2.5 h-8 rounded-xl bg-black/55 border border-slate-700/80 hover:border-[#f5c542]/50 text-[10px] font-black tracking-widest text-slate-400 flex items-center justify-center">
+                    TND
+                </button>
+            </div>
+        </header>
+
+        <!-- 3. BÁO NHÀ (+10 CỦ) RESCUE BANNER (VISIBLE WHEN BALANCE < 100,000đ) -->
+        <div id="bailoutWrap" class="px-3 pb-1.5 hidden">
+            <button id="bailoutBtn" class="btn-press bailout-pulse w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-red-700 via-rose-600 to-amber-600 border-2 border-[#fef08a] text-white font-black text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2">
+                <span>🆘</span>
+                <span>BÁO NHÀ (+10 CỦ GỠ KÈO BÓNG)</span>
+            </button>
+        </div>
+
+        <!-- 4. TOP 3 MODE TABS (TRẬN THẬT 5 GIẢI ÂU / BÓNG ĐÁ ẢO 60S / VÉ CƯỢC) -->
+        <nav class="px-3 pb-2">
+            <div class="glass-card rounded-2xl p-1 grid grid-cols-3 gap-1">
+                <button id="tabRealBtn" data-main-tab="real" class="main-tab-btn btn-press py-2 px-1 rounded-xl text-[11px] font-black bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 shadow">
+                    🌍 Trận Thật
+                </button>
+                <button id="tabVirtualBtn" data-main-tab="virtual" class="main-tab-btn btn-press py-2 px-1 rounded-xl text-[11px] font-extrabold text-slate-300 bg-black/35">
+                    ⚡ Ảo 60s
+                </button>
+                <button id="tabTicketsBtn" data-main-tab="tickets" class="main-tab-btn btn-press py-2 px-1 rounded-xl text-[11px] font-extrabold text-slate-300 bg-black/35 relative">
+                    🎟️ Vé (<span id="pendingTicketBadge" class="font-mono-num">0</span>)
+                </button>
+            </div>
+        </nav>
+
+        <!-- =================================================================
+             MAIN CONTENT VIEWS
+        ================================================================= -->
+        <main class="flex-1 px-3 space-y-2.5">
+
+            <!-- =============================================================
+                 VIEW 1: TRẬN THẬT (5 GIẢI HÀNG ĐẦU CHÂU ÂU - ESPN LIVE API)
+            ============================================================= -->
+            <section id="view-real" class="main-view space-y-2.5">
+                <!-- League Filter Pills, BXH & Refresh Button -->
+                <div class="flex items-center gap-1.5">
+                    <div id="leaguePills" class="flex-1 flex items-center gap-1.5 overflow-x-auto thin-scroll py-0.5">
+                        <button data-league="all"            class="league-pill btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10.5px] font-black bg-[#f5c542] text-slate-950 border border-yellow-200">Tất cả</button>
+                        <button data-league="eng.1"          class="league-pill btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-200 border border-white/15">🏴󠁧󠁢󠁥󠁮󠁧󠁿 NHA</button>
+                        <button data-league="uefa.champions" class="league-pill btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-200 border border-white/15">🏆 Cúp C1</button>
+                        <button data-league="esp.1"          class="league-pill btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-200 border border-white/15">🇪🇸 La Liga</button>
+                        <button data-league="ita.1"          class="league-pill btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-200 border border-white/15">🇮🇹 Serie A</button>
+                        <button data-league="ger.1"          class="league-pill btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-200 border border-white/15">🇩🇪 Bundesliga</button>
+                    </div>
+                    <button id="openStandingsBtn" aria-label="Xem Bảng Xếp Hạng" class="btn-press shrink-0 px-2.5 h-8 rounded-xl bg-amber-500/20 border border-[#f5c542]/80 text-[#fef08a] text-[10.5px] font-black flex items-center gap-1 shadow">
+                        <span>📊</span><span>BXH</span>
+                    </button>
+                    <button id="refreshRealBtn" aria-label="Cập nhật lịch đấu thật" class="btn-press shrink-0 w-8 h-8 rounded-xl bg-emerald-950 border border-emerald-400/60 text-emerald-200 text-xs flex items-center justify-center shadow">
+                        🔄
+                    </button>
+                </div>
+
+                <!-- Real API Info Strip -->
+                <div class="px-2.5 py-1.5 rounded-xl bg-black/45 border border-emerald-500/30 flex items-center justify-between text-[10px] font-bold text-slate-300">
+                    <span id="espnSyncStatus" class="truncate">📡 Đang kéo lịch 5 giải hàng đầu châu Âu...</span>
+                    <span class="shrink-0 ml-2 text-[#f5c542]">1X2 • Góc • Thẻ</span>
+                </div>
+
+                <!-- Real Matches List -->
+                <div id="realMatchesList" class="space-y-2.5">
+                    <!-- Populated via ESPN API + Admin Custom Matches -->
+                </div>
+            </section>
+
+            <!-- =============================================================
+                 VIEW 2: BÓNG ĐÁ ẢO SIÊU TỐC 60 GIÂY (24/7 TIME-SYNCED)
+            ============================================================= -->
+            <section id="view-virtual" class="main-view hidden space-y-2.5">
+                <!-- Virtual Match Cycle Clock Banner -->
+                <div class="glass-card rounded-2xl p-3 flex items-center justify-between gap-2 border-emerald-400/50">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5">
+                            <span id="virtualPhaseDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span id="virtualPhaseTitle" class="text-xs font-black uppercase tracking-wide text-[#fef08a]">
+                                🟢 ĐANG MỞ CƯỢC VÒNG ẢO
+                            </span>
+                        </div>
+                        <div id="virtualPhaseSub" class="text-[10.5px] text-slate-300 font-semibold mt-0.5">
+                            Chốt kèo 1X2, Góc, Thẻ trước khi trọng tài thổi còi!
+                        </div>
+                    </div>
+                    <div class="shrink-0 px-3 py-1.5 rounded-xl bg-black/65 border border-[#f5c542]/65 text-center min-w-[74px]">
+                        <div class="text-[8.5px] font-bold text-slate-400 uppercase leading-none" id="virtualClockLabel">Còn lại</div>
+                        <div id="virtualClockVal" class="font-mono-num text-base font-black text-[#f5c542] leading-tight mt-0.5">20s</div>
+                    </div>
+                </div>
+
+                <!-- Live Virtual Commentary Ticker -->
+                <div id="virtualCommentaryBox" class="px-3 py-2 rounded-xl bg-emerald-950/80 border border-emerald-400/45 text-[11px] font-bold text-emerald-100 leading-snug">
+                    🎙️ Bình luận viên: 3 cặp đấu Siêu Kinh Điển Châu Âu chuẩn bị khai cuộc!
+                </div>
+
+                <!-- 3 Simultaneous Virtual European Matches -->
+                <div id="virtualMatchesList" class="space-y-2.5"></div>
+            </section>
+
+            <!-- =============================================================
+                 VIEW 3: VÉ CƯỢC & TỰ ĐỘNG TRẢ THƯỞNG KHI QUAY LẠI
+            ============================================================= -->
+            <section id="view-tickets" class="main-view hidden space-y-2.5">
+                <!-- Offline Auto-Settle Bar -->
+                <div class="glass-card rounded-2xl p-3 flex items-center justify-between gap-2">
+                    <div class="min-w-0">
+                        <div class="text-xs font-black text-[#f5c542]">🎟️ QUẢN LÝ VÉ CƯỢC</div>
+                        <div class="text-[10px] text-slate-300 font-semibold mt-0.5">
+                            Tắt web đi ngủ, trận xong mở lại tự đối chiếu &amp; cộng tiền!
+                        </div>
+                    </div>
+                    <button id="checkSettleBtn" class="btn-press shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 border border-emerald-200 text-white font-black text-[10.5px]">
+                        🔄 Trả Thưởng
+                    </button>
+                </div>
+
+                <!-- Ticket Filter Tabs -->
+                <div class="grid grid-cols-3 gap-1.5">
+                    <button data-tfilter="all"     class="tfilter-btn btn-press py-1.5 rounded-xl text-[10.5px] font-black bg-[#f5c542] text-slate-950">Tất Cả</button>
+                    <button data-tfilter="PENDING" class="tfilter-btn btn-press py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-300 border border-white/10">⏳ Đang Chờ</button>
+                    <button data-tfilter="SETTLED" class="tfilter-btn btn-press py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-300 border border-white/10">✅ Đã Chốt</button>
+                </div>
+
+                <!-- Tickets Container -->
+                <div id="ticketsList" class="space-y-2"></div>
+            </section>
+
+            <!-- COLLAPSIBLE STADIUM BOT CHAT -->
+            <section class="pt-1">
+                <div class="glass-card rounded-2xl overflow-hidden">
+                    <button id="toggleChatBtn" class="w-full px-3.5 py-2.5 flex items-center justify-between text-xs font-extrabold text-slate-200">
+                        <span class="flex items-center gap-2">
+                            <span>💬</span> Hội Soi Kèo Bóng Đá VIP
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 text-[10px]">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span id="onlineCount">1,142</span> online
+                            </span>
+                            <span id="chatUnreadDot" class="hidden px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[9px]">Mới</span>
+                        </span>
+                        <span id="chatChevron" class="transition-transform duration-200">▼</span>
+                    </button>
+
+                    <div id="chatDrawer" class="hidden border-t border-[#f5c542]/20">
+                        <div id="chatMessages" class="h-36 overflow-y-auto thin-scroll p-2.5 flex flex-col gap-1.5 text-xs bg-black/55"></div>
+                        <form id="chatForm" class="p-2 flex items-center gap-1.5 bg-slate-900/90 border-t border-slate-800">
+                            <input id="chatInput" type="text" maxlength="120" placeholder="Hô kèo NHA, Cúp C1, Góc/Thẻ..." class="flex-1 bg-black/70 border border-slate-700 focus:border-[#f5c542] focus:outline-none rounded-xl px-3 py-2 text-xs text-white" />
+                            <button type="submit" class="btn-press px-3.5 py-2 rounded-xl bg-[#f5c542] text-slate-950 font-black text-xs">Gửi</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="text-center text-[10px] text-slate-500 pt-1">
+                NamKyBet • Thể Thao Bóng Đá VIP • Trò chơi giải trí tiền ảo, dữ liệu lịch đấu từ ESPN.
+            </footer>
+        </main>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 1: MATCH BET SLIP (1X2 + CORNERS + CARDS WITH DEVIATION INSURANCE)
+    ===================================================================== -->
+    <div id="betModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/84 backdrop-blur-sm p-3">
+        <div class="w-full max-w-md rounded-3xl glass-card border-2 border-[#f5c542] p-4 shadow-2xl max-h-[92vh] overflow-y-auto thin-scroll pop-in">
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between gap-2 border-b border-[#f5c542]/25 pb-2.5">
+                <div class="min-w-0">
+                    <div id="bmLeagueLabel" class="text-[10px] font-black text-emerald-300 uppercase tracking-wider">🏴󠁧󠁢󠁥󠁮󠁧󠁿 NGOẠI HẠNG ANH</div>
+                    <h3 id="bmMatchTitle" class="text-sm font-black text-white truncate mt-0.5">Arsenal vs Chelsea</h3>
+                </div>
+                <button id="closeBetModalBtn" class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold shrink-0">✕</button>
+            </div>
+
+            <!-- 3 Market Selector Tabs -->
+            <div class="grid grid-cols-3 gap-1.5 mt-3">
+                <button data-market="1x2"     class="bm-market-btn btn-press py-2 rounded-xl text-[11px] font-black bg-[#f5c542] text-slate-950">⚽ Đội Thắng</button>
+                <button data-market="corners" class="bm-market-btn btn-press py-2 rounded-xl text-[11px] font-bold bg-black/55 text-slate-300 border border-white/10">🚩 Phạt Góc</button>
+                <button data-market="cards"   class="bm-market-btn btn-press py-2 rounded-xl text-[11px] font-bold bg-black/55 text-slate-300 border border-white/10">🟨 Thẻ Phạt</button>
+            </div>
+
+            <!-- A. MARKET 1X2 PANEL -->
+            <div id="bmPanel-1x2" class="mt-3 space-y-2">
+                <div class="text-[11px] font-bold text-slate-300">Chọn đội thắng chung cuộc (90 phút):</div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button id="bmOptHome" data-sel="HOME" class="bm-1x2-opt odds-pill btn-press rounded-2xl p-2.5 text-center">
+                        <div id="bmHomeShort" class="text-[10.5px] font-extrabold text-sky-200 truncate">Đội 1</div>
+                        <div class="text-[9px] text-slate-400 font-bold">Chủ Nhà</div>
+                        <div id="bmOddsHome" class="font-mono-num text-sm font-black text-[#f5c542] mt-1">1.85x</div>
+                    </button>
+                    <button id="bmOptDraw" data-sel="DRAW" class="bm-1x2-opt odds-pill btn-press rounded-2xl p-2.5 text-center">
+                        <div class="text-[10.5px] font-extrabold text-slate-200">HÒA (X)</div>
+                        <div class="text-[9px] text-slate-400 font-bold">Bằng tỷ số</div>
+                        <div id="bmOddsDraw" class="font-mono-num text-sm font-black text-[#f5c542] mt-1">3.40x</div>
+                    </button>
+                    <button id="bmOptAway" data-sel="AWAY" class="bm-1x2-opt odds-pill btn-press rounded-2xl p-2.5 text-center">
+                        <div id="bmAwayShort" class="text-[10.5px] font-extrabold text-rose-200 truncate">Đội 2</div>
+                        <div class="text-[9px] text-slate-400 font-bold">Đội Khách</div>
+                        <div id="bmOddsAway" class="font-mono-num text-sm font-black text-[#f5c542] mt-1">2.25x</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- B. MARKET CORNERS & CARDS PANEL (SHARED WITH DEVIATION INSURANCE ±0..±3) -->
+            <div id="bmPanel-stat" class="hidden mt-3 space-y-3">
+                <!-- Predicted Exact Number Stepper -->
+                <div class="bg-black/45 rounded-2xl p-3 border border-white/10">
+                    <div id="bmStatPrompt" class="text-[11px] font-extrabold text-yellow-200 text-center mb-2">
+                        🚩 Dự đoán TỔNG PHẠT GÓC cả trận (2 đội):
+                    </div>
+                    <div class="flex items-center justify-center gap-3">
+                        <button id="bmStatMinus" class="btn-press w-11 h-11 rounded-xl bg-slate-900 border border-[#f5c542]/55 text-[#f5c542] text-xl font-black">−</button>
+                        <div class="min-w-[92px] text-center">
+                            <div id="bmStatNum" class="font-mono-num text-3xl font-black text-white leading-none">10</div>
+                            <div id="bmStatUnit" class="text-[10px] font-bold text-emerald-300 mt-1">quả góc</div>
+                        </div>
+                        <button id="bmStatPlus" class="btn-press w-11 h-11 rounded-xl bg-slate-900 border border-[#f5c542]/55 text-[#f5c542] text-xl font-black">+</button>
+                    </div>
+                </div>
+
+                <!-- 🛡️ DEVIATION INSURANCE SELECTOR (±0, ±1, ±2, ±3 -> -10% EACH) -->
+                <div class="bg-black/45 rounded-2xl p-3 border border-sky-400/40">
+                    <div class="flex items-center justify-between text-[11px] font-extrabold mb-2">
+                        <span class="text-sky-300">🛡️ Bảo Hiểm Chênh Lệch (Mỗi bậc -10%):</span>
+                        <span id="bmRangePreview" class="font-mono-num text-[#fef08a] text-[10.5px]">Trúng: 9–11</span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-1.5" id="bmToleranceRow">
+                        <button data-tol="0" class="bm-tol-btn btn-press py-2 px-1 rounded-xl border text-center leading-tight">
+                            <div class="text-xs font-black">±0</div>
+                            <div class="text-[9px] font-bold opacity-85">100%</div>
+                        </button>
+                        <button data-tol="1" class="bm-tol-btn btn-press py-2 px-1 rounded-xl border text-center leading-tight">
+                            <div class="text-xs font-black">±1</div>
+                            <div class="text-[9px] font-bold opacity-85">-10%</div>
+                        </button>
+                        <button data-tol="2" class="bm-tol-btn btn-press py-2 px-1 rounded-xl border text-center leading-tight">
+                            <div class="text-xs font-black">±2</div>
+                            <div class="text-[9px] font-bold opacity-85">-20%</div>
+                        </button>
+                        <button data-tol="3" class="bm-tol-btn btn-press py-2 px-1 rounded-xl border text-center leading-tight">
+                            <div class="text-xs font-black">±3</div>
+                            <div class="text-[9px] font-bold opacity-85">-30%</div>
+                        </button>
+                    </div>
+                    <div id="bmInsuranceExplain" class="text-[10px] text-slate-300 font-semibold mt-2 text-center leading-snug">
+                        Tỉ lệ ăn sau bảo hiểm: <b class="text-[#f5c542]">5.40x</b> (chênh tối đa 1 góc vẫn ăn!)
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAKE INPUT & QUICK CHIPS -->
+            <div class="mt-3 pt-3 border-t border-white/10 space-y-2">
+                <div class="flex items-center gap-1.5">
+                    <button id="bmStakeMinus" class="btn-press w-10 h-10 rounded-xl bg-slate-900 border border-[#f5c542]/45 text-[#f5c542] text-lg font-black shrink-0">−</button>
+                    <div class="flex-1 h-10 rounded-xl bg-black/75 border border-[#f5c542]/55 flex items-center px-2.5">
+                        <input id="bmStakeInput" type="text" inputmode="numeric" value="100.000" class="font-mono-num w-full bg-transparent text-center text-sm font-black text-[#f5c542] focus:outline-none" />
+                        <span class="text-xs font-bold text-slate-400">đ</span>
+                    </div>
+                    <button id="bmStakePlus" class="btn-press w-10 h-10 rounded-xl bg-slate-900 border border-[#f5c542]/45 text-[#f5c542] text-lg font-black shrink-0">+</button>
+                </div>
+
+                <div class="grid grid-cols-6 gap-1">
+                    <button data-bchip="100000"  class="bm-chip btn-press py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-[10px] font-black text-emerald-300">100K</button>
+                    <button data-bchip="200000"  class="bm-chip btn-press py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-[10px] font-black text-sky-300">200K</button>
+                    <button data-bchip="500000"  class="bm-chip btn-press py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-[10px] font-black text-amber-300">500K</button>
+                    <button data-bchip="1000000" class="bm-chip btn-press py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-[10px] font-black text-purple-300">1M</button>
+                    <button data-bchip="5000000" class="bm-chip btn-press py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-[10px] font-black text-rose-300">5M</button>
+                    <button id="bmAllInBtn"      class="btn-press py-1.5 rounded-lg bg-gradient-to-b from-red-600 to-amber-700 border border-[#f5c542]/80 text-[10px] font-black text-white">All</button>
+                </div>
+
+                <!-- Summary & Confirm Button -->
+                <div class="rounded-xl bg-emerald-950/60 border border-emerald-500/40 px-3 py-2 flex items-center justify-between text-xs">
+                    <span class="text-emerald-200 font-bold">Dự kiến nhận (<b id="bmFinalOddsText" class="text-[#fef08a] font-mono-num">1.85x</b>):</span>
+                    <span id="bmPotentialWinText" class="font-mono-num text-sm font-black text-[#f5c542]">185.000đ</span>
+                </div>
+
+                <button id="bmConfirmBtn" class="btn-press w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-500 via-green-600 to-emerald-700 border-2 border-[#fef08a] text-white font-black text-sm tracking-wider uppercase shadow-lg">
+                    ✅ XÁC NHẬN ĐẶT KÈO
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 1B: BẢNG XẾP HẠNG (BXH) THẬT 5 GIẢI HÀNG ĐẦU CHÂU ÂU (ESPN)
+    ===================================================================== -->
+    <div id="standingsModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm p-2.5">
+        <div class="w-full max-w-md rounded-3xl glass-card border-2 border-[#f5c542] p-3.5 shadow-2xl max-h-[90vh] flex flex-col pop-in">
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b border-[#f5c542]/25 pb-2.5 gap-2">
+                <div>
+                    <h3 class="text-sm font-black text-[#f5c542]">📊 BẢNG XẾP HẠNG CHÂU ÂU</h3>
+                    <div id="standingsMetaText" class="text-[10px] text-emerald-300 font-semibold mt-0.5">
+                        Dữ liệu BXH thật trực tiếp từ ESPN
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <button id="refreshStandingsBtn" aria-label="Tải lại BXH" class="btn-press w-7 h-7 rounded-full bg-emerald-950 border border-emerald-400/50 text-emerald-200 text-xs flex items-center justify-center">🔄</button>
+                    <button id="closeStandingsTopBtn" class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+                </div>
+            </div>
+
+            <!-- 5 League Switcher Tabs -->
+            <div id="standingsLeagueTabs" class="flex items-center gap-1 overflow-x-auto thin-scroll py-2 shrink-0">
+                <button data-bxh-league="eng.1"          class="bxh-lg-tab btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10px] font-black bg-[#f5c542] text-slate-950">🏴󠁧󠁢󠁥󠁮󠁧󠁿 NHA</button>
+                <button data-bxh-league="uefa.champions" class="bxh-lg-tab btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10px] font-bold bg-black/55 text-slate-300 border border-white/10">🏆 Cúp C1</button>
+                <button data-bxh-league="esp.1"          class="bxh-lg-tab btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10px] font-bold bg-black/55 text-slate-300 border border-white/10">🇪🇸 La Liga</button>
+                <button data-bxh-league="ita.1"          class="bxh-lg-tab btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10px] font-bold bg-black/55 text-slate-300 border border-white/10">🇮🇹 Serie A</button>
+                <button data-bxh-league="ger.1"          class="bxh-lg-tab btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10px] font-bold bg-black/55 text-slate-300 border border-white/10">🇩🇪 Bundesliga</button>
+            </div>
+
+            <!-- Table Column Headers -->
+            <div class="grid grid-cols-12 items-center px-2 py-1.5 rounded-xl bg-black/60 text-[9.5px] font-extrabold text-slate-400 uppercase shrink-0">
+                <span class="col-span-1 text-center">#</span>
+                <span class="col-span-5 pl-1">Câu Lạc Bộ</span>
+                <span class="col-span-1 text-center">Tr</span>
+                <span class="col-span-2 text-center">T-H-B</span>
+                <span class="col-span-1 text-center">HS</span>
+                <span class="col-span-2 text-right pr-1 text-[#f5c542]">Điểm</span>
+            </div>
+
+            <!-- Scrollable Standings Rows -->
+            <div id="standingsBody" class="flex-1 overflow-y-auto thin-scroll mt-1.5 space-y-1 pr-0.5 min-h-[220px]">
+                <div class="py-10 text-center text-xs text-slate-400">📡 Đang tải bảng xếp hạng thật từ ESPN...</div>
+            </div>
+
+            <!-- Color Legend & Close Button -->
+            <div class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between gap-2 text-[9.5px] text-slate-300 shrink-0">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>Top C1</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-400"></span>Cúp Âu</span>
+                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-500"></span>Xuống hạng</span>
+                </div>
+                <button id="closeStandingsBtn" class="btn-press px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-[11px]">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 2: RULES & DEVIATION INSURANCE EXPLAINER (?)
+    ===================================================================== -->
+    <div id="rulesModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/82 backdrop-blur-sm p-3">
+        <div class="w-full max-w-sm rounded-3xl glass-card border-2 border-[#f5c542] p-4 shadow-2xl max-h-[88vh] overflow-y-auto thin-scroll pop-in">
+            <div class="flex items-center justify-between border-b border-[#f5c542]/25 pb-2.5">
+                <h3 class="text-sm font-black text-[#f5c542]">⚽ LUẬT CÁ ĐỘ &amp; BẢO HIỂM GÓC/THẺ</h3>
+                <button id="closeRulesTopBtn" class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+            </div>
+            <div class="mt-3 space-y-2 text-xs text-slate-200 leading-relaxed">
+                <p>• <b>🌍 Trận Thật (5 Giải Hàng Đầu Châu Âu):</b> Tự động cập nhật lịch thi đấu, tên &amp; logo CLB thật từ <b>ESPN</b> (*Ngoại Hạng Anh, Cúp C1, La Liga, Serie A, Bundesliga*). Đặt xong tắt web đi ngủ, trận đá xong quay lại web tự đối chiếu tỷ số/góc/thẻ thật và cộng tiền vào ví chung!</p>
+                <p>• <b>⚡ Bóng Đá Ảo 60s:</b> Chạy liên tục 24/7 theo đồng hồ thực (20s mở cược + 35s đá 90 phút + 5s chốt thưởng). Tắt web quay lại vẫn tự trả thưởng.</p>
+                <p>• <b>⚽ Kèo 1X2:</b> Chọn <b>Đội 1 Thắng</b>, <b>Hòa</b> hoặc <b>Đội 2 Thắng</b> cực dễ hiểu.</p>
+                <p>• <b>🛡️ Bảo Hiểm Chênh Lệch (Phạt Góc 6.0x &amp; Thẻ Phạt 5.5x):</b></p>
+                <ul class="list-disc pl-4 space-y-1 text-[11px]">
+                    <li><b>±0 (Trúng phóc):</b> Ăn <b>100%</b> thưởng (Góc <b>6.00x</b> • Thẻ <b>5.50x</b>).</li>
+                    <li><b>±1 (Lệch tối đa 1):</b> Giảm <b>-10%</b> → 90% thưởng (Góc <b>5.40x</b> • Thẻ <b>4.95x</b>).</li>
+                    <li><b>±2 (Lệch tối đa 2):</b> Giảm <b>-20%</b> → 80% thưởng (Góc <b>4.80x</b> • Thẻ <b>4.40x</b>).</li>
+                    <li><b>±3 (Lệch tối đa 3):</b> Giảm <b>-30%</b> → 70% thưởng (Góc <b>4.20x</b> • Thẻ <b>3.85x</b>).</li>
+                </ul>
+            </div>
+            <button id="closeRulesBtn" class="btn-press w-full mt-4 py-2.5 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs uppercase">
+                Đã Hiểu &amp; Vào Soi Kèo
+            </button>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 3: SECRET PASSWORD PROMPT ("TND" -> "memaybeo123")
+    ===================================================================== -->
+    <div id="adminPassModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/82 backdrop-blur-md p-4">
+        <div id="adminPassBox" class="w-full max-w-xs rounded-3xl bg-[#07110e] border-2 border-slate-700 p-5 shadow-2xl pop-in">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-black tracking-widest text-slate-400 uppercase">TND ACCESS</span>
+                <button id="closePassBtn" class="w-7 h-7 rounded-full bg-slate-800 text-slate-300 text-xs font-bold">✕</button>
+            </div>
+            <form id="adminPassForm" class="space-y-3">
+                <input id="adminPassInput" type="password" autocomplete="off" placeholder="Nhập mật khẩu..." class="w-full bg-black border border-slate-700 focus:border-[#f5c542] focus:outline-none rounded-xl px-3.5 py-2.5 text-sm font-bold text-white" />
+                <div id="adminPassError" class="text-[11px] font-bold text-red-400 hidden">❌ Sai mật khẩu truy cập!</div>
+                <button type="submit" class="btn-press w-full py-2.5 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+                    Xác Nhận
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 4: SECRET ADMIN CONTROL PANEL (UNLOCKED WITH "memaybeo123")
+    ===================================================================== -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/88 backdrop-blur-md p-3">
+        <div class="w-full max-w-md rounded-3xl bg-gradient-to-b from-slate-900 via-[#081712] to-black border-2 border-[#f5c542] p-4 shadow-2xl max-h-[92vh] overflow-y-auto thin-scroll pop-in">
+            <div class="flex items-start justify-between border-b border-[#f5c542]/30 pb-2.5 gap-2">
+                <div>
+                    <span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest">TND BACKDOOR • SPORTSBOOK</span>
+                    <h2 class="text-base font-black text-[#f5c542] tracking-wide mt-0.5">👑 ADMIN CONTROL - THỂ THAO</h2>
+                </div>
+                <button id="closeAdminTopBtn" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold shrink-0">✕</button>
+            </div>
+
+            <!-- 1. Force Settle Pending Tickets Immediately (Great for testing Real Matches!) -->
+            <div class="mt-3 bg-slate-900/85 p-3 rounded-2xl border border-[#f5c542]/25">
+                <div class="text-xs font-extrabold text-yellow-200 mb-2">🎟️ Ép Chốt Vé Đang Chờ (Khỏi Đợi 90 Phút):</div>
+                <div id="adminPendingTicketsList" class="space-y-1.5 max-h-40 overflow-y-auto thin-scroll">
+                    <div class="text-[11px] text-slate-400 italic">Không có vé nào đang chờ.</div>
+                </div>
+            </div>
+
+            <!-- 2. Create Custom Match -->
+            <div class="mt-3 bg-slate-900/85 p-3 rounded-2xl border border-[#f5c542]/25 space-y-2">
+                <div class="text-xs font-extrabold text-yellow-200">🏟️ Tạo Trận Giao Hữu Tùy Chỉnh:</div>
+                <div class="grid grid-cols-2 gap-1.5">
+                    <input id="adminCustomHome" type="text" maxlength="20" placeholder="Đội 1 (vd: Lớp 12A1)" class="bg-black border border-slate-700 focus:border-[#f5c542] rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none" />
+                    <input id="adminCustomAway" type="text" maxlength="20" placeholder="Đội 2 (vd: Lớp 12A2)" class="bg-black border border-slate-700 focus:border-[#f5c542] rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none" />
+                </div>
+                <button id="adminAddCustomMatchBtn" class="btn-press w-full py-2 rounded-xl bg-emerald-700 border border-emerald-400/60 text-white font-black text-xs">
+                    ➕ Lên Kèo Trận Này Ngay
+                </button>
+            </div>
+
+            <!-- 3. Virtual 60s Dual Rigging Sliders -->
+            <div class="mt-3 bg-slate-900/85 p-3 rounded-2xl border border-[#f5c542]/25 space-y-3">
+                <div>
+                    <div class="flex items-center justify-between text-xs font-extrabold mb-1">
+                        <span class="text-yellow-200">🎯 Bịp Bóng Ảo 60s (&lt; 500K):</span>
+                        <span id="rigSmallVal" class="text-emerald-400 text-sm font-black font-mono-num">10%</span>
+                    </div>
+                    <input id="rigSmallSlider" type="range" min="0" max="100" value="10" class="w-full accent-emerald-400 cursor-pointer">
+                </div>
+                <div class="pt-2 border-t border-slate-800">
+                    <div class="flex items-center justify-between text-xs font-extrabold mb-1">
+                        <span class="text-yellow-200">🔥 Bịp Bóng Ảo 60s (&gt;= 500K):</span>
+                        <span id="rigBigVal" class="text-rose-400 text-sm font-black font-mono-num">30%</span>
+                    </div>
+                    <input id="rigBigSlider" type="range" min="0" max="100" value="30" class="w-full accent-rose-500 cursor-pointer">
+                </div>
+            </div>
+
+            <!-- 4. Shared Wallet Manager -->
+            <div class="mt-3 bg-slate-900/85 p-3 rounded-2xl border border-[#f5c542]/25">
+                <div class="text-xs font-extrabold text-yellow-200 mb-2">💵 Quản Lý Ví Chung:</div>
+                <div class="flex gap-2">
+                    <input id="adminBalInput" type="number" min="0" step="10000" placeholder="Nhập số dư..." class="flex-1 bg-black border border-[#f5c542]/45 rounded-xl px-3 py-2 text-xs font-bold font-mono-num text-[#f5c542] focus:outline-none focus:border-[#f5c542]" />
+                    <button id="adminSetBalBtn" class="btn-press px-3.5 py-2 rounded-xl bg-[#f5c542] text-slate-950 font-black text-xs">Đặt</button>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 mt-2">
+                    <button id="adminAdd10M" class="btn-press py-2 rounded-xl bg-emerald-950 border border-emerald-500/50 text-[11px] font-extrabold text-emerald-300">+10 Củ</button>
+                    <button id="adminAdd50M" class="btn-press py-2 rounded-xl bg-amber-950 border border-amber-500/50 text-[11px] font-extrabold text-amber-300">+50 Củ</button>
+                    <button id="adminSetZero" class="btn-press py-2 rounded-xl bg-rose-950 border border-rose-500/50 text-[11px] font-extrabold text-rose-300">Set 0đ</button>
+                </div>
+            </div>
+
+            <button id="hideAdminBtn" class="btn-press w-full mt-4 py-3 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider">
+                🔒 Đóng &amp; Ẩn Sạch Dấu Vết
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           NAMKYBET - THỂ THAO & CÁ ĐỘ BÓNG ĐÁ VIP
+           Real Top 5 European Leagues (ESPN Public API) + Virtual Football 60s
+           1X2 + Corners & Cards with Deviation Insurance (±0..±3, -10% per step)
+           Offline Auto-Settlement via LocalStorage + Shared Wallet (namkybet_balance)
+        ===================================================================== */
+        (() => {
+            'use strict';
+
+            /* -----------------------------------------------------------------
+               1. CONSTANTS, TOP 5 LEAGUES & VIRTUAL CLUB DATABASE (REAL ESPN LOGOS)
+            ----------------------------------------------------------------- */
+            const STORAGE_KEY        = 'namkybet_thethao_vip_v1';
+            const SHARED_BALANCE_KEY = 'namkybet_balance';
+            const SHARED_USERNAME_KEY= 'namkybet_username';
+            const ADMIN_PASS         = 'memaybeo123';
+
+            const STARTING_BALANCE   = 20_000_000;
+            const MIN_BET            = 100_000;
+            const BIG_BET_THRESHOLD  = 500_000;
+            const BAILOUT_AMOUNT     = 10_000_000;
+
+            const BASE_CORNER_ODDS   = 6.00; // ±0: 6.00x | ±1: 5.40x | ±2: 4.80x | ±3: 4.20x
+            const BASE_CARD_ODDS     = 5.50; // ±0: 5.50x | ±1: 4.95x | ±2: 4.40x | ±3: 3.85x
+
+            const VIRTUAL_CYCLE_MS   = 60_000; // 60s total: 0..20s betting, 20..55s match (0'->90'), 55..60s FT
+            const VIRTUAL_BET_SEC    = 20;
+            const VIRTUAL_PLAY_SEC   = 35;
+
+            const TOP_LEAGUES = [
+                { slug: 'eng.1',          name: 'Ngoại Hạng Anh', short: 'NHA',        flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+                { slug: 'uefa.champions', name: 'Cúp C1 Châu Âu', short: 'Cúp C1',     flag: '🏆' },
+                { slug: 'esp.1',          name: 'La Liga',        short: 'La Liga',    flag: '🇪🇸' },
+                { slug: 'ita.1',          name: 'Serie A',        short: 'Serie A',    flag: '🇮🇹' },
+                { slug: 'ger.1',          name: 'Bundesliga',     short: 'Bundesliga', flag: '🇩🇪' }
+            ];
+
+            // Real Top European Clubs with Official ESPN CDN Logo IDs
+            const EURO_CLUBS = [
+                { id: 359,  name: 'Arsenal',          abbr: 'ARS', color: '#dc2626', rating: 88, league: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 NHA' },
+                { id: 363,  name: 'Chelsea',          abbr: 'CHE', color: '#034694', rating: 85, league: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 NHA' },
+                { id: 364,  name: 'Liverpool',        abbr: 'LIV', color: '#b91c1c', rating: 89, league: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 NHA' },
+                { id: 382,  name: 'Man City',         abbr: 'MCI', color: '#38bdf8', rating: 90, league: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 NHA' },
+                { id: 360,  name: 'Man United',       abbr: 'MUN', color: '#991b1b', rating: 82, league: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 NHA' },
+                { id: 367,  name: 'Tottenham',        abbr: 'TOT', color: '#1e293b', rating: 83, league: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 NHA' },
+                { id: 86,   name: 'Real Madrid',      abbr: 'RMA', color: '#eab308', rating: 91, league: '🇪🇸 La Liga' },
+                { id: 83,   name: 'Barcelona',        abbr: 'BAR', color: '#1d4ed8', rating: 89, league: '🇪🇸 La Liga' },
+                { id: 1068, name: 'Atletico Madrid',  abbr: 'ATM', color: '#dc2626', rating: 85, league: '🇪🇸 La Liga' },
+                { id: 132,  name: 'Bayern Munich',    abbr: 'BAY', color: '#dc2626', rating: 89, league: '🇩🇪 Bundesliga' },
+                { id: 124,  name: 'Dortmund',         abbr: 'BVB', color: '#facc15', rating: 84, league: '🇩🇪 Bundesliga' },
+                { id: 131,  name: 'Leverkusen',       abbr: 'B04', color: '#b91c1c', rating: 85, league: '🇩🇪 Bundesliga' },
+                { id: 110,  name: 'Inter Milan',      abbr: 'INT', color: '#1d4ed8', rating: 87, league: '🇮🇹 Serie A' },
+                { id: 103,  name: 'AC Milan',         abbr: 'ACM', color: '#dc2626', rating: 84, league: '🇮🇹 Serie A' },
+                { id: 111,  name: 'Juventus',         abbr: 'JUV', color: '#334155', rating: 84, league: '🇮🇹 Serie A' },
+                { id: 160,  name: 'PSG',              abbr: 'PSG', color: '#1e3a8a', rating: 88, league: '🏆 Cúp C1' }
+            ];
+
+            const BOT_NAMES = [
+                'TuanAnh_2k9', 'HoangLong_VIP', 'ChelseaBlue_99', 'MinhQuan_SG',
+                'AnhBa_CuChi', 'LinhXinh_2k8', 'DatSoiKeo', 'KhangGocThe'
+            ];
+
+            const BOT_LINES = [
+                'Bảo hiểm ±2 phạt góc ăn 4.80x ngon vãi, dễ trúng hơn đoán trúng phóc nhiều 🚩💰',
+                'Tối nay có lịch Ngoại Hạng Anh với Cúp C1 thật kìa anh em, vào đặt rồi đi ngủ sáng mai lụm tiền!',
+                'Vừa chốt kèo 4 thẻ phạt bảo hiểm ±1 trận La Liga ăn 4.95x ngọt nước 🟨🔥',
+                'Lúc chờ trận thật sang tab Bóng Ảo 60s làm vài vòng gỡ vốn phê lắm ⚡⚽',
+                'Cửa Hòa 1X2 tỷ lệ toàn 3.3x – 3.8x, bắt trúng phát ấm no cả mùa Noel!',
+                'Cháy túi bấm Báo Nhà lấy 10 củ vào phục thù nhà cái nào 🆘🎄'
+            ];
+
+            /* -----------------------------------------------------------------
+               2. APPLICATION STATE
+            ----------------------------------------------------------------- */
+            const state = {
+                balance: STARTING_BALANCE,
+                activeMainTab: 'real', // 'real' | 'virtual' | 'tickets'
+                leagueFilter: 'all',
+                ticketFilter: 'all',
+                muted: false,
+                chatOpen: false,
+                realMatches: [],
+                customMatches: [],
+                tickets: [],           // Saved to localStorage for offline auto-settlement!
+                virtualOutcomes: {},   // Persisted virtual match final outcomes keyed by matchId
+                currentVirtualCycleId: -1,
+                currentVirtualMatches: [],
+                isFetchingReal: false,
+                // Real ESPN Standings (Top 5 European Leagues)
+                standings: {},         // slug -> { table: [...], byId: {...}, byName: {...} }
+                standingsModalLeague: 'eng.1',
+                standingsHighlightIds: [],
+                isFetchingStandings: false,
+                // Active Bet Slip Modal state
+                slip: {
+                    match: null,
+                    market: '1x2',     // '1x2' | 'corners' | 'cards'
+                    sel1x2: 'HOME',    // 'HOME' | 'DRAW' | 'AWAY'
+                    cornerNum: 10,     // 5..16
+                    cardNum: 4,        // 0..10
+                    tolerance: 1,      // 0..3 (-10% per unit)
+                    stake: 100_000
+                },
+                admin: {
+                    rigSmallPct: 10,
+                    rigBigPct: 30
+                }
+            };
+
+            /* -----------------------------------------------------------------
+               3. WEB AUDIO API SOUND ENGINE (ZERO EXTERNAL FILES)
+            ----------------------------------------------------------------- */
+            class SportsAudio {
+                constructor() { this.ctx = null; }
+
+                unlock() {
+                    try {
+                        if (!this.ctx) {
+                            const AC = window.AudioContext || window.webkitAudioContext;
+                            if (AC) this.ctx = new AC();
+                        }
+                        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+                    } catch (_) {}
+                }
+
+                ready() {
+                    if (state.muted) return false;
+                    this.unlock();
+                    return !!this.ctx;
+                }
+
+                playClick() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const g = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(1060, t);
+                    osc.frequency.exponentialRampToValueAtTime(520, t + 0.036);
+                    g.gain.setValueAtTime(0.12, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.042);
+                    osc.connect(g); g.connect(this.ctx.destination);
+                    osc.start(t); osc.stop(t + 0.045);
+                }
+
+                playWhistle() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const lfo = this.ctx.createOscillator();
+                    const lfoG = this.ctx.createGain();
+                    const g = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(2800, t);
+                    lfo.frequency.value = 34;
+                    lfoG.gain.value = 90;
+                    lfo.connect(lfoG); lfoG.connect(osc.frequency);
+                    g.gain.setValueAtTime(0.09, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+                    osc.connect(g); g.connect(this.ctx.destination);
+                    osc.start(t); lfo.start(t);
+                    osc.stop(t + 0.24); lfo.stop(t + 0.24);
+                }
+
+                playWin() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    [659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => {
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(f, t + i * 0.06);
+                        g.gain.setValueAtTime(0.16, t + i * 0.06);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + i * 0.06 + 0.24);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(t + i * 0.06); osc.stop(t + i * 0.06 + 0.26);
+                    });
+                }
+
+                playError() {
+                    if (!this.ready()) return;
+                    const t = this.ctx.currentTime;
+                    const osc = this.ctx.createOscillator();
+                    const g = this.ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, t);
+                    osc.frequency.linearRampToValueAtTime(140, t + 0.15);
+                    g.gain.setValueAtTime(0.09, t);
+                    g.gain.exponentialRampToValueAtTime(0.001, t + 0.17);
+                    osc.connect(g); g.connect(this.ctx.destination);
+                    osc.start(t); osc.stop(t + 0.18);
+                }
+            }
+
+            const sfx = new SportsAudio();
+
+            /* -----------------------------------------------------------------
+               4. DOM REFERENCES
+            ----------------------------------------------------------------- */
+            const el = {
+                backLobbyBtn: document.getElementById('backLobbyBtn'),
+                balanceDisplay: document.getElementById('balanceDisplay'),
+                rulesBtn: document.getElementById('rulesBtn'),
+                soundBtn: document.getElementById('soundBtn'),
+                tndLogoBtn: document.getElementById('tndLogoBtn'),
+                bailoutWrap: document.getElementById('bailoutWrap'),
+                bailoutBtn: document.getElementById('bailoutBtn'),
+                pendingTicketBadge: document.getElementById('pendingTicketBadge'),
+                openStandingsBtn: document.getElementById('openStandingsBtn'),
+                refreshRealBtn: document.getElementById('refreshRealBtn'),
+                espnSyncStatus: document.getElementById('espnSyncStatus'),
+                realMatchesList: document.getElementById('realMatchesList'),
+                // Standings Modal
+                standingsModal: document.getElementById('standingsModal'),
+                standingsMetaText: document.getElementById('standingsMetaText'),
+                refreshStandingsBtn: document.getElementById('refreshStandingsBtn'),
+                closeStandingsTopBtn: document.getElementById('closeStandingsTopBtn'),
+                closeStandingsBtn: document.getElementById('closeStandingsBtn'),
+                standingsBody: document.getElementById('standingsBody'),
+                virtualPhaseDot: document.getElementById('virtualPhaseDot'),
+                virtualPhaseTitle: document.getElementById('virtualPhaseTitle'),
+                virtualPhaseSub: document.getElementById('virtualPhaseSub'),
+                virtualClockLabel: document.getElementById('virtualClockLabel'),
+                virtualClockVal: document.getElementById('virtualClockVal'),
+                virtualCommentaryBox: document.getElementById('virtualCommentaryBox'),
+                virtualMatchesList: document.getElementById('virtualMatchesList'),
+                checkSettleBtn: document.getElementById('checkSettleBtn'),
+                ticketsList: document.getElementById('ticketsList'),
+                // Bet Modal
+                betModal: document.getElementById('betModal'),
+                closeBetModalBtn: document.getElementById('closeBetModalBtn'),
+                bmLeagueLabel: document.getElementById('bmLeagueLabel'),
+                bmMatchTitle: document.getElementById('bmMatchTitle'),
+                bmPanel1x2: document.getElementById('bmPanel-1x2'),
+                bmPanelStat: document.getElementById('bmPanel-stat'),
+                bmHomeShort: document.getElementById('bmHomeShort'),
+                bmAwayShort: document.getElementById('bmAwayShort'),
+                bmOddsHome: document.getElementById('bmOddsHome'),
+                bmOddsDraw: document.getElementById('bmOddsDraw'),
+                bmOddsAway: document.getElementById('bmOddsAway'),
+                bmStatPrompt: document.getElementById('bmStatPrompt'),
+                bmStatMinus: document.getElementById('bmStatMinus'),
+                bmStatPlus: document.getElementById('bmStatPlus'),
+                bmStatNum: document.getElementById('bmStatNum'),
+                bmStatUnit: document.getElementById('bmStatUnit'),
+                bmRangePreview: document.getElementById('bmRangePreview'),
+                bmInsuranceExplain: document.getElementById('bmInsuranceExplain'),
+                bmStakeMinus: document.getElementById('bmStakeMinus'),
+                bmStakePlus: document.getElementById('bmStakePlus'),
+                bmStakeInput: document.getElementById('bmStakeInput'),
+                bmAllInBtn: document.getElementById('bmAllInBtn'),
+                bmFinalOddsText: document.getElementById('bmFinalOddsText'),
+                bmPotentialWinText: document.getElementById('bmPotentialWinText'),
+                bmConfirmBtn: document.getElementById('bmConfirmBtn'),
+                // Chat
+                toggleChatBtn: document.getElementById('toggleChatBtn'),
+                chatChevron: document.getElementById('chatChevron'),
+                chatDrawer: document.getElementById('chatDrawer'),
+                chatMessages: document.getElementById('chatMessages'),
+                chatUnreadDot: document.getElementById('chatUnreadDot'),
+                chatForm: document.getElementById('chatForm'),
+                chatInput: document.getElementById('chatInput'),
+                onlineCount: document.getElementById('onlineCount'),
+                toastContainer: document.getElementById('toastContainer'),
+                // Rules Modal
+                rulesModal: document.getElementById('rulesModal'),
+                closeRulesTopBtn: document.getElementById('closeRulesTopBtn'),
+                closeRulesBtn: document.getElementById('closeRulesBtn'),
+                // Admin Modals
+                adminPassModal: document.getElementById('adminPassModal'),
+                adminPassBox: document.getElementById('adminPassBox'),
+                adminPassForm: document.getElementById('adminPassForm'),
+                adminPassInput: document.getElementById('adminPassInput'),
+                adminPassError: document.getElementById('adminPassError'),
+                closePassBtn: document.getElementById('closePassBtn'),
+                adminModal: document.getElementById('adminModal'),
+                adminPendingTicketsList: document.getElementById('adminPendingTicketsList'),
+                adminCustomHome: document.getElementById('adminCustomHome'),
+                adminCustomAway: document.getElementById('adminCustomAway'),
+                adminAddCustomMatchBtn: document.getElementById('adminAddCustomMatchBtn'),
+                rigSmallSlider: document.getElementById('rigSmallSlider'),
+                rigSmallVal: document.getElementById('rigSmallVal'),
+                rigBigSlider: document.getElementById('rigBigSlider'),
+                rigBigVal: document.getElementById('rigBigVal'),
+                adminBalInput: document.getElementById('adminBalInput'),
+                adminSetBalBtn: document.getElementById('adminSetBalBtn'),
+                adminAdd10M: document.getElementById('adminAdd10M'),
+                adminAdd50M: document.getElementById('adminAdd50M'),
+                adminSetZero: document.getElementById('adminSetZero'),
+                closeAdminTopBtn: document.getElementById('closeAdminTopBtn'),
+                hideAdminBtn: document.getElementById('hideAdminBtn')
+            };
+
+            /* -----------------------------------------------------------------
+               5. UTILITIES: DETERMINISTIC HASH, FORMATTERS, STORAGE, ESCAPE
+            ----------------------------------------------------------------- */
+            function getPlayerName() {
+                try {
+                    const n = localStorage.getItem(SHARED_USERNAME_KEY);
+                    if (n && n.trim()) return n.trim();
+                } catch (_) {}
+                return 'Bạn (VIP)';
+            }
+
+            function escapeHtml(str) {
+                return String(str || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function formatDots(num) {
+                const safe = Math.max(0, Math.floor(Number(num) || 0));
+                return String(safe).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            function formatVND(num) {
+                return formatDots(num) + 'đ';
+            }
+
+            function formatShort(num) {
+                const n = Math.max(0, Math.floor(Number(num) || 0));
+                if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(2).replace(/\.?0+$/, '') + 'B';
+                if (n >= 1_000_000) return (n / 1_000_000).toFixed(2).replace(/\.?0+$/, '') + 'M';
+                if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+                return String(n);
+            }
+
+            // Fast deterministic PRNG (Mulberry32) from string/number seed
+            function hashStr(str) {
+                let h = 2166136261 >>> 0;
+                const s = String(str);
+                for (let i = 0; i < s.length; i++) {
+                    h ^= s.charCodeAt(i);
+                    h = Math.imul(h, 16777619);
+                }
+                return h >>> 0;
+            }
+
+            function mulberry32(seed) {
+                let a = seed >>> 0;
+                return function () {
+                    a |= 0;
+                    a = (a + 0x6D2B79F5) | 0;
+                    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+                    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+                    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+                };
+            }
+
+            function secureRand() {
+                if (window.crypto && window.crypto.getRandomValues) {
+                    const buf = new Uint32Array(1);
+                    window.crypto.getRandomValues(buf);
+                    return buf[0] / 4294967296;
+                }
+                return Math.random();
+            }
+
+            function formatDateYYYYMMDD(d) {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${y}${m}${day}`;
+            }
+
+            function formatDateYYYYMM(d) {
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                return `${y}${m}`;
+            }
+
+            function formatKickoffVN(isoStr) {
+                try {
+                    const d = new Date(isoStr);
+                    if (Number.isNaN(d.getTime())) return 'Sắp đá';
+                    const hh = String(d.getHours()).padStart(2, '0');
+                    const mm = String(d.getMinutes()).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    const mo = String(d.getMonth() + 1).padStart(2, '0');
+                    return `${hh}:${mm} • ${dd}/${mo}`;
+                } catch (_) {
+                    return 'Sắp đá';
+                }
+            }
+
+            function showToast(msg, type = 'info', duration = 3000) {
+                const styles = {
+                    info: 'bg-[#082118]/95 border-[#f5c542]/85 text-yellow-100',
+                    win:  'bg-emerald-950/95 border-emerald-400 text-emerald-200',
+                    loss: 'bg-rose-950/95 border-rose-400 text-rose-200',
+                    warn: 'bg-amber-950/95 border-amber-400 text-amber-200'
+                };
+                const div = document.createElement('div');
+                div.className = `pointer-events-auto px-4 py-2.5 rounded-2xl border-2 text-xs font-extrabold shadow-2xl text-center pop-in ${styles[type] || styles.info}`;
+                div.textContent = msg;
+                el.toastContainer.appendChild(div);
+                setTimeout(() => {
+                    div.style.transition = 'opacity 0.28s ease, transform 0.28s ease';
+                    div.style.opacity = '0';
+                    div.style.transform = 'translateY(-10px)';
+                    setTimeout(() => div.remove(), 300);
+                }, duration);
+            }
+
+            function syncSharedBalance() {
+                try {
+                    const raw = localStorage.getItem(SHARED_BALANCE_KEY);
+                    if (raw !== null && raw.trim() !== '' && !Number.isNaN(Number(raw)) && Number(raw) >= 0) {
+                        state.balance = Math.floor(Number(raw));
+                    } else {
+                        localStorage.setItem(SHARED_BALANCE_KEY, String(Math.max(0, Math.floor(state.balance))));
+                    }
+                } catch (_) {}
+            }
+
+            function saveState() {
+                try {
+                    const cleanBal = Math.max(0, Math.floor(Number(state.balance) || 0));
+                    state.balance = cleanBal;
+                    localStorage.setItem(SHARED_BALANCE_KEY, String(cleanBal));
+                    // Keep last 45 tickets & prune old virtualOutcomes
+                    const trimmedTickets = state.tickets.slice(0, 45);
+                    state.tickets = trimmedTickets;
+                    const voKeys = Object.keys(state.virtualOutcomes);
+                    if (voKeys.length > 40) {
+                        voKeys.slice(0, voKeys.length - 40).forEach(k => delete state.virtualOutcomes[k]);
+                    }
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                        muted: state.muted,
+                        tickets: state.tickets,
+                        customMatches: state.customMatches.slice(0, 12),
+                        virtualOutcomes: state.virtualOutcomes,
+                        admin: state.admin
+                    }));
+                } catch (_) {}
+            }
+
+            function loadState() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const d = JSON.parse(raw);
+                        if (typeof d.muted === 'boolean') state.muted = d.muted;
+                        if (Array.isArray(d.tickets)) state.tickets = d.tickets.slice(0, 45);
+                        if (Array.isArray(d.customMatches)) state.customMatches = d.customMatches.slice(0, 12);
+                        if (d.virtualOutcomes && typeof d.virtualOutcomes === 'object') state.virtualOutcomes = d.virtualOutcomes;
+                        if (d.admin) {
+                            if (typeof d.admin.rigSmallPct === 'number') state.admin.rigSmallPct = Math.max(0, Math.min(100, d.admin.rigSmallPct));
+                            if (typeof d.admin.rigBigPct === 'number') state.admin.rigBigPct = Math.max(0, Math.min(100, d.admin.rigBigPct));
+                        }
+                    }
+                } catch (_) {}
+                syncSharedBalance();
+            }
+
+            /* -----------------------------------------------------------------
+               6. SNOWFALL & COIN RAIN CANVASES (DELTA-TIME NORMALIZED)
+            ----------------------------------------------------------------- */
+            const snowCanvas = document.getElementById('snowCanvas');
+            const snowCtx = snowCanvas.getContext('2d');
+            const coinCanvas = document.getElementById('coinCanvas');
+            const coinCtx = coinCanvas.getContext('2d');
+            let flakes = [];
+            let coins = [];
+            let coinBurstTimer = 0;
+
+            function resizeCanvases() {
+                snowCanvas.width = window.innerWidth;
+                snowCanvas.height = window.innerHeight;
+                coinCanvas.width = window.innerWidth;
+                coinCanvas.height = window.innerHeight;
+                const count = Math.min(60, Math.max(26, Math.floor(window.innerWidth / 16)));
+                flakes = Array.from({ length: count }, () => ({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    r: Math.random() * 2.1 + 0.7,
+                    vy: 18 + Math.random() * 30,
+                    vx: (Math.random() - 0.5) * 14,
+                    phase: Math.random() * Math.PI * 2,
+                    a: 0.18 + Math.random() * 0.45
+                }));
+            }
+
+            function launchCoins(sec = 2.0) {
+                coinBurstTimer = Math.max(coinBurstTimer, sec);
+            }
+
+            let lastAnimTs = 0;
+            function animLoop(ts) {
+                if (!lastAnimTs) lastAnimTs = ts;
+                const dt = Math.min(0.05, Math.max(0.001, (ts - lastAnimTs) / 1000));
+                lastAnimTs = ts;
+
+                snowCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+                for (let i = 0; i < flakes.length; i++) {
+                    const f = flakes[i];
+                    f.y += f.vy * dt;
+                    f.phase += 1.4 * dt;
+                    f.x += (Math.sin(f.phase) * 14 + f.vx) * dt;
+                    if (f.y > snowCanvas.height + 6) { f.y = -6; f.x = Math.random() * snowCanvas.width; }
+                    if (f.x > snowCanvas.width + 6) f.x = -6;
+                    if (f.x < -6) f.x = snowCanvas.width + 6;
+                    snowCtx.fillStyle = `rgba(255,255,255,${f.a})`;
+                    snowCtx.beginPath();
+                    snowCtx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                    snowCtx.fill();
+                }
+
+                if (coinBurstTimer > 0) {
+                    coinBurstTimer = Math.max(0, coinBurstTimer - dt);
+                    if (coins.length < 70) {
+                        for (let k = 0; k < 2; k++) {
+                            coins.push({
+                                x: Math.random() * coinCanvas.width,
+                                y: -18 - Math.random() * 40,
+                                vx: (Math.random() - 0.5) * 120,
+                                vy: 185 + Math.random() * 200,
+                                r: 9 + Math.random() * 6,
+                                spin: Math.random() * Math.PI * 2,
+                                vSpin: 6 + Math.random() * 8
+                            });
+                        }
+                    }
+                }
+                if (coins.length > 0) {
+                    coinCtx.clearRect(0, 0, coinCanvas.width, coinCanvas.height);
+                    for (let i = coins.length - 1; i >= 0; i--) {
+                        const c = coins[i];
+                        c.x += c.vx * dt;
+                        c.y += c.vy * dt;
+                        c.vy += 420 * dt;
+                        c.spin += c.vSpin * dt;
+                        const sx = Math.max(0.2, Math.abs(Math.cos(c.spin)));
+                        coinCtx.save();
+                        coinCtx.translate(c.x, c.y);
+                        coinCtx.scale(sx, 1);
+                        coinCtx.beginPath();
+                        coinCtx.arc(0, 0, c.r, 0, Math.PI * 2);
+                        coinCtx.fillStyle = '#facc15';
+                        coinCtx.fill();
+                        coinCtx.lineWidth = 2;
+                        coinCtx.strokeStyle = '#b45309';
+                        coinCtx.stroke();
+                        coinCtx.fillStyle = '#fef08a';
+                        coinCtx.font = `900 ${Math.floor(c.r * 1.1)}px sans-serif`;
+                        coinCtx.textAlign = 'center';
+                        coinCtx.textBaseline = 'middle';
+                        coinCtx.fillText('★', 0, 1);
+                        coinCtx.restore();
+                        if (c.y > coinCanvas.height + 28) coins.splice(i, 1);
+                    }
+                    if (coins.length === 0) coinCtx.clearRect(0, 0, coinCanvas.width, coinCanvas.height);
+                }
+
+                requestAnimationFrame(animLoop);
+            }
+
+            /* -----------------------------------------------------------------
+               7. REAL MATCHES FETCHER (ESPN PUBLIC API - TOP 5 EUROPEAN LEAGUES)
+            ----------------------------------------------------------------- */
+            function compute1x2Odds(seedKey, homeBias = 0) {
+                const rng = mulberry32(hashStr(seedKey));
+                // Deterministic balanced football odds
+                const pHome = Math.min(0.62, Math.max(0.22, 0.42 + homeBias + (rng() - 0.5) * 0.26));
+                const pDraw = 0.25 + (rng() - 0.5) * 0.06;
+                const pAway = Math.max(0.14, 1 - pHome - pDraw);
+                const margin = 0.94;
+                const toOdds = p => Math.max(1.25, Math.min(6.50, +(margin / p).toFixed(2)));
+                return {
+                    home: toOdds(pHome),
+                    draw: toOdds(pDraw),
+                    away: toOdds(pAway)
+                };
+            }
+
+            async function fetchWithTimeout(url, ms = 8500) {
+                const ctrl = new AbortController();
+                const timer = setTimeout(() => ctrl.abort(), ms);
+                try {
+                    const res = await fetch(url, { signal: ctrl.signal, mode: 'cors' });
+                    if (!res.ok) {
+                        const err = new Error('HTTP ' + res.status);
+                        err.httpStatus = res.status;
+                        throw err;
+                    }
+                    return await res.json();
+                } finally {
+                    clearTimeout(timer);
+                }
+            }
+
+            /**
+             * Calls ESPN public JSON directly (ESPN natively allows browser CORS).
+             * Only tries CORS proxy if network/CORS blocked; returns null cleanly on HTTP errors.
+             */
+            async function fetchEspnJsonSmart(espnUrl) {
+                try {
+                    return await fetchWithTimeout(espnUrl, 8500);
+                } catch (err) {
+                    if (err && err.httpStatus && err.httpStatus >= 400 && err.httpStatus < 500) {
+                        return null;
+                    }
+                    try {
+                        const proxied = `https://corsproxy.io/?url=${encodeURIComponent(espnUrl)}`;
+                        return await fetchWithTimeout(proxied, 8500);
+                    } catch (_) {
+                        return null;
+                    }
+                }
+            }
+
+            async function fetchRealEuropeanMatches(showToastFeedback = false) {
+                if (state.isFetchingReal) return;
+                state.isFetchingReal = true;
+                el.espnSyncStatus.textContent = '📡 Đang tải lịch thi đấu THẬT 5 giải lớn từ ESPN...';
+
+                const now = new Date();
+                const nowMs = now.getTime();
+                const curMonthStr = formatDateYYYYMM(now);
+                // When near end of month (day >= 18), also pull next month's real fixtures!
+                const nextMonthDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                const nextMonthStr = formatDateYYYYMM(nextMonthDate);
+                const includeNextMonth = now.getDate() >= 18;
+
+                // Use valid ESPN endpoints ONLY: /scoreboard (current matchweek) + ?dates=YYYYMM (never YYYYMMDD-YYYYMMDD!)
+                const requests = TOP_LEAGUES.map(async (lg) => {
+                    const base = `https://site.api.espn.com/apis/site/v2/sports/soccer/${lg.slug}/scoreboard`;
+                    const urls = [base, `${base}?dates=${curMonthStr}`];
+                    if (includeNextMonth) urls.push(`${base}?dates=${nextMonthStr}`);
+
+                    const responses = await Promise.all(urls.map(u => fetchEspnJsonSmart(u)));
+                    const events = [];
+                    responses.forEach(data => {
+                        if (data && Array.isArray(data.events)) {
+                            events.push(...data.events);
+                        }
+                    });
+                    return { lg, events };
+                });
+
+                const results = await Promise.allSettled(requests);
+                const parsed = [];
+                const seenIds = new Set();
+
+                // Window: matches from last 24h up to next 14 days (21 days for Champions League)
+                const minTs = nowMs - 24 * 3600_000;
+
+                results.forEach(res => {
+                    if (res.status !== 'fulfilled') return;
+                    const { lg, events } = res.value;
+                    const maxTs = nowMs + (lg.slug === 'uefa.champions' ? 21 : 14) * 86400_000;
+
+                    events.forEach(ev => {
+                        const evId = String(ev.id);
+                        if (seenIds.has(evId)) return;
+
+                        const comp = ev.competitions && ev.competitions[0];
+                        if (!comp || !Array.isArray(comp.competitors) || comp.competitors.length < 2) return;
+
+                        const stType = (comp.status && comp.status.type) || {};
+                        const stateCode = stType.state || 'pre'; // 'pre' | 'in' | 'post'
+                        const kickoffTs = new Date(ev.date).getTime() || 0;
+
+                        // Keep only real current/upcoming/just-finished matches within window (always keep LIVE)
+                        if (stateCode !== 'in' && (kickoffTs < minTs || kickoffTs > maxTs)) return;
+
+                        seenIds.add(evId);
+
+                        const homeObj = comp.competitors.find(c => c.homeAway === 'home') || comp.competitors[0];
+                        const awayObj = comp.competitors.find(c => c.homeAway === 'away') || comp.competitors[1];
+
+                        const homeId   = String((homeObj.team && homeObj.team.id) || '');
+                        const awayId   = String((awayObj.team && awayObj.team.id) || '');
+                        const homeName = (homeObj.team && (homeObj.team.shortDisplayName || homeObj.team.displayName)) || 'Chủ Nhà';
+                        const awayName = (awayObj.team && (awayObj.team.shortDisplayName || awayObj.team.displayName)) || 'Đội Khách';
+                        const homeAbbr = (homeObj.team && homeObj.team.abbreviation) || homeName.slice(0, 3).toUpperCase();
+                        const awayAbbr = (awayObj.team && awayObj.team.abbreviation) || awayName.slice(0, 3).toUpperCase();
+                        const homeLogo = (homeObj.team && homeObj.team.logo) || '';
+                        const awayLogo = (awayObj.team && awayObj.team.logo) || '';
+                        const homeColor = (homeObj.team && homeObj.team.color) ? `#${homeObj.team.color}` : '#1d4ed8';
+                        const awayColor = (awayObj.team && awayObj.team.color) ? `#${awayObj.team.color}` : '#dc2626';
+
+                        parsed.push({
+                            id: evId,
+                            isVirtual: false,
+                            isCustom: false,
+                            leagueSlug: lg.slug,
+                            leagueName: `${lg.flag} ${lg.name}`,
+                            leagueShort: `${lg.flag} ${lg.short}`,
+                            dateIso: ev.date,
+                            kickoffTs,
+                            status: stateCode, // 'pre' | 'in' | 'post'
+                            clockText: (comp.status && comp.status.displayClock) || stType.shortDetail || '',
+                            home: { id: homeId, name: homeName, abbr: homeAbbr, logo: homeLogo, color: homeColor, score: parseInt(homeObj.score, 10) || 0 },
+                            away: { id: awayId, name: awayName, abbr: awayAbbr, logo: awayLogo, color: awayColor, score: parseInt(awayObj.score, 10) || 0 },
+                            odds: compute1x2Odds(`${lg.slug}_${evId}`)
+                        });
+                    });
+                });
+
+                // Sort: LIVE first, then upcoming chronologically, then recently finished
+                const orderRank = s => (s === 'in' ? 0 : (s === 'pre' ? 1 : 2));
+                parsed.sort((a, b) => {
+                    const rDiff = orderRank(a.status) - orderRank(b.status);
+                    if (rDiff !== 0) return rDiff;
+                    return a.status === 'post' ? (b.kickoffTs - a.kickoffTs) : (a.kickoffTs - b.kickoffTs);
+                });
+
+                state.isFetchingReal = false;
+                state.realMatches = parsed;
+
+                if (parsed.length > 0) {
+                    const liveCnt = parsed.filter(m => m.status === 'in').length;
+                    const upCnt   = parsed.filter(m => m.status === 'pre').length;
+                    el.espnSyncStatus.textContent = `✅ Lịch THẬT ESPN: ${liveCnt} đang đá • ${upCnt} sắp đá (Top 5 Âu)`;
+                    if (showToastFeedback) showToast(`⚽ Đã tải ${parsed.length} trận thật 100% từ ESPN!`, 'win', 2200);
+                } else {
+                    el.espnSyncStatus.textContent = '❌ Không kết nối được ESPN (hoặc khung Preview chặn mạng) — Bấm 🔄 thử lại!';
+                    if (showToastFeedback) showToast('❌ Không gọi được ESPN trong môi trường này — Hãy mở trực tiếp trên trình duyệt/Vercel!', 'loss', 3200);
+                }
+
+                renderRealMatches();
+                // Fetch real standings for Top 5 leagues in background to populate rank badges & BXH
+                fetchAllStandings(false);
+                // Immediately check & auto-settle any pending real-match tickets!
+                await settleAllPendingTickets(false);
+            }
+
+            /* -----------------------------------------------------------------
+               7B. REAL STANDINGS FETCHER & MODAL (ESPN V2 STANDINGS API)
+            ----------------------------------------------------------------- */
+            function extractStatVal(statsArr, namesList, fallback = 0) {
+                if (!Array.isArray(statsArr)) return fallback;
+                for (let i = 0; i < namesList.length; i++) {
+                    const target = namesList[i].toLowerCase();
+                    const found = statsArr.find(s =>
+                        String(s.name || '').toLowerCase() === target ||
+                        String(s.type || '').toLowerCase() === target ||
+                        String(s.abbreviation || '').toLowerCase() === target
+                    );
+                    if (found) {
+                        if (typeof found.value === 'number' && Number.isFinite(found.value)) return found.value;
+                        const parsed = parseInt(String(found.displayValue || '').replace(/[^\d-]/g, ''), 10);
+                        if (Number.isFinite(parsed)) return parsed;
+                    }
+                }
+                return fallback;
+            }
+
+            async function fetchLeagueStandings(slug) {
+                const url = `https://site.api.espn.com/apis/v2/sports/soccer/${slug}/standings`;
+                const data = await fetchEspnJsonSmart(url);
+                if (!data) return null;
+
+                // Gather entries from data.children[].standings.entries OR top-level data.standings.entries
+                let rawEntries = [];
+                if (Array.isArray(data.children) && data.children.length > 0) {
+                    data.children.forEach(ch => {
+                        if (ch.standings && Array.isArray(ch.standings.entries)) {
+                            rawEntries.push(...ch.standings.entries);
+                        }
+                    });
+                } else if (data.standings && Array.isArray(data.standings.entries)) {
+                    rawEntries = data.standings.entries;
+                }
+
+                if (rawEntries.length === 0) return null;
+
+                const byId = {};
+                const byName = {};
+                const table = rawEntries.map((entry, idx) => {
+                    const tm = entry.team || {};
+                    const stats = entry.stats || [];
+                    const teamId = String(tm.id || '');
+                    const name = tm.shortDisplayName || tm.displayName || tm.name || 'CLB';
+                    const abbr = tm.abbreviation || name.slice(0, 3).toUpperCase();
+                    const logo = (tm.logos && tm.logos[0] && tm.logos[0].href) || tm.logo || '';
+                    const rank = extractStatVal(stats, ['rank'], idx + 1);
+                    const played = extractStatVal(stats, ['gamesplayed', 'gp'], 0);
+                    const wins = extractStatVal(stats, ['wins', 'w'], 0);
+                    const draws = extractStatVal(stats, ['ties', 'draws', 'd'], 0);
+                    const losses = extractStatVal(stats, ['losses', 'l'], 0);
+                    const gd = extractStatVal(stats, ['pointdifferential', 'goaldiff', 'gd'], 0);
+                    const points = extractStatVal(stats, ['points', 'pts', 'p'], 0);
+                    const noteColor = (entry.note && entry.note.color) ? String(entry.note.color) : '';
+                    const noteDesc = (entry.note && entry.note.description) ? String(entry.note.description) : '';
+
+                    const row = { rank, teamId, name, abbr, logo, played, wins, draws, losses, gd, points, noteColor, noteDesc };
+                    if (teamId) byId[teamId] = row;
+                    byName[name.toLowerCase()] = row;
+                    return row;
+                });
+
+                // Sort cleanly by rank ascending (fallback points desc, gd desc)
+                table.sort((a, b) => (a.rank - b.rank) || (b.points - a.points) || (b.gd - a.gd));
+                // Normalize sequential ranks if API returned 0s
+                table.forEach((row, i) => {
+                    if (!row.rank || row.rank <= 0) row.rank = i + 1;
+                });
+
+                const bundle = { updatedAt: Date.now(), table, byId, byName };
+                state.standings[slug] = bundle;
+                return bundle;
+            }
+
+            async function fetchAllStandings(force = false) {
+                if (state.isFetchingStandings && !force) return;
+                state.isFetchingStandings = true;
+                try {
+                    await Promise.allSettled(TOP_LEAGUES.map(lg => fetchLeagueStandings(lg.slug)));
+                } finally {
+                    state.isFetchingStandings = false;
+                }
+                renderRealMatches();
+                if (!el.standingsModal.classList.contains('hidden')) {
+                    renderStandingsModal();
+                }
+            }
+
+            function getTeamStanding(leagueSlug, team) {
+                if (!leagueSlug || !team) return null;
+                const st = state.standings[leagueSlug];
+                if (!st) return null;
+                if (team.id && st.byId[String(team.id)]) return st.byId[String(team.id)];
+                if (team.name && st.byName[team.name.toLowerCase()]) return st.byName[team.name.toLowerCase()];
+                return null;
+            }
+
+            function getRankToneClass(slug, rank, totalTeams) {
+                if (slug === 'uefa.champions') {
+                    if (rank <= 8) return 'bg-emerald-900/90 text-emerald-200 border border-emerald-400/70';
+                    if (rank <= 24) return 'bg-sky-900/85 text-sky-200 border border-sky-400/55';
+                    return 'bg-rose-950/90 text-rose-300 border border-rose-500/60';
+                }
+                if (rank <= 4) return 'bg-amber-500/25 text-[#fef08a] border border-[#f5c542]/80';
+                if (rank <= 6) return 'bg-sky-900/80 text-sky-200 border border-sky-400/55';
+                if (totalTeams >= 16 && rank > totalTeams - 3) return 'bg-rose-950/90 text-rose-300 border border-rose-500/65';
+                return 'bg-slate-800/90 text-slate-300 border border-white/15';
+            }
+
+            function renderTeamRankBadge(leagueSlug, team) {
+                const st = getTeamStanding(leagueSlug, team);
+                if (!st) return '';
+                const total = (state.standings[leagueSlug] && state.standings[leagueSlug].table.length) || 20;
+                const tone = getRankToneClass(leagueSlug, st.rank, total);
+                return `<span class="rank-badge font-mono-num ${tone}" title="Hạng ${st.rank} • ${st.points} điểm">#${st.rank} • ${st.points}đ</span>`;
+            }
+
+            function openStandingsModal(leagueSlug = null, highlightIds = []) {
+                sfx.playClick();
+                const targetSlug = (leagueSlug && leagueSlug !== 'all' && leagueSlug !== 'virtual')
+                    ? leagueSlug
+                    : (state.leagueFilter !== 'all' ? state.leagueFilter : 'eng.1');
+                state.standingsModalLeague = targetSlug;
+                state.standingsHighlightIds = (highlightIds || []).map(String).filter(Boolean);
+
+                el.standingsModal.classList.remove('hidden');
+                el.standingsModal.classList.add('flex');
+                renderStandingsModal();
+
+                if (!state.standings[targetSlug]) {
+                    fetchLeagueStandings(targetSlug).then(() => renderStandingsModal());
+                }
+            }
+
+            function closeStandingsModal() {
+                el.standingsModal.classList.add('hidden');
+                el.standingsModal.classList.remove('flex');
+            }
+
+            function renderStandingsModal() {
+                const slug = state.standingsModalLeague;
+                const lgObj = TOP_LEAGUES.find(x => x.slug === slug) || TOP_LEAGUES[0];
+
+                document.querySelectorAll('.bxh-lg-tab').forEach(btn => {
+                    const active = btn.dataset.bxhLeague === slug;
+                    btn.className = active
+                        ? 'bxh-lg-tab btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10px] font-black bg-[#f5c542] text-slate-950 shadow'
+                        : 'bxh-lg-tab btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10px] font-bold bg-black/55 text-slate-300 border border-white/10';
+                });
+
+                const bundle = state.standings[slug];
+                if (!bundle || !bundle.table || bundle.table.length === 0) {
+                    el.standingsMetaText.textContent = `${lgObj.flag} ${lgObj.name} • Đang đồng bộ ESPN...`;
+                    el.standingsBody.innerHTML = `
+                        <div class="py-10 text-center space-y-2">
+                            <div class="text-2xl">📡</div>
+                            <div class="text-xs font-bold text-slate-300">Chưa tải được BXH ${escapeHtml(lgObj.name)}</div>
+                            <div class="text-[10.5px] text-slate-400">Bấm nút 🔄 góc trên để thử lại (mở trên trình duyệt/Vercel nếu Preview chặn mạng).</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const total = bundle.table.length;
+                el.standingsMetaText.textContent = `${lgObj.flag} ${lgObj.name} • ${total} CLB (Cập nhật trực tiếp từ ESPN)`;
+
+                el.standingsBody.innerHTML = bundle.table.map(row => {
+                    const isHL = state.standingsHighlightIds.includes(row.teamId);
+                    let rankDotCls = 'bg-slate-700 text-slate-200';
+                    if (slug === 'uefa.champions') {
+                        if (row.rank <= 8) rankDotCls = 'bg-emerald-600 text-white';
+                        else if (row.rank <= 24) rankDotCls = 'bg-sky-600 text-white';
+                        else rankDotCls = 'bg-rose-700 text-white';
+                    } else {
+                        if (row.rank <= 4) rankDotCls = 'bg-emerald-600 text-white';
+                        else if (row.rank <= 6) rankDotCls = 'bg-sky-600 text-white';
+                        else if (total >= 16 && row.rank > total - 3) rankDotCls = 'bg-rose-700 text-white';
+                    }
+
+                    const gdText = row.gd > 0 ? `+${row.gd}` : String(row.gd);
+                    const gdCls = row.gd > 0 ? 'text-emerald-300' : (row.gd < 0 ? 'text-rose-300' : 'text-slate-300');
+                    const logoHtml = row.logo
+                        ? `<img src="${escapeHtml(row.logo)}" alt="${escapeHtml(row.abbr)}" class="w-5 h-5 object-contain shrink-0" loading="lazy" onerror="this.style.display='none'" />`
+                        : '';
+
+                    return `
+                        <div class="grid grid-cols-12 items-center px-2 py-1.5 rounded-xl bg-black/45 border border-white/5 text-[10.5px] ${isHL ? 'bxh-row-highlight' : ''}">
+                            <div class="col-span-1 flex justify-center">
+                                <span class="font-mono-num w-5 h-5 rounded-md text-[9.5px] font-black flex items-center justify-center ${rankDotCls}">${row.rank}</span>
+                            </div>
+                            <div class="col-span-5 flex items-center gap-1.5 pl-1 min-w-0">
+                                ${logoHtml}
+                                <span class="font-extrabold ${isHL ? 'text-[#fef08a]' : 'text-white'} truncate">${escapeHtml(row.name)}</span>
+                            </div>
+                            <span class="col-span-1 text-center font-mono-num text-slate-300">${row.played}</span>
+                            <span class="col-span-2 text-center font-mono-num text-[9.5px] text-slate-300">${row.wins}-${row.draws}-${row.losses}</span>
+                            <span class="col-span-1 text-center font-mono-num font-bold ${gdCls}">${gdText}</span>
+                            <span class="col-span-2 text-right pr-1 font-mono-num font-black text-[#f5c542] text-xs">${row.points}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            /**
+             * Fetches official ESPN Match Summary for a finished real match to extract
+             * final Score, Total Corners (wonCorners), and Total Cards (yellowCards + redCards)
+             */
+            async function fetchRealMatchFinalStats(leagueSlug, eventId) {
+                const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${leagueSlug}/summary?event=${eventId}`;
+                const data = await fetchEspnJsonSmart(url);
+                const comp = data && data.header && data.header.competitions && data.header.competitions[0];
+                if (!comp) return null;
+
+                const stType = (comp.status && comp.status.type) || {};
+                const isFinished = stType.completed === true || stType.state === 'post';
+                if (!isFinished) return null;
+
+                const homeObj = comp.competitors.find(c => c.homeAway === 'home') || comp.competitors[0];
+                const awayObj = comp.competitors.find(c => c.homeAway === 'away') || comp.competitors[1];
+                const homeScore = parseInt(homeObj.score, 10) || 0;
+                const awayScore = parseInt(awayObj.score, 10) || 0;
+
+                // Parse official corners & cards from boxscore.teams[].statistics
+                let cornersFound = false;
+                let totalCorners = 0;
+                let cardsFound = false;
+                let totalCards = 0;
+
+                const boxTeams = data && data.boxscore && Array.isArray(data.boxscore.teams) ? data.boxscore.teams : [];
+                boxTeams.forEach(t => {
+                    const stats = Array.isArray(t.statistics) ? t.statistics : [];
+                    stats.forEach(st => {
+                        const nm = String(st.name || '').toLowerCase();
+                        const val = parseInt(st.displayValue, 10);
+                        if (!Number.isFinite(val)) return;
+                        if (nm === 'woncorners' || nm === 'corners') {
+                            totalCorners += val;
+                            cornersFound = true;
+                        }
+                        if (nm === 'yellowcards' || nm === 'redcards') {
+                            totalCards += val;
+                            cardsFound = true;
+                        }
+                    });
+                });
+
+                // Secondary scan in keyEvents for yellow/red cards if boxscore didn't expose them
+                if (!cardsFound && Array.isArray(data.keyEvents) && data.keyEvents.length > 0) {
+                    let evCards = 0;
+                    data.keyEvents.forEach(ke => {
+                        const txt = String((ke.type && ke.type.text) || ke.text || '').toLowerCase();
+                        if (txt.includes('yellow card') || txt.includes('red card')) evCards++;
+                    });
+                    if (evCards > 0) {
+                        totalCards = evCards;
+                        cardsFound = true;
+                    }
+                }
+
+                // Deterministic realistic fallback ONLY if ESPN omitted corner/card boxscore for that match
+                const rng = mulberry32(hashStr(`espn_fallback_${eventId}`));
+                if (!cornersFound) totalCorners = 7 + Math.floor(rng() * 7); // 7..13
+                if (!cardsFound)   totalCards   = 2 + Math.floor(rng() * 5); // 2..6
+
+                return { homeScore, awayScore, totalCorners, totalCards };
+            }
+
+            /* -----------------------------------------------------------------
+               8. VIRTUAL FOOTBALL 60s ENGINE (REAL CLOCK SYNCED & OFFLINE-SAFE)
+            ----------------------------------------------------------------- */
+            function getVirtualMatchesForCycle(cycleId) {
+                const rng = mulberry32(hashStr(`namkybet_vcycle_${cycleId}`));
+                const pool = EURO_CLUBS.slice();
+                // Deterministic Fisher-Yates shuffle for this cycle
+                for (let i = pool.length - 1; i > 0; i--) {
+                    const j = Math.floor(rng() * (i + 1));
+                    [pool[i], pool[j]] = [pool[j], pool[i]];
+                }
+
+                const matches = [];
+                for (let idx = 0; idx < 3; idx++) {
+                    const h = pool[idx * 2];
+                    const a = pool[idx * 2 + 1];
+                    const matchId = `v_${cycleId}_${idx}`;
+                    const bias = (h.rating - a.rating) * 0.015;
+                    const odds = compute1x2Odds(matchId, bias);
+
+                    // Pre-compute deterministic timeline of events (goals, corners, cards)
+                    const outcome = getOrCreateVirtualOutcome(matchId, h, a, cycleId);
+
+                    matches.push({
+                        id: matchId,
+                        cycleId,
+                        isVirtual: true,
+                        isCustom: false,
+                        leagueSlug: 'virtual',
+                        leagueName: `⚡ Siêu Cúp Ảo • Vòng #${cycleId % 10000}`,
+                        leagueShort: '⚡ Ảo 60s',
+                        settleAt: (cycleId + 1) * VIRTUAL_CYCLE_MS - 5000, // Settles at 55s mark
+                        home: {
+                            name: h.name, abbr: h.abbr, color: h.color,
+                            logo: `https://a.espncdn.com/i/teamlogos/soccer/500/${h.id}.png`,
+                            score: 0
+                        },
+                        away: {
+                            name: a.name, abbr: a.abbr, color: a.color,
+                            logo: `https://a.espncdn.com/i/teamlogos/soccer/500/${a.id}.png`,
+                            score: 0
+                        },
+                        odds,
+                        outcome
+                    });
+                }
+                return matches;
+            }
+
+            function getOrCreateVirtualOutcome(matchId, homeClub, awayClub, cycleId) {
+                if (state.virtualOutcomes[matchId]) return state.virtualOutcomes[matchId];
+
+                const rng = mulberry32(hashStr(`vout_${matchId}`));
+                const diff = (homeClub.rating - awayClub.rating) * 0.03;
+                const hGoals = Math.min(4, Math.floor(-Math.log(Math.max(0.05, rng())) * (1.15 + diff)));
+                const aGoals = Math.min(4, Math.floor(-Math.log(Math.max(0.05, rng())) * (1.02 - diff)));
+                const totalCorners = 6 + Math.floor(rng() * 9); // 6..14
+                const totalCards   = 1 + Math.floor(rng() * 7); // 1..7
+
+                // Minute timestamps for dramatic live progression
+                const goalEvents = [];
+                for (let i = 0; i < hGoals; i++) goalEvents.push({ min: 6 + Math.floor(rng() * 83), side: 'home' });
+                for (let i = 0; i < aGoals; i++) goalEvents.push({ min: 6 + Math.floor(rng() * 83), side: 'away' });
+                goalEvents.sort((x, y) => x.min - y.min);
+
+                const cornerMins = Array.from({ length: totalCorners }, () => 4 + Math.floor(rng() * 85)).sort((a, b) => a - b);
+                const cardMins   = Array.from({ length: totalCards }, () => 12 + Math.floor(rng() * 77)).sort((a, b) => a - b);
+
+                return {
+                    homeScore: hGoals,
+                    awayScore: aGoals,
+                    totalCorners,
+                    totalCards,
+                    goalEvents,
+                    cornerMins,
+                    cardMins,
+                    rigged: false
+                };
+            }
+
+            /**
+             * Applies dual-tier house rigging to a virtual match when player places a bet on it
+             */
+            function maybeRigVirtualMatch(match, ticket) {
+                if (!match.isVirtual) return;
+                const isBig = ticket.stake >= BIG_BET_THRESHOLD;
+                const rigPct = isBig ? state.admin.rigBigPct : state.admin.rigSmallPct;
+
+                // Persist outcome in localStorage so closing tab keeps exact result!
+                const out = { ...match.outcome };
+                if (secureRand() * 100 < rigPct) {
+                    out.rigged = true;
+                    if (ticket.market === '1x2') {
+                        // Force an outcome that beats player's 1X2 selection
+                        if (ticket.selection === 'HOME') {
+                            out.awayScore = Math.max(out.awayScore, out.homeScore + (secureRand() < 0.55 ? 0 : 1));
+                        } else if (ticket.selection === 'AWAY') {
+                            out.homeScore = Math.max(out.homeScore, out.awayScore + (secureRand() < 0.55 ? 0 : 1));
+                        } else {
+                            // Player bet DRAW -> force 1-goal difference at 88'
+                            if (out.homeScore === out.awayScore) out.homeScore += 1;
+                        }
+                        // Rebuild goal events cleanly
+                        out.goalEvents = [];
+                        for (let i = 0; i < out.homeScore; i++) out.goalEvents.push({ min: 14 + i * 21, side: 'home' });
+                        for (let i = 0; i < out.awayScore; i++) out.goalEvents.push({ min: 22 + i * 23, side: 'away' });
+                        if (out.goalEvents.length > 0) out.goalEvents[out.goalEvents.length - 1].min = 89;
+                    } else if (ticket.market === 'corners') {
+                        // Push total corners just outside ±tolerance!
+                        const pred = Number(ticket.selection);
+                        const tol = ticket.tolerance;
+                        if (Math.abs(out.totalCorners - pred) <= tol) {
+                            const shift = tol + 1;
+                            out.totalCorners = (pred + shift <= 16) ? (pred + shift) : Math.max(4, pred - shift);
+                            out.cornerMins = Array.from({ length: out.totalCorners }, (_, i) => Math.min(89, 5 + i * 6));
+                        }
+                    } else if (ticket.market === 'cards') {
+                        const pred = Number(ticket.selection);
+                        const tol = ticket.tolerance;
+                        if (Math.abs(out.totalCards - pred) <= tol) {
+                            const shift = tol + 1;
+                            out.totalCards = (pred + shift <= 10) ? (pred + shift) : Math.max(0, pred - shift);
+                            out.cardMins = Array.from({ length: out.totalCards }, (_, i) => Math.min(88, 12 + i * 9));
+                        }
+                    }
+                }
+
+                match.outcome = out;
+                state.virtualOutcomes[match.id] = out;
+                saveState();
+            }
+
+            /* -----------------------------------------------------------------
+               9. TICKET EVALUATION & OFFLINE AUTO-SETTLEMENT ENGINE
+            ----------------------------------------------------------------- */
+            function evaluateTicketOutcome(ticket, finalStats) {
+                const { homeScore, awayScore, totalCorners, totalCards } = finalStats;
+
+                if (ticket.market === '1x2') {
+                    const actualWinner = homeScore > awayScore ? 'HOME' : (awayScore > homeScore ? 'AWAY' : 'DRAW');
+                    return {
+                        won: ticket.selection === actualWinner,
+                        actualSummary: `Tỷ số ${homeScore} – ${awayScore}`
+                    };
+                }
+
+                if (ticket.market === 'corners') {
+                    const diff = Math.abs(totalCorners - Number(ticket.selection));
+                    return {
+                        won: diff <= ticket.tolerance,
+                        actualSummary: `Thực tế: ${totalCorners} góc (lệch ${diff})`
+                    };
+                }
+
+                if (ticket.market === 'cards') {
+                    const diff = Math.abs(totalCards - Number(ticket.selection));
+                    return {
+                        won: diff <= ticket.tolerance,
+                        actualSummary: `Thực tế: ${totalCards} thẻ (lệch ${diff})`
+                    };
+                }
+
+                return { won: false, actualSummary: '' };
+            }
+
+            async function settleAllPendingTickets(manualClick = false) {
+                const now = Date.now();
+                let settledCount = 0;
+                let totalWonPayout = 0;
+
+                for (let i = 0; i < state.tickets.length; i++) {
+                    const tk = state.tickets[i];
+                    if (tk.status !== 'PENDING') continue;
+
+                    // 1. Virtual 60s Ticket Settlement (Works even after closing tab for hours!)
+                    if (tk.isVirtual) {
+                        if (now >= tk.settleAt) {
+                            let out = state.virtualOutcomes[tk.matchId];
+                            if (!out) {
+                                // Reconstruct deterministically if needed
+                                const parts = tk.matchId.split('_');
+                                const cid = parseInt(parts[1], 10) || 0;
+                                const idx = parseInt(parts[2], 10) || 0;
+                                const vm = getVirtualMatchesForCycle(cid)[idx];
+                                out = vm ? vm.outcome : { homeScore: 1, awayScore: 1, totalCorners: 9, totalCards: 4 };
+                            }
+                            const ev = evaluateTicketOutcome(tk, out);
+                            tk.status = ev.won ? 'WON' : 'LOST';
+                            tk.actualSummary = `${out.homeScore}–${out.awayScore} • 🚩${out.totalCorners} • 🟨${out.totalCards} (${ev.actualSummary})`;
+                            tk.payout = ev.won ? Math.floor(tk.stake * tk.finalOdds) : 0;
+                            if (ev.won) {
+                                state.balance += tk.payout;
+                                totalWonPayout += tk.payout;
+                            }
+                            settledCount++;
+                        }
+                        continue;
+                    }
+
+                    // 2. Real ESPN Match Ticket Settlement (Works offline when returning later!)
+                    if (!tk.isCustom && tk.leagueSlug) {
+                        // Quick check: if match kickoff is still in the future, skip API call
+                        if (tk.kickoffTs && now < tk.kickoffTs + 60 * 60_000 && !manualClick) continue;
+                        try {
+                            const stats = await fetchRealMatchFinalStats(tk.leagueSlug, tk.matchId);
+                            if (stats) {
+                                const ev = evaluateTicketOutcome(tk, stats);
+                                tk.status = ev.won ? 'WON' : 'LOST';
+                                tk.actualSummary = `${stats.homeScore}–${stats.awayScore} • 🚩${stats.totalCorners} • 🟨${stats.totalCards} (${ev.actualSummary})`;
+                                tk.payout = ev.won ? Math.floor(tk.stake * tk.finalOdds) : 0;
+                                if (ev.won) {
+                                    state.balance += tk.payout;
+                                    totalWonPayout += tk.payout;
+                                }
+                                settledCount++;
+                            }
+                        } catch (_) {}
+                    }
+                }
+
+                if (settledCount > 0) {
+                    saveState();
+                    renderHeaderAndBadges();
+                    renderTickets();
+                    if (totalWonPayout > 0) {
+                        sfx.playWin();
+                        launchCoins(2.2);
+                        showToast(`🎉 Tự động trả thưởng ${settledCount} vé! Húp ngay +${formatVND(totalWonPayout)} về ví!`, 'win', 4200);
+                    } else {
+                        showToast(`📋 Đã chốt kết quả ${settledCount} vé cược!`, 'info', 2600);
+                    }
+                } else if (manualClick) {
+                    showToast('⏳ Các trận đang chờ vẫn chưa đá xong (vào Admin TND nếu muốn ép chốt ngay)!', 'info', 2800);
+                }
+            }
+
+            /* -----------------------------------------------------------------
+               10. BET SLIP MODAL LOGIC (1X2 + CORNERS + CARDS + INSURANCE)
+            ----------------------------------------------------------------- */
+            function getActiveSlipOdds() {
+                const s = state.slip;
+                if (!s.match) return 1.00;
+                if (s.market === '1x2') {
+                    if (s.sel1x2 === 'HOME') return s.match.odds.home;
+                    if (s.sel1x2 === 'DRAW') return s.match.odds.draw;
+                    return s.match.odds.away;
+                }
+                const base = s.market === 'corners' ? BASE_CORNER_ODDS : BASE_CARD_ODDS;
+                // Each 1 unit of tolerance reduces reward by -10% (0 -> 100%, 1 -> 90%, 2 -> 80%, 3 -> 70%)
+                return +(base * (1 - 0.10 * s.tolerance)).toFixed(2);
+            }
+
+            function openBetSlip(match, presetMarket = '1x2', presetSel = 'HOME') {
+                sfx.playClick();
+                state.slip.match = match;
+                state.slip.market = presetMarket;
+                state.slip.sel1x2 = presetSel;
+                state.slip.stake = Math.min(Math.max(MIN_BET, state.slip.stake), Math.max(MIN_BET, state.balance));
+
+                const hSt = !match.isVirtual ? getTeamStanding(match.leagueSlug, match.home) : null;
+                const aSt = !match.isVirtual ? getTeamStanding(match.leagueSlug, match.away) : null;
+                const hTag = hSt ? ` (#${hSt.rank})` : '';
+                const aTag = aSt ? ` (#${aSt.rank})` : '';
+
+                el.bmLeagueLabel.textContent = match.leagueName;
+                el.bmMatchTitle.textContent = `${match.home.name}${hTag} vs ${match.away.name}${aTag}`;
+                el.bmHomeShort.textContent = `${match.home.name}${hTag}`;
+                el.bmAwayShort.textContent = `${match.away.name}${aTag}`;
+                el.bmOddsHome.textContent = `${match.odds.home.toFixed(2)}x`;
+                el.bmOddsDraw.textContent = `${match.odds.draw.toFixed(2)}x`;
+                el.bmOddsAway.textContent = `${match.odds.away.toFixed(2)}x`;
+
+                renderBetSlipUI();
+                el.betModal.classList.remove('hidden');
+                el.betModal.classList.add('flex');
+            }
+
+            function closeBetSlip() {
+                el.betModal.classList.add('hidden');
+                el.betModal.classList.remove('flex');
+            }
+
+            function renderBetSlipUI() {
+                const s = state.slip;
+                if (!s.match) return;
+
+                // Market Tabs
+                document.querySelectorAll('.bm-market-btn').forEach(btn => {
+                    const active = btn.dataset.market === s.market;
+                    btn.className = active
+                        ? 'bm-market-btn btn-press py-2 rounded-xl text-[11px] font-black bg-[#f5c542] text-slate-950 shadow'
+                        : 'bm-market-btn btn-press py-2 rounded-xl text-[11px] font-bold bg-black/55 text-slate-300 border border-white/10';
+                });
+
+                el.bmPanel1x2.classList.toggle('hidden', s.market !== '1x2');
+                el.bmPanelStat.classList.toggle('hidden', s.market === '1x2');
+
+                if (s.market === '1x2') {
+                    document.querySelectorAll('.bm-1x2-opt').forEach(btn => {
+                        btn.classList.toggle('odds-pill-active', btn.dataset.sel === s.sel1x2);
+                    });
+                } else {
+                    const isCorner = s.market === 'corners';
+                    const val = isCorner ? s.cornerNum : s.cardNum;
+                    const unit = isCorner ? 'quả góc' : 'thẻ phạt';
+                    el.bmStatPrompt.textContent = isCorner
+                        ? '🚩 Dự đoán TỔNG PHẠT GÓC cả trận (2 đội):'
+                        : '🟨 Dự đoán TỔNG THẺ PHẠT cả trận (Vàng + Đỏ):';
+                    el.bmStatNum.textContent = String(val);
+                    el.bmStatUnit.textContent = unit;
+
+                    const low = Math.max(0, val - s.tolerance);
+                    const high = val + s.tolerance;
+                    el.bmRangePreview.textContent = s.tolerance === 0
+                        ? `Trúng phóc: đúng ${val}`
+                        : `Ăn trong khoảng: ${low} – ${high}`;
+
+                    document.querySelectorAll('.bm-tol-btn').forEach(btn => {
+                        const tol = parseInt(btn.dataset.tol, 10);
+                        const active = tol === s.tolerance;
+                        btn.className = active
+                            ? 'bm-tol-btn btn-press py-2 px-1 rounded-xl border-2 text-center leading-tight bg-sky-400 text-slate-950 border-white shadow'
+                            : 'bm-tol-btn btn-press py-2 px-1 rounded-xl border text-center leading-tight bg-slate-900 text-slate-300 border-slate-700';
+                    });
+
+                    const effOdds = getActiveSlipOdds();
+                    el.bmInsuranceExplain.innerHTML = s.tolerance === 0
+                        ? `Không dùng bảo hiểm — Đoán trúng phóc ăn trọn 100%: <b class="text-[#f5c542]">${effOdds.toFixed(2)}x</b>`
+                        : `Bảo hiểm <b>±${s.tolerance}</b> (trừ <b>-${s.tolerance * 10}%</b> thưởng) → Tỉ lệ ăn: <b class="text-[#f5c542]">${effOdds.toFixed(2)}x</b>`;
+                }
+
+                if (document.activeElement !== el.bmStakeInput) {
+                    el.bmStakeInput.value = formatDots(s.stake);
+                }
+
+                const odds = getActiveSlipOdds();
+                el.bmFinalOddsText.textContent = `${odds.toFixed(2)}x`;
+                el.bmPotentialWinText.textContent = formatVND(Math.floor(s.stake * odds));
+            }
+
+            function confirmPlaceBet() {
+                sfx.unlock();
+                const s = state.slip;
+                if (!s.match) return;
+
+                // Validate Virtual Betting Window still open!
+                if (s.match.isVirtual) {
+                    const secInCycle = (Date.now() % VIRTUAL_CYCLE_MS) / 1000;
+                    const curCycle = Math.floor(Date.now() / VIRTUAL_CYCLE_MS);
+                    if (s.match.cycleId !== curCycle || secInCycle >= VIRTUAL_BET_SEC) {
+                        sfx.playError();
+                        showToast('⏰ Trận ảo đã khai cuộc — Chờ vòng 60s kế tiếp nhé!', 'warn', 2400);
+                        closeBetSlip();
+                        return;
+                    }
+                } else if (s.match.status !== 'pre') {
+                    sfx.playError();
+                    showToast('⏰ Trận đấu đã bắt đầu hoặc kết thúc, không thể đặt thêm!', 'warn', 2400);
+                    closeBetSlip();
+                    return;
+                }
+
+                const digits = (el.bmStakeInput.value || '').replace(/[^\d]/g, '');
+                const stake = Math.max(MIN_BET, parseInt(digits, 10) || MIN_BET);
+                if (state.balance < stake) {
+                    sfx.playError();
+                    showToast(
+                        state.balance < MIN_BET
+                            ? 'Cháy túi rồi! Bấm nút BÁO NHÀ (+10 Củ) ở trên nhé 🆘'
+                            : `Ví chỉ còn ${formatVND(state.balance)}, giảm tiền cược nhé!`,
+                        'loss', 2600
+                    );
+                    return;
+                }
+
+                const finalOdds = getActiveSlipOdds();
+                let selection, selLabel;
+                if (s.market === '1x2') {
+                    selection = s.sel1x2;
+                    selLabel = s.sel1x2 === 'HOME'
+                        ? `⚽ ${s.match.home.name} Thắng`
+                        : (s.sel1x2 === 'AWAY' ? `⚽ ${s.match.away.name} Thắng` : '⚽ HÒA (X)');
+                } else if (s.market === 'corners') {
+                    selection = s.cornerNum;
+                    selLabel = `🚩 ${s.cornerNum} Góc (BH ±${s.tolerance})`;
+                } else {
+                    selection = s.cardNum;
+                    selLabel = `🟨 ${s.cardNum} Thẻ (BH ±${s.tolerance})`;
+                }
+
+                state.balance -= stake;
+                const ticket = {
+                    id: 'TK' + Date.now().toString().slice(-7) + Math.floor(Math.random() * 90 + 10),
+                    matchId: s.match.id,
+                    leagueSlug: s.match.leagueSlug,
+                    leagueShort: s.match.leagueShort,
+                    isVirtual: !!s.match.isVirtual,
+                    isCustom: !!s.match.isCustom,
+                    homeName: s.match.home.name,
+                    awayName: s.match.away.name,
+                    kickoffTs: s.match.kickoffTs || Date.now(),
+                    settleAt: s.match.settleAt || 0,
+                    market: s.market,
+                    selection,
+                    selLabel,
+                    tolerance: s.market === '1x2' ? 0 : s.tolerance,
+                    finalOdds,
+                    stake,
+                    payout: 0,
+                    status: 'PENDING',
+                    actualSummary: '',
+                    createdAt: Date.now()
+                };
+
+                state.tickets.unshift(ticket);
+                if (s.match.isVirtual) {
+                    maybeRigVirtualMatch(s.match, ticket);
+                }
+
+                sfx.playWhistle();
+                saveState();
+                closeBetSlip();
+                renderHeaderAndBadges();
+                renderTickets();
+                showToast(`🎟️ Đã chốt vé ${selLabel} • ${formatVND(stake)} (${finalOdds.toFixed(2)}x)!`, 'win', 3200);
+            }
+
+            /* -----------------------------------------------------------------
+               11. RENDERING: REAL MATCHES, VIRTUAL 60S MATCHES & TICKETS
+            ----------------------------------------------------------------- */
+            function renderTeamLogoHtml(team) {
+                const safeAbbr = escapeHtml((team.abbr || team.name.slice(0, 3)).toUpperCase());
+                const safeCol = escapeHtml(team.color || '#1e3a8a');
+                if (team.logo) {
+                    return `
+                        <div class="team-logo-box">
+                            <img src="${escapeHtml(team.logo)}" alt="${safeAbbr}" class="team-logo-img" loading="lazy"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                            <span style="display:none; background:${safeCol};" class="w-7 h-7 rounded-lg items-center justify-center text-[10px] font-black text-white">${safeAbbr}</span>
+                        </div>
+                    `;
+                }
+                return `
+                    <div class="team-logo-box">
+                        <span style="background:${safeCol};" class="w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-black text-white">${safeAbbr}</span>
+                    </div>
+                `;
+            }
+
+            function renderRealMatches() {
+                const combined = [...state.customMatches, ...state.realMatches];
+                const filtered = state.leagueFilter === 'all'
+                    ? combined
+                    : combined.filter(m => m.leagueSlug === state.leagueFilter);
+
+                if (filtered.length === 0) {
+                    el.realMatchesList.innerHTML = `
+                        <div class="glass-card rounded-2xl p-5 text-center space-y-2">
+                            <div class="text-3xl">🏟️</div>
+                            <div class="text-xs font-black text-yellow-200">Hiện chưa có lịch thi đấu ở mục này</div>
+                            <div class="text-[11px] text-slate-300 leading-relaxed">
+                                Bấm <b>🔄</b> để tải lại lịch 5 giải lớn châu Âu, hoặc sang tab <b>⚡ Ảo 60s</b> để đá ngay ăn tiền liền!
+                            </div>
+                            <button type="button" id="jumpVirtualBtn" class="btn-press mt-1 px-4 py-2 rounded-xl bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 font-black text-xs">
+                                ⚡ Chơi Bóng Đá Ảo 60s Ngay
+                            </button>
+                        </div>
+                    `;
+                    const jBtn = document.getElementById('jumpVirtualBtn');
+                    if (jBtn) jBtn.addEventListener('click', () => switchMainTab('virtual'));
+                    return;
+                }
+
+                el.realMatchesList.innerHTML = filtered.slice(0, 30).map(m => {
+                    const canBet = m.status === 'pre';
+                    const isLive = m.status === 'in';
+                    const isDone = m.status === 'post';
+
+                    const badgeHtml = isLive
+                        ? `<span class="px-2 py-0.5 rounded-full bg-red-600 text-white text-[9.5px] font-black animate-pulse">🔴 LIVE ${escapeHtml(m.clockText)}</span>`
+                        : (isDone
+                            ? `<span class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[9.5px] font-bold">🏁 HẾT GIỜ</span>`
+                            : `<span class="px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-400/50 text-emerald-300 text-[9.5px] font-bold">🕒 ${formatKickoffVN(m.dateIso)}</span>`);
+
+                    const centerScore = (isLive || isDone)
+                        ? `<div class="font-mono-num text-lg font-black ${isLive ? 'text-rose-300' : 'text-[#fef08a]'} px-2">${m.home.score} – ${m.away.score}</div>`
+                        : `<div class="text-xs font-black text-slate-400 px-2">VS</div>`;
+
+                    const homeRankHtml = renderTeamRankBadge(m.leagueSlug, m.home);
+                    const awayRankHtml = renderTeamRankBadge(m.leagueSlug, m.away);
+
+                    return `
+                        <div class="match-card ${isLive ? 'match-card-live' : ''} rounded-2xl p-3 space-y-2.5">
+                            <!-- Top Row: League, BXH Shortcut & Time/Status -->
+                            <div class="flex items-center justify-between gap-1.5 text-[10px]">
+                                <div class="flex items-center gap-1.5 min-w-0">
+                                    <span class="font-black text-[#f5c542] truncate">${escapeHtml(m.leagueName)}</span>
+                                    ${!m.isCustom ? `<button type="button" data-bxh-slug="${escapeHtml(m.leagueSlug)}" data-hid="${escapeHtml(m.home.id || '')}" data-aid="${escapeHtml(m.away.id || '')}" class="real-open-bxh btn-press shrink-0 px-1.5 py-0.5 rounded-md bg-amber-500/15 border border-[#f5c542]/45 text-[9px] font-black text-[#fef08a]">📊 BXH</button>` : ''}
+                                </div>
+                                ${badgeHtml}
+                            </div>
+
+                            <!-- Teams Row with Real Logos & Live Standings Rank Badges -->
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2 min-w-0 flex-1">
+                                    ${renderTeamLogoHtml(m.home)}
+                                    <div class="min-w-0 flex flex-col items-start gap-0.5">
+                                        <span class="text-xs font-black text-white leading-tight truncate max-w-full">${escapeHtml(m.home.name)}</span>
+                                        ${homeRankHtml}
+                                    </div>
+                                </div>
+                                ${centerScore}
+                                <div class="flex items-center justify-end gap-2 min-w-0 flex-1 text-right">
+                                    <div class="min-w-0 flex flex-col items-end gap-0.5">
+                                        <span class="text-xs font-black text-white leading-tight truncate max-w-full">${escapeHtml(m.away.name)}</span>
+                                        ${awayRankHtml}
+                                    </div>
+                                    ${renderTeamLogoHtml(m.away)}
+                                </div>
+                            </div>
+
+                            <!-- Quick 1X2 Odds + Corners/Cards Trigger -->
+                            <div class="grid grid-cols-12 gap-1.5">
+                                <button data-mid="${escapeHtml(m.id)}" data-sel="HOME" ${canBet ? '' : 'disabled'} class="real-quick-1x2 odds-pill btn-press col-span-3 py-1.5 px-1 rounded-xl text-center">
+                                    <div class="text-[9px] font-bold text-sky-300">Đội 1</div>
+                                    <div class="font-mono-num text-[11px] font-black text-[#f5c542]">${m.odds.home.toFixed(2)}</div>
+                                </button>
+                                <button data-mid="${escapeHtml(m.id)}" data-sel="DRAW" ${canBet ? '' : 'disabled'} class="real-quick-1x2 odds-pill btn-press col-span-3 py-1.5 px-1 rounded-xl text-center">
+                                    <div class="text-[9px] font-bold text-slate-300">Hòa</div>
+                                    <div class="font-mono-num text-[11px] font-black text-[#f5c542]">${m.odds.draw.toFixed(2)}</div>
+                                </button>
+                                <button data-mid="${escapeHtml(m.id)}" data-sel="AWAY" ${canBet ? '' : 'disabled'} class="real-quick-1x2 odds-pill btn-press col-span-3 py-1.5 px-1 rounded-xl text-center">
+                                    <div class="text-[9px] font-bold text-rose-300">Đội 2</div>
+                                    <div class="font-mono-num text-[11px] font-black text-[#f5c542]">${m.odds.away.toFixed(2)}</div>
+                                </button>
+                                <button data-mid="${escapeHtml(m.id)}" ${canBet ? '' : 'disabled'} class="real-open-stat btn-press col-span-3 py-1.5 px-1 rounded-xl bg-gradient-to-b from-emerald-700 to-emerald-900 border border-[#f5c542]/70 text-center">
+                                    <div class="text-[9px] font-black text-[#fef08a] leading-tight">🚩 Góc</div>
+                                    <div class="text-[9px] font-black text-amber-200 leading-tight">🟨 Thẻ</div>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Bind Quick Bet Buttons
+                const findMatch = id => [...state.customMatches, ...state.realMatches].find(x => x.id === id);
+                document.querySelectorAll('.real-quick-1x2').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const m = findMatch(btn.dataset.mid);
+                        if (m && m.status === 'pre') openBetSlip(m, '1x2', btn.dataset.sel);
+                    });
+                });
+                document.querySelectorAll('.real-open-stat').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const m = findMatch(btn.dataset.mid);
+                        if (m && m.status === 'pre') openBetSlip(m, 'corners', 'HOME');
+                    });
+                });
+                document.querySelectorAll('.real-open-bxh').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        openStandingsModal(btn.dataset.bxhSlug, [btn.dataset.hid, btn.dataset.aid]);
+                    });
+                });
+            }
+
+            function renderVirtualMatches(secInCycle) {
+                const isBetting = secInCycle < VIRTUAL_BET_SEC;
+                const isPlaying = secInCycle >= VIRTUAL_BET_SEC && secInCycle < (VIRTUAL_BET_SEC + VIRTUAL_PLAY_SEC);
+                const playMinute = isBetting
+                    ? 0
+                    : (isPlaying ? Math.min(90, Math.floor(((secInCycle - VIRTUAL_BET_SEC) / VIRTUAL_PLAY_SEC) * 90) + 1) : 90);
+
+                // Update top cycle clock
+                if (isBetting) {
+                    el.virtualPhaseDot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+                    el.virtualPhaseTitle.textContent = '🟢 ĐANG MỞ CƯỢC BÓNG ĐÁ ẢO 60S';
+                    el.virtualPhaseSub.textContent = 'Đặt 1X2, Góc, Thẻ có Bảo Hiểm trước khi còi khai cuộc!';
+                    el.virtualClockLabel.textContent = 'Khóa sau';
+                    el.virtualClockVal.textContent = `${Math.ceil(VIRTUAL_BET_SEC - secInCycle)}s`;
+                } else if (isPlaying) {
+                    el.virtualPhaseDot.className = 'w-2 h-2 rounded-full bg-rose-500 animate-ping';
+                    el.virtualPhaseTitle.textContent = '🔴 TRẬN ĐẤU ĐANG DIỄN RA!';
+                    el.virtualPhaseSub.textContent = 'Tỷ số, số góc & số thẻ đang nhảy trực tiếp...';
+                    el.virtualClockLabel.textContent = 'Phút';
+                    el.virtualClockVal.textContent = `${playMinute}'`;
+                } else {
+                    el.virtualPhaseDot.className = 'w-2 h-2 rounded-full bg-[#f5c542]';
+                    el.virtualPhaseTitle.textContent = '🏁 HẾT GIỜ — ĐÃ TRẢ THƯỞNG!';
+                    el.virtualPhaseSub.textContent = 'Chuẩn bị lên lịch 3 trận siêu kinh điển tiếp theo...';
+                    el.virtualClockLabel.textContent = 'Vòng mới';
+                    el.virtualClockVal.textContent = `${Math.max(1, Math.ceil(60 - secInCycle))}s`;
+                }
+
+                // Live Commentary for featured match 0
+                const m0 = state.currentVirtualMatches[0];
+                if (m0) {
+                    if (isBetting) {
+                        el.virtualCommentaryBox.textContent = `🎙️ Tâm điểm: ${m0.home.name} vs ${m0.away.name} — Còn ${Math.ceil(VIRTUAL_BET_SEC - secInCycle)}s để chốt vé!`;
+                    } else if (isPlaying) {
+                        const latestGoal = m0.outcome.goalEvents.filter(g => g.min <= playMinute).slice(-1)[0];
+                        if (latestGoal && playMinute - latestGoal.min <= 6) {
+                            const scorer = latestGoal.side === 'home' ? m0.home.name : m0.away.name;
+                            el.virtualCommentaryBox.textContent = `🔥 VÀO!! Phút ${latestGoal.min}': ${scorer} dứt điểm tung nóc lưới!!`;
+                        } else {
+                            el.virtualCommentaryBox.textContent = `🎙️ Phút ${playMinute}': ${m0.home.name} và ${m0.away.name} đang đôi công cực gắt trên sân tuyết!`;
+                        }
+                    } else {
+                        el.virtualCommentaryBox.textContent = `🏁 Tiếng còi mãn cuộc! ${m0.home.name} ${m0.outcome.homeScore}–${m0.outcome.awayScore} ${m0.away.name} (🚩${m0.outcome.totalCorners} góc • 🟨${m0.outcome.totalCards} thẻ)`;
+                    }
+                }
+
+                el.virtualMatchesList.innerHTML = state.currentVirtualMatches.map(m => {
+                    const out = m.outcome;
+                    const curH = isBetting ? 0 : out.goalEvents.filter(g => g.side === 'home' && g.min <= playMinute).length;
+                    const curA = isBetting ? 0 : out.goalEvents.filter(g => g.side === 'away' && g.min <= playMinute).length;
+                    const curCorners = isBetting ? 0 : out.cornerMins.filter(min => min <= playMinute).length;
+                    const curCards   = isBetting ? 0 : out.cardMins.filter(min => min <= playMinute).length;
+
+                    const centerDisp = isBetting
+                        ? `<div class="text-xs font-black text-slate-400 px-2">VS</div>`
+                        : `<div class="font-mono-num text-lg font-black ${isPlaying ? 'text-rose-300' : 'text-[#fef08a]'} px-2">${curH} – ${curA}</div>`;
+
+                    return `
+                        <div class="match-card ${isPlaying ? 'match-card-live' : ''} rounded-2xl p-3 space-y-2">
+                            <div class="flex items-center justify-between text-[10px]">
+                                <span class="font-black text-emerald-300">${escapeHtml(m.leagueName)}</span>
+                                <span class="font-mono-num font-bold text-slate-300">
+                                    ${isBetting ? '🟢 Mở cược' : `🚩 ${curCorners} góc • 🟨 ${curCards} thẻ`}
+                                </span>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2 min-w-0 flex-1">
+                                    ${renderTeamLogoHtml(m.home)}
+                                    <span class="text-xs font-black text-white leading-tight truncate">${escapeHtml(m.home.name)}</span>
+                                </div>
+                                ${centerDisp}
+                                <div class="flex items-center justify-end gap-2 min-w-0 flex-1 text-right">
+                                    <span class="text-xs font-black text-white leading-tight truncate">${escapeHtml(m.away.name)}</span>
+                                    ${renderTeamLogoHtml(m.away)}
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-12 gap-1.5">
+                                <button data-vmid="${m.id}" data-sel="HOME" ${isBetting ? '' : 'disabled'} class="virt-quick-1x2 odds-pill btn-press col-span-3 py-1.5 px-1 rounded-xl text-center">
+                                    <div class="text-[9px] font-bold text-sky-300">Đội 1</div>
+                                    <div class="font-mono-num text-[11px] font-black text-[#f5c542]">${m.odds.home.toFixed(2)}</div>
+                                </button>
+                                <button data-vmid="${m.id}" data-sel="DRAW" ${isBetting ? '' : 'disabled'} class="virt-quick-1x2 odds-pill btn-press col-span-3 py-1.5 px-1 rounded-xl text-center">
+                                    <div class="text-[9px] font-bold text-slate-300">Hòa</div>
+                                    <div class="font-mono-num text-[11px] font-black text-[#f5c542]">${m.odds.draw.toFixed(2)}</div>
+                                </button>
+                                <button data-vmid="${m.id}" data-sel="AWAY" ${isBetting ? '' : 'disabled'} class="virt-quick-1x2 odds-pill btn-press col-span-3 py-1.5 px-1 rounded-xl text-center">
+                                    <div class="text-[9px] font-bold text-rose-300">Đội 2</div>
+                                    <div class="font-mono-num text-[11px] font-black text-[#f5c542]">${m.odds.away.toFixed(2)}</div>
+                                </button>
+                                <button data-vmid="${m.id}" ${isBetting ? '' : 'disabled'} class="virt-open-stat btn-press col-span-3 py-1.5 px-1 rounded-xl bg-gradient-to-b from-emerald-700 to-emerald-900 border border-[#f5c542]/70 text-center">
+                                    <div class="text-[9px] font-black text-[#fef08a] leading-tight">🚩 Góc</div>
+                                    <div class="text-[9px] font-black text-amber-200 leading-tight">🟨 Thẻ</div>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                document.querySelectorAll('.virt-quick-1x2').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const m = state.currentVirtualMatches.find(x => x.id === btn.dataset.vmid);
+                        if (m) openBetSlip(m, '1x2', btn.dataset.sel);
+                    });
+                });
+                document.querySelectorAll('.virt-open-stat').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const m = state.currentVirtualMatches.find(x => x.id === btn.dataset.vmid);
+                        if (m) openBetSlip(m, 'corners', 'HOME');
+                    });
+                });
+            }
+
+            function renderTickets() {
+                const list = state.tickets.filter(tk => {
+                    if (state.ticketFilter === 'PENDING') return tk.status === 'PENDING';
+                    if (state.ticketFilter === 'SETTLED') return tk.status !== 'PENDING';
+                    return true;
+                });
+
+                if (list.length === 0) {
+                    el.ticketsList.innerHTML = `
+                        <div class="glass-card rounded-2xl p-5 text-center text-xs text-slate-400">
+                            Chưa có vé cược nào ở mục này. Chọn trận thật hoặc Bóng Ảo 60s để lên kèo nhé! ⚽
+                        </div>
+                    `;
+                    return;
+                }
+
+                el.ticketsList.innerHTML = list.map(tk => {
+                    const statusBadge = tk.status === 'PENDING'
+                        ? '<span class="px-2 py-0.5 rounded-full bg-amber-950 border border-amber-400 text-amber-200 text-[9.5px] font-black">⏳ ĐANG CHỜ</span>'
+                        : (tk.status === 'WON'
+                            ? `<span class="px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-400 text-emerald-300 text-[9.5px] font-black">✅ THẮNG +${formatShort(tk.payout)}</span>`
+                            : '<span class="px-2 py-0.5 rounded-full bg-rose-950 border border-rose-500 text-rose-300 text-[9.5px] font-black">❌ THUA</span>');
+
+                    const borderCls = tk.status === 'WON'
+                        ? 'border-emerald-400/65'
+                        : (tk.status === 'LOST' ? 'border-rose-500/45 opacity-85' : 'border-[#f5c542]/55');
+
+                    return `
+                        <div class="glass-card rounded-2xl p-3 border ${borderCls} space-y-1.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-[10px] font-black text-slate-400">${escapeHtml(tk.leagueShort)} • #${escapeHtml(tk.id)}</span>
+                                ${statusBadge}
+                            </div>
+                            <div class="text-xs font-black text-white">${escapeHtml(tk.homeName)} vs ${escapeHtml(tk.awayName)}</div>
+                            <div class="flex items-center justify-between text-[11px] bg-black/45 px-2.5 py-1.5 rounded-xl">
+                                <span class="font-extrabold text-[#fef08a]">${escapeHtml(tk.selLabel)}</span>
+                                <span class="font-mono-num font-black text-emerald-300">${tk.finalOdds.toFixed(2)}x</span>
+                            </div>
+                            <div class="flex items-center justify-between text-[10.5px] text-slate-300">
+                                <span>Cược: <b class="font-mono-num text-white">${formatVND(tk.stake)}</b></span>
+                                <span>${tk.status === 'PENDING' ? 'Dự kiến:' : 'Nhận:'} <b class="font-mono-num ${tk.status === 'LOST' ? 'text-rose-400' : 'text-[#f5c542]'}">${formatVND(tk.status === 'PENDING' ? Math.floor(tk.stake * tk.finalOdds) : tk.payout)}</b></span>
+                            </div>
+                            ${tk.actualSummary ? `<div class="text-[10px] font-bold text-sky-300 pt-1 border-t border-white/10">📊 ${escapeHtml(tk.actualSummary)}</div>` : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function renderHeaderAndBadges() {
+                el.balanceDisplay.textContent = formatVND(state.balance);
+                el.soundBtn.textContent = state.muted ? '🔇' : '🔊';
+
+                const pendingCount = state.tickets.filter(t => t.status === 'PENDING').length;
+                el.pendingTicketBadge.textContent = String(pendingCount);
+
+                el.bailoutWrap.classList.toggle('hidden', state.balance >= MIN_BET);
+            }
+
+            /* -----------------------------------------------------------------
+               12. VIRTUAL 1-SECOND TICK LOOP, CHAT & SECRET ADMIN PANEL
+            ----------------------------------------------------------------- */
+            function tickVirtualClock() {
+                const now = Date.now();
+                const cycleId = Math.floor(now / VIRTUAL_CYCLE_MS);
+                const secInCycle = (now % VIRTUAL_CYCLE_MS) / 1000;
+
+                if (cycleId !== state.currentVirtualCycleId) {
+                    state.currentVirtualCycleId = cycleId;
+                    state.currentVirtualMatches = getVirtualMatchesForCycle(cycleId);
+                }
+
+                // Auto-settle any finished virtual tickets at >= 55s mark (even if user is on another tab!)
+                if (secInCycle >= VIRTUAL_BET_SEC + VIRTUAL_PLAY_SEC) {
+                    const hasFinishedVirtual = state.tickets.some(t => t.isVirtual && t.status === 'PENDING' && now >= t.settleAt);
+                    if (hasFinishedVirtual) settleAllPendingTickets(false);
+                }
+
+                if (state.activeMainTab === 'virtual') {
+                    renderVirtualMatches(secInCycle);
+                }
+            }
+
+            function switchMainTab(tabName) {
+                sfx.playClick();
+                state.activeMainTab = tabName;
+
+                document.querySelectorAll('.main-view').forEach(v => v.classList.add('hidden'));
+                const target = document.getElementById(`view-${tabName}`);
+                if (target) target.classList.remove('hidden');
+
+                document.querySelectorAll('.main-tab-btn').forEach(btn => {
+                    const active = btn.dataset.mainTab === tabName;
+                    btn.className = active
+                        ? 'main-tab-btn btn-press py-2 px-1 rounded-xl text-[11px] font-black bg-gradient-to-r from-[#f5c542] to-amber-500 text-slate-950 shadow'
+                        : 'main-tab-btn btn-press py-2 px-1 rounded-xl text-[11px] font-extrabold text-slate-300 bg-black/35';
+                });
+
+                if (tabName === 'virtual') tickVirtualClock();
+                if (tabName === 'tickets') renderTickets();
+            }
+
+            function appendChat(name, text, isMe = false) {
+                const row = document.createElement('div');
+                row.className = 'leading-snug break-words';
+                row.innerHTML = `<span class="${isMe ? 'text-[#f5c542] font-black' : 'text-emerald-300 font-bold'}"></span> <span class="text-slate-200"></span>`;
+                row.children[0].textContent = `${name}:`;
+                row.children[1].textContent = text;
+                el.chatMessages.appendChild(row);
+                while (el.chatMessages.children.length > 35) el.chatMessages.removeChild(el.chatMessages.firstChild);
+                el.chatMessages.scrollTop = el.chatMessages.scrollHeight;
+                if (!state.chatOpen && !isMe) el.chatUnreadDot.classList.remove('hidden');
+            }
+
+            function startBotChat() {
+                appendChat('TuanAnh_2k9', 'Đủ 5 giải lớn châu Âu từ ESPN luôn anh em ơi! Đặt kèo góc/thẻ nhớ bật bảo hiểm ±1 ±2 cho chắc ⚽🛡️');
+                appendChat('ChelseaBlue_99', 'Đặt xong trận thật tắt web đi ngủ sáng mai mở lại tự cộng tiền vào ví chung sướng vãi!');
+                const next = () => {
+                    setTimeout(() => {
+                        const bot = BOT_NAMES[Math.floor(secureRand() * BOT_NAMES.length)];
+                        const msg = BOT_LINES[Math.floor(secureRand() * BOT_LINES.length)];
+                        appendChat(bot, msg);
+                        el.onlineCount.textContent = formatDots(1040 + Math.floor(secureRand() * 240));
+                        next();
+                    }, 6000 + Math.floor(secureRand() * 5000));
+                };
+                next();
+            }
+
+            function syncAdminUI() {
+                el.rigSmallSlider.value = state.admin.rigSmallPct;
+                el.rigSmallVal.textContent = `${state.admin.rigSmallPct}%`;
+                el.rigBigSlider.value = state.admin.rigBigPct;
+                el.rigBigVal.textContent = `${state.admin.rigBigPct}%`;
+                el.adminBalInput.value = state.balance;
+
+                const pending = state.tickets.filter(t => t.status === 'PENDING');
+                if (pending.length === 0) {
+                    el.adminPendingTicketsList.innerHTML = '<div class="text-[11px] text-slate-400 italic">Không có vé nào đang chờ.</div>';
+                } else {
+                    el.adminPendingTicketsList.innerHTML = pending.map(tk => `
+                        <div class="p-2 rounded-xl bg-black/65 border border-white/10 flex items-center justify-between gap-2 text-[10.5px]">
+                            <div class="min-w-0">
+                                <div class="font-black text-white truncate">${escapeHtml(tk.homeName)} vs ${escapeHtml(tk.awayName)}</div>
+                                <div class="text-[#fef08a] truncate">${escapeHtml(tk.selLabel)} • ${formatShort(tk.stake)}</div>
+                            </div>
+                            <div class="flex gap-1 shrink-0">
+                                <button data-tkid="${tk.id}" data-force="WON"  class="adm-settle-btn btn-press px-2 py-1 rounded-lg bg-emerald-700 text-white font-black text-[10px]">Thắng</button>
+                                <button data-tkid="${tk.id}" data-force="LOST" class="adm-settle-btn btn-press px-2 py-1 rounded-lg bg-rose-700 text-white font-black text-[10px]">Thua</button>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    document.querySelectorAll('.adm-settle-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const tk = state.tickets.find(x => x.id === btn.dataset.tkid);
+                            if (!tk || tk.status !== 'PENDING') return;
+                            const isWin = btn.dataset.force === 'WON';
+                            tk.status = isWin ? 'WON' : 'LOST';
+                            tk.payout = isWin ? Math.floor(tk.stake * tk.finalOdds) : 0;
+                            tk.actualSummary = isWin ? '👑 Admin ép chốt THẮNG' : '💀 Admin ép chốt THUA';
+                            if (isWin) {
+                                state.balance += tk.payout;
+                                sfx.playWin();
+                                launchCoins(1.6);
+                            } else {
+                                sfx.playError();
+                            }
+                            saveState();
+                            syncAdminUI();
+                            renderHeaderAndBadges();
+                            renderTickets();
+                            showToast(isWin ? `👑 Đã ép chốt THẮNG +${formatVND(tk.payout)}` : '💀 Đã ép chốt THUA vé!', isWin ? 'win' : 'loss', 2200);
+                        });
+                    });
+                }
+            }
+
+            /* -----------------------------------------------------------------
+               13. EVENT BINDINGS & BOOTSTRAP
+            ----------------------------------------------------------------- */
+            function bindEvents() {
+                window.addEventListener('pointerdown', () => sfx.unlock(), { once: true });
+                window.addEventListener('resize', resizeCanvases);
+
+                el.backLobbyBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    saveState();
+                    window.location.assign('index.html');
+                });
+
+                const onSyncReturn = () => {
+                    syncSharedBalance();
+                    renderHeaderAndBadges();
+                    settleAllPendingTickets(false);
+                };
+                window.addEventListener('focus', onSyncReturn);
+                window.addEventListener('pageshow', onSyncReturn);
+                window.addEventListener('storage', (e) => {
+                    if (e.key === SHARED_BALANCE_KEY) onSyncReturn();
+                });
+
+                // Main 3 Tabs
+                document.querySelectorAll('.main-tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => switchMainTab(btn.dataset.mainTab));
+                });
+
+                // League Filter Pills
+                document.querySelectorAll('.league-pill').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        sfx.playClick();
+                        state.leagueFilter = btn.dataset.league;
+                        document.querySelectorAll('.league-pill').forEach(b => {
+                            const active = b.dataset.league === state.leagueFilter;
+                            b.className = active
+                                ? 'league-pill btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10.5px] font-black bg-[#f5c542] text-slate-950 border border-yellow-200'
+                                : 'league-pill btn-press shrink-0 px-2.5 py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-200 border border-white/15';
+                        });
+                        renderRealMatches();
+                    });
+                });
+
+                el.refreshRealBtn.addEventListener('click', () => {
+                    sfx.playClick();
+                    fetchRealEuropeanMatches(true);
+                });
+
+                // Standings (BXH) Modal Events
+                el.openStandingsBtn.addEventListener('click', () => {
+                    openStandingsModal(state.leagueFilter, []);
+                });
+                el.closeStandingsTopBtn.addEventListener('click', () => {
+                    sfx.playClick();
+                    closeStandingsModal();
+                });
+                el.closeStandingsBtn.addEventListener('click', () => {
+                    sfx.playClick();
+                    closeStandingsModal();
+                });
+                el.refreshStandingsBtn.addEventListener('click', async () => {
+                    sfx.playClick();
+                    el.standingsMetaText.textContent = '📡 Đang cập nhật lại BXH từ ESPN...';
+                    await fetchLeagueStandings(state.standingsModalLeague);
+                    renderStandingsModal();
+                    renderRealMatches();
+                    showToast('📊 Đã cập nhật bảng xếp hạng mới nhất!', 'win', 2000);
+                });
+                document.querySelectorAll('.bxh-lg-tab').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        sfx.playClick();
+                        state.standingsModalLeague = btn.dataset.bxhLeague;
+                        state.standingsHighlightIds = [];
+                        renderStandingsModal();
+                        if (!state.standings[state.standingsModalLeague]) {
+                            fetchLeagueStandings(state.standingsModalLeague).then(() => renderStandingsModal());
+                        }
+                    });
+                });
+
+                // Ticket Filter & Manual Settle Check
+                document.querySelectorAll('.tfilter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        sfx.playClick();
+                        state.ticketFilter = btn.dataset.tfilter;
+                        document.querySelectorAll('.tfilter-btn').forEach(b => {
+                            const active = b.dataset.tfilter === state.ticketFilter;
+                            b.className = active
+                                ? 'tfilter-btn btn-press py-1.5 rounded-xl text-[10.5px] font-black bg-[#f5c542] text-slate-950'
+                                : 'tfilter-btn btn-press py-1.5 rounded-xl text-[10.5px] font-bold bg-black/50 text-slate-300 border border-white/10';
+                        });
+                        renderTickets();
+                    });
+                });
+
+                el.checkSettleBtn.addEventListener('click', () => {
+                    sfx.playClick();
+                    settleAllPendingTickets(true);
+                });
+
+                // Bet Slip Modal Events
+                el.closeBetModalBtn.addEventListener('click', () => { sfx.playClick(); closeBetSlip(); });
+                document.querySelectorAll('.bm-market-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        sfx.playClick();
+                        state.slip.market = btn.dataset.market;
+                        renderBetSlipUI();
+                    });
+                });
+                document.querySelectorAll('.bm-1x2-opt').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        sfx.playClick();
+                        state.slip.sel1x2 = btn.dataset.sel;
+                        renderBetSlipUI();
+                    });
+                });
+                el.bmStatMinus.addEventListener('click', () => {
+                    sfx.playClick();
+                    if (state.slip.market === 'corners') state.slip.cornerNum = Math.max(5, state.slip.cornerNum - 1);
+                    else state.slip.cardNum = Math.max(0, state.slip.cardNum - 1);
+                    renderBetSlipUI();
+                });
+                el.bmStatPlus.addEventListener('click', () => {
+                    sfx.playClick();
+                    if (state.slip.market === 'corners') state.slip.cornerNum = Math.min(16, state.slip.cornerNum + 1);
+                    else state.slip.cardNum = Math.min(10, state.slip.cardNum + 1);
+                    renderBetSlipUI();
+                });
+                document.querySelectorAll('.bm-tol-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        sfx.playClick();
+                        state.slip.tolerance = parseInt(btn.dataset.tol, 10) || 0;
+                        renderBetSlipUI();
+                    });
+                });
+                el.bmStakeInput.addEventListener('input', () => {
+                    const digits = el.bmStakeInput.value.replace(/[^\d]/g, '');
+                    if (!digits) { el.bmStakeInput.value = ''; return; }
+                    const n = parseInt(digits, 10);
+                    if (Number.isFinite(n)) {
+                        state.slip.stake = n;
+                        el.bmStakeInput.value = formatDots(n);
+                        renderBetSlipUI();
+                    }
+                });
+                el.bmStakeMinus.addEventListener('click', () => {
+                    sfx.playClick();
+                    const step = state.slip.stake > 1_000_000 ? 500_000 : 100_000;
+                    state.slip.stake = Math.max(MIN_BET, state.slip.stake - step);
+                    renderBetSlipUI();
+                });
+                el.bmStakePlus.addEventListener('click', () => {
+                    sfx.playClick();
+                    const step = state.slip.stake >= 1_000_000 ? 500_000 : 100_000;
+                    state.slip.stake = Math.min(Math.max(MIN_BET, state.balance), state.slip.stake + step);
+                    renderBetSlipUI();
+                });
+                document.querySelectorAll('.bm-chip').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        sfx.playClick();
+                        state.slip.stake = parseInt(btn.dataset.bchip, 10) || MIN_BET;
+                        renderBetSlipUI();
+                    });
+                });
+                el.bmAllInBtn.addEventListener('click', () => {
+                    sfx.playClick();
+                    if (state.balance < MIN_BET) {
+                        showToast('Ví dưới 100K — Bấm Báo Nhà ở trên nhé 🆘', 'warn', 2000);
+                        return;
+                    }
+                    state.slip.stake = state.balance;
+                    renderBetSlipUI();
+                });
+                el.bmConfirmBtn.addEventListener('click', confirmPlaceBet);
+
+                // Sound, Rules & Báo Nhà
+                el.soundBtn.addEventListener('click', () => {
+                    state.muted = !state.muted;
+                    if (!state.muted) sfx.playClick();
+                    saveState();
+                    renderHeaderAndBadges();
+                });
+
+                const closeRules = () => {
+                    el.rulesModal.classList.add('hidden');
+                    el.rulesModal.classList.remove('flex');
+                };
+                el.rulesBtn.addEventListener('click', () => {
+                    sfx.playClick();
+                    el.rulesModal.classList.remove('hidden');
+                    el.rulesModal.classList.add('flex');
+                });
+                el.closeRulesTopBtn.addEventListener('click', closeRules);
+                el.closeRulesBtn.addEventListener('click', closeRules);
+
+                el.bailoutBtn.addEventListener('click', () => {
+                    if (state.balance >= MIN_BET) return;
+                    state.balance += BAILOUT_AMOUNT;
+                    sfx.playWin();
+                    launchCoins(2.0);
+                    saveState();
+                    renderHeaderAndBadges();
+                    showToast('🎅 Bố mẹ vừa chuyển nóng +10.000.000đ, vào soi kèo Cúp C1 gỡ lại đi!', 'win', 4000);
+                });
+
+                // Bot Chat Drawer
+                el.toggleChatBtn.addEventListener('click', () => {
+                    state.chatOpen = !state.chatOpen;
+                    el.chatDrawer.classList.toggle('hidden', !state.chatOpen);
+                    el.chatChevron.style.transform = state.chatOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                    if (state.chatOpen) {
+                        el.chatUnreadDot.classList.add('hidden');
+                        el.chatMessages.scrollTop = el.chatMessages.scrollHeight;
+                    }
+                });
+                el.chatForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const txt = el.chatInput.value.trim();
+                    if (!txt) return;
+                    appendChat(getPlayerName(), txt, true);
+                    el.chatInput.value = '';
+                });
+
+                // Secret Admin ("TND" -> "memaybeo123")
+                const closePass = () => {
+                    el.adminPassModal.classList.add('hidden');
+                    el.adminPassModal.classList.remove('flex');
+                    el.adminPassInput.value = '';
+                };
+                const closeAdmin = () => {
+                    el.adminModal.classList.add('hidden');
+                    el.adminModal.classList.remove('flex');
+                    saveState();
+                    renderHeaderAndBadges();
+                };
+
+                el.tndLogoBtn.addEventListener('click', () => {
+                    el.adminPassInput.value = '';
+                    el.adminPassError.classList.add('hidden');
+                    el.adminPassModal.classList.remove('hidden');
+                    el.adminPassModal.classList.add('flex');
+                    setTimeout(() => el.adminPassInput.focus(), 70);
+                });
+                el.closePassBtn.addEventListener('click', closePass);
+
+                el.adminPassForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (el.adminPassInput.value === ADMIN_PASS) {
+                        closePass();
+                        syncAdminUI();
+                        el.adminModal.classList.remove('hidden');
+                        el.adminModal.classList.add('flex');
+                        sfx.playClick();
+                    } else {
+                        sfx.playError();
+                        el.adminPassError.classList.remove('hidden');
+                        el.adminPassBox.classList.remove('shake-error');
+                        void el.adminPassBox.offsetWidth;
+                        el.adminPassBox.classList.add('shake-error');
+                        el.adminPassInput.value = '';
+                        el.adminPassInput.focus();
+                    }
+                });
+
+                el.adminAddCustomMatchBtn.addEventListener('click', () => {
+                    const hName = el.adminCustomHome.value.trim();
+                    const aName = el.adminCustomAway.value.trim();
+                    if (!hName || !aName) {
+                        showToast('Nhập đủ tên Đội 1 và Đội 2!', 'warn', 1800);
+                        return;
+                    }
+                    const id = 'custom_' + Date.now();
+                    state.customMatches.unshift({
+                        id,
+                        isVirtual: false,
+                        isCustom: true,
+                        leagueSlug: 'eng.1',
+                        leagueName: '👑 KÈO ĐẶC BIỆT ADMIN',
+                        leagueShort: '👑 Admin',
+                        dateIso: new Date(Date.now() + 3600_000).toISOString(),
+                        kickoffTs: Date.now() + 3600_000,
+                        status: 'pre',
+                        clockText: '',
+                        home: { name: hName, abbr: hName.slice(0, 3).toUpperCase(), logo: '', color: '#034694', score: 0 },
+                        away: { name: aName, abbr: aName.slice(0, 3).toUpperCase(), logo: '', color: '#dc2626', score: 0 },
+                        odds: compute1x2Odds(id)
+                    });
+                    el.adminCustomHome.value = '';
+                    el.adminCustomAway.value = '';
+                    saveState();
+                    renderRealMatches();
+                    sfx.playWin();
+                    showToast(`🏟️ Đã lên kèo "${hName} vs ${aName}" ở đầu bảng Trận Thật!`, 'win', 2500);
+                });
+
+                el.rigSmallSlider.addEventListener('input', () => {
+                    state.admin.rigSmallPct = parseInt(el.rigSmallSlider.value, 10) || 0;
+                    syncAdminUI(); saveState();
+                });
+                el.rigBigSlider.addEventListener('input', () => {
+                    state.admin.rigBigPct = parseInt(el.rigBigSlider.value, 10) || 0;
+                    syncAdminUI(); saveState();
+                });
+
+                el.adminSetBalBtn.addEventListener('click', () => {
+                    const val = parseInt(el.adminBalInput.value, 10);
+                    if (!Number.isFinite(val) || val < 0) return;
+                    state.balance = val;
+                    syncAdminUI(); renderHeaderAndBadges(); saveState();
+                    showToast(`👑 Đã đặt số dư thành ${formatVND(state.balance)}`, 'info', 1800);
+                });
+                el.adminAdd10M.addEventListener('click', () => {
+                    state.balance += 10_000_000;
+                    syncAdminUI(); renderHeaderAndBadges(); saveState();
+                });
+                el.adminAdd50M.addEventListener('click', () => {
+                    state.balance += 50_000_000;
+                    syncAdminUI(); renderHeaderAndBadges(); saveState();
+                });
+                el.adminSetZero.addEventListener('click', () => {
+                    state.balance = 0;
+                    syncAdminUI(); renderHeaderAndBadges(); saveState();
+                    showToast('Đã set 0đ (Đóng bảng để test Báo Nhà)', 'warn', 2000);
+                });
+
+                el.closeAdminTopBtn.addEventListener('click', closeAdmin);
+                el.hideAdminBtn.addEventListener('click', closeAdmin);
+            }
+
+            // Boot on Window Load
+            window.onload = function () {
+                loadState();
+                resizeCanvases();
+                bindEvents();
+                renderHeaderAndBadges();
+                renderTickets();
+                tickVirtualClock();
+                setInterval(tickVirtualClock, 1000);
+                fetchRealEuropeanMatches(false);
+                startBotChat();
+                requestAnimationFrame(animLoop);
+            };
+        })();
+    </script>
+</body>
+</html>
